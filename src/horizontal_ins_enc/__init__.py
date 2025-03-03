@@ -1,0 +1,2 @@
+from .config import HorizontalConfiguration
+from .check_regular import regular_horizontal_insertion_encoding
