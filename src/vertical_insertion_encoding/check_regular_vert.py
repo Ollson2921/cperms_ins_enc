@@ -21,14 +21,14 @@ def regular_vertical_insertion_encoding(basis: List[CayleyPermutation]) -> bool:
     return True
 
 
-def check_if_type(cperm: CayleyPermutation, jux: int) -> bool:
+def check_if_type(cperm: List[int], jux: int) -> bool:
     """Checks if the Cayley permutation is of the type of sequence specified by the integer."""
     if jux == 0:
-        return cperm.is_decreasing()
+        return is_decreasing(cperm)
     if jux == 1:
-        return cperm.is_increasing()
+        return is_increasing(cperm)
     if jux == 2:
-        return cperm.is_constant()
+        return is_constant(cperm)
     raise ValueError("Type must be 0, 1, or 2.")
 
 
@@ -63,3 +63,18 @@ def checks_type(cperm: CayleyPermutation, class_to_check: Tuple[int, int]) -> bo
         ):
             return True
     return False
+
+
+def is_increasing(cperm: List[int]) -> bool:
+    """Returns True if the Cayley permutation is strictly increasing."""
+    return all(x < y for x, y in zip(cperm, cperm[1:]))
+
+
+def is_decreasing(cperm: List[int]) -> bool:
+    """Returns True if the Cayley permutation is strictly decreasing."""
+    return all(x > y for x, y in zip(cperm, cperm[1:]))
+
+
+def is_constant(cperm: List[int]) -> bool:
+    """Returns True if the Cayley permutation is constant."""
+    return all(x == y for x, y in zip(cperm, cperm[1:]))

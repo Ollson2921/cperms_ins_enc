@@ -1,5 +1,5 @@
 """Places a point requirement in a tiling in extreme directions.
-0 = rightmost 
+0 = rightmost
 1 = topmost, taking the rightmost if there are multiple
 2 = topmost, taking the leftmost if there are multiple
 3 = leftmost
@@ -108,7 +108,6 @@ class InsertionEncodingPlacementFactory(StrategyFactory[Tiling]):
             GriddedCayleyPerm(CayleyPermutation([0]), [cell]) for cell in cells
         )
         indices = tuple(0 for _ in gcps)
-        # direction = Right_bot
         direction = Left_bot
         yield RequirementPlacementStrategy(gcps, indices, direction)
 

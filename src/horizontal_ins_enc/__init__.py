@@ -1,2 +1,2 @@
-from .config import HorizontalConfiguration
-from .check_regular import regular_horizontal_insertion_encoding
+from .hori_config import HorizontalConfiguration
+from .check_regular_hori import regular_horizontal_insertion_encoding

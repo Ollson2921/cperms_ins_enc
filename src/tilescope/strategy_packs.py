@@ -12,7 +12,7 @@ class TileScopePack(StrategyPack):
         super().__init__(*args, **kwargs)
 
     @classmethod
-    def insertion_encoding(cls):
+    def vertical_insertion_encoding(cls):
         return TileScopePack(
             initial_strats=[
                 FactorStrategy(),
@@ -23,7 +23,7 @@ class TileScopePack(StrategyPack):
                 [InsertionEncodingPlacementFactory()]
             ],  # Iterable[Iterable[Strategy]]
             ver_strats=[AtomStrategy()],  # Iterable[Strategy]
-            name="Insertion Encoding",
+            name="Vertical Insertion Encoding",
             symmetries=[],
             iterative=False,
         )

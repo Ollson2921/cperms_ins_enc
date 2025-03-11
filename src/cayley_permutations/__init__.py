@@ -2,3 +2,4 @@
 
 from .cayley import CayleyPermutation
 from .av import Av
+from .basis import string_to_basis

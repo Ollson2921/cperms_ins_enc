@@ -4,6 +4,7 @@ horizontal insertion encoding."""
 
 from typing import List
 from cayley_permutations import CayleyPermutation
+from vertical_insertion_encoding import check_if_type
 
 
 def regular_horizontal_insertion_encoding(basis: List[CayleyPermutation]) -> bool:
@@ -19,17 +20,6 @@ def regular_horizontal_insertion_encoding(basis: List[CayleyPermutation]) -> boo
                 continue
             return False
     return True
-
-
-def check_if_type(cperm: CayleyPermutation, jux: int) -> bool:
-    """Checks if the Cayley permutation is of the type of sequence specified by the integer."""
-    if jux == 0:
-        return cperm.is_decreasing()
-    if jux == 1:
-        return cperm.is_increasing()
-    if jux == 2:
-        return cperm.is_constant()
-    raise ValueError("Type must be 0, 1, or 2.")
 
 
 def check_is_type_of_horizontal_jux(

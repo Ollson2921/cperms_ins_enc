@@ -279,18 +279,6 @@ class CayleyPermutation:
             self.cperm[:index] + self.cperm[index + 1 :]
         )
 
-    def is_increasing(self) -> bool:
-        """Returns True if the Cayley permutation is strictly increasing."""
-        return all(x < y for x, y in zip(self.cperm, self.cperm[1:]))
-
-    def is_decreasing(self) -> bool:
-        """Returns True if the Cayley permutation is strictly decreasing."""
-        return all(x > y for x, y in zip(self.cperm, self.cperm[1:]))
-
-    def is_constant(self) -> bool:
-        """Returns True if the Cayley permutation is constant."""
-        return all(x == y for x, y in zip(self.cperm, self.cperm[1:]))
-
     def to_jsonable(self) -> dict:
         """Returns a dictionary of the Cayley permutation."""
         return {"cperm": self.cperm}
