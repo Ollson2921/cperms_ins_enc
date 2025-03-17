@@ -11,7 +11,7 @@ from comb_spec_searcher import (
     AtomStrategy,
 )
 from cayley_permutations import CayleyPermutation
-from vertical_insertion_encoding     import Configuration
+from ..vertical_insertion_encoding.vert_config import Configuration
 
 
 class CPermutation(CayleyPermutation, CombinatorialObject):

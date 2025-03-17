@@ -14,5 +14,8 @@ setup(
         "tilescope",
         "vatters_method",
     ],
-    install_requires=["typing"],  # external packages as dependencies
+    install_requires=[
+        "typing",
+        "comb_spec_searcher",
+    ],  # external packages as dependencies
 )

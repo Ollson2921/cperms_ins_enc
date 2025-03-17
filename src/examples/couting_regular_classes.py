@@ -19,4 +19,7 @@ for m in range(1, 14):
             v_reg += 1
         if regular_horizontal_insertion_encoding(basis):
             h_reg += 1
-print(v_reg, h_reg, both, total)
+print('Classes with a vertical insertion encoding', v_reg)
+print('Classes with a horizontal insertion encoding', h_reg)
+print('Classes with both a vertical and horizontal insertion encoding', both)
+print('Total classes', total)

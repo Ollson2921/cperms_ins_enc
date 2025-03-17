@@ -13,7 +13,7 @@ from gridded_cayley_permutations import Tiling
 from gridded_cayley_permutations.point_placements import (
     PointPlacement,
     Directions,
-    Left_bot,
+    Left_bot, Left
 )
 from gridded_cayley_permutations import GriddedCayleyPerm
 from cayley_permutations import CayleyPermutation
@@ -109,6 +109,26 @@ class InsertionEncodingPlacementFactory(StrategyFactory[Tiling]):
         )
         indices = tuple(0 for _ in gcps)
         direction = Left_bot
+        yield RequirementPlacementStrategy(gcps, indices, direction)
+
+    @classmethod
+    def from_dict(cls, d: dict) -> "InsertionEncodingPlacementFactory":
+        return cls(**d)
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}()"
+
+    def __str__(self) -> str:
+        return "Place next point of insertion encoding"
+    
+class HorizontalInsertionEncodingPlacementFactory(StrategyFactory[Tiling]):
+    def __call__(self, comb_class: Tiling) -> Iterator[RequirementPlacementStrategy]:
+        cells = comb_class.active_cells() - comb_class.point_cells()
+        gcps = tuple(
+            GriddedCayleyPerm(CayleyPermutation([0]), [cell]) for cell in cells
+        )
+        indices = tuple(0 for _ in gcps)
+        direction = Left
         yield RequirementPlacementStrategy(gcps, indices, direction)
 
     @classmethod

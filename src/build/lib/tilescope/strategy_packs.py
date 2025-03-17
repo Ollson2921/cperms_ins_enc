@@ -4,7 +4,6 @@ from .strategies import (
     FactorStrategy,
     InsertionEncodingRequirementInsertionFactory,
     InsertionEncodingPlacementFactory,
-    HorizontalInsertionEncodingPlacementFactory,
 )
 
 
@@ -25,23 +24,6 @@ class TileScopePack(StrategyPack):
             ],  # Iterable[Iterable[Strategy]]
             ver_strats=[AtomStrategy()],  # Iterable[Strategy]
             name="Vertical Insertion Encoding",
-            symmetries=[],
-            iterative=False,
-        )
-
-    @classmethod
-    def horizontal_insertion_encoding(cls):
-        return TileScopePack(
-            initial_strats=[
-                FactorStrategy(),
-                InsertionEncodingRequirementInsertionFactory(),
-            ],  # Iterable[Strategy]
-            inferral_strats=[RemoveEmptyRowsAndColumnsStrategy()],  # Iterable[Strategy]
-            expansion_strats=[
-                [HorizontalInsertionEncodingPlacementFactory()]
-            ],  # Iterable[Iterable[Strategy]]
-            ver_strats=[AtomStrategy()],  # Iterable[Strategy]
-            name="Horizontal Insertion Encoding",
             symmetries=[],
             iterative=False,
         )

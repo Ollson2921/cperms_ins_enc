@@ -1,0 +1,8 @@
+Metadata-Version: 2.2
+Name: cayley_perms_ins_enc
+Version: 1.0
+Summary: A module for enumerating Cayley permutations using the insertion encoding.
+Requires-Dist: typing
+Requires-Dist: comb_spec_searcher
+Dynamic: requires-dist
+Dynamic: summary
