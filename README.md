@@ -1,7 +1,7 @@
 # CayleyPermutationsInsEnc
 This is a python library for enumerating Cayley permutations with the insertion encoding.
 
-### Installing
+## Installing
 
 ### Cayley Permutations
 A Cayley permutation is a word $\pi \in \mathbb{N}^*$ such that every number between 1 and the maximum value of $\pi$ appears at least once. Cayley permutations can be seen as a generalisation of permutations where repeated values are allowed. Definitions of pattern containment and Cayley permutation classes follow the same ideas as defined for permutations where the patterns contained are also Cayley permutations, so the Cayley permutation class Av(11) describes all permutations. 
@@ -36,7 +36,12 @@ A basis is an iterable of Cayley permutations. This can be created directly or u
 ### Checking if a class will succeed
 
 
+In the ``examples`` folder, the file ``checking_if_regular`` can be used to check if a basis has regular insertion encoding for either of the two types.
+
+
 ### Enumerating Cayley permutation classes
 There are three diffferent ways to enumerate Cayley permutation classes. Examples of using each of these methods can be found in the ``examples`` folder under ``vertical_vatters_method``, ``vertical_ins_encoding`` and  ``horizontal_ins_encoding``respectively. The first of these,  ``vertical_vatters_method``, is an implementation of the vertical insertion encoding by directly extending Vatter's method for enumerating permutation classes using insertion encoding. The example in ``vertical_ins_encoding`` also uses vertical insertion encoding but is implemented using the tilings method. Tilings are also used for horizontal insertion encoding in the ``horizontal_ins_encoding`` file. 
 
-For each of these files the basis string at the start can be changed
+For each of these files will raise an error if the input class will not succeed with that method. On a success, they will print the specification, generating function and counts for the class up to length $n$ for some $n$.
+
+### Brute force checks
