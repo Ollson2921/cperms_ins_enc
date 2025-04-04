@@ -1,4 +1,4 @@
-""" This module contains the Letter class, Configuration class and the Word class."""
+"""This module contains the Letter class, Configuration class and the Word class."""
 
 from typing import Iterator, List, Dict, Union
 from cayley_permutations import Av, CayleyPermutation
@@ -226,7 +226,7 @@ class Configuration:
         >>> Configuration([0, 1, 1, "🔹", 2]).index_of_max()
         4
         """
-        if self.max_value() == 0:
+        if Configuration(["🔹"]) == self:
             return 1
         max_val = self.max_value()
         for idx, val in reversed(list(enumerate(self.config))):
@@ -496,10 +496,6 @@ class Configuration:
 
         >>> for letter in Configuration(["🔹"]).all_possible_letters():
         ...     print(letter)
-        f_(1, 0)
-        l_(1, 0)
-        m_(1, 0)
-        r_(1, 0)
         f_(1, 1)
         l_(1, 1)
         m_(1, 1)

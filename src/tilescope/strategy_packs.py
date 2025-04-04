@@ -2,9 +2,10 @@ from comb_spec_searcher import StrategyPack, AtomStrategy
 from .strategies import (
     RemoveEmptyRowsAndColumnsStrategy,
     FactorStrategy,
-    InsertionEncodingRequirementInsertionFactory,
-    InsertionEncodingPlacementFactory,
+    VerticalInsertionEncodingPlacementFactory,
     HorizontalInsertionEncodingPlacementFactory,
+    VerticalInsertionEncodingRequirementInsertionFactory,
+    HorizontalInsertionEncodingRequirementInsertionFactory,
 )
 
 
@@ -17,11 +18,11 @@ class TileScopePack(StrategyPack):
         return TileScopePack(
             initial_strats=[
                 FactorStrategy(),
-                InsertionEncodingRequirementInsertionFactory(),
+                VerticalInsertionEncodingRequirementInsertionFactory(),
             ],  # Iterable[Strategy]
             inferral_strats=[RemoveEmptyRowsAndColumnsStrategy()],  # Iterable[Strategy]
             expansion_strats=[
-                [InsertionEncodingPlacementFactory()]
+                [VerticalInsertionEncodingPlacementFactory()]
             ],  # Iterable[Iterable[Strategy]]
             ver_strats=[AtomStrategy()],  # Iterable[Strategy]
             name="Vertical Insertion Encoding",
@@ -34,7 +35,7 @@ class TileScopePack(StrategyPack):
         return TileScopePack(
             initial_strats=[
                 FactorStrategy(),
-                InsertionEncodingRequirementInsertionFactory(),
+                HorizontalInsertionEncodingRequirementInsertionFactory(),
             ],  # Iterable[Strategy]
             inferral_strats=[RemoveEmptyRowsAndColumnsStrategy()],  # Iterable[Strategy]
             expansion_strats=[

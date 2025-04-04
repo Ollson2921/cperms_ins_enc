@@ -1,3 +1,15 @@
+"""This file enumerates Cayley permutation classes using the vertical insertion
+encoding by the tilings method.
+
+Change the basis to any string of Cayley permutations.
+They can be 1 based or 0 based and separated by anything.
+
+If the class is not regular for vertical insertion encoding, an exception will be raised.
+If it is then it will find a specification for it. The lines below can be used to
+print the specification, print the generating function, and print how many Cayley
+permutations there are in the class up to size n for any n.
+"""
+
 from tilescope import TileScope, TileScopePack
 from comb_spec_searcher.rule_db import RuleDBForest
 from gridded_cayley_permutations import Tiling, GriddedCayleyPerm
@@ -26,7 +38,14 @@ spec = scope.auto_search(max_expansion_time=600)
 ## Print the specification
 spec.show()
 
-## Find counts and generating function
-for i in range(10):
-    print(spec.count_objects_of_size(i))
+## Print the generating function
 print(spec.get_genf())
+
+## Print the counts up to size n
+n = 10
+for i in range(n):
+    print(
+        f"Size {i}: ",
+        spec.count_objects_of_size(i),
+        # Av(basis_patterns).generate_cperms(i),
+    )

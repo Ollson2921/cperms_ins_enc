@@ -1,10 +1,11 @@
 from .requirement_insertions import (
     RequirementInsertionStrategy,
-    InsertionEncodingRequirementInsertionFactory,
+    VerticalInsertionEncodingRequirementInsertionFactory,
+    HorizontalInsertionEncodingRequirementInsertionFactory,
 )
 from .point_placements import (
     RequirementPlacementStrategy,
-    InsertionEncodingPlacementFactory,
+    VerticalInsertionEncodingPlacementFactory,
     HorizontalInsertionEncodingPlacementFactory,
 )
 from .remove_empty_rows_and_cols import RemoveEmptyRowsAndColumnsStrategy

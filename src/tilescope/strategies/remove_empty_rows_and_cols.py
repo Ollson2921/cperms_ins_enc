@@ -32,7 +32,7 @@ class RemoveEmptyRowsAndColumnsStrategy(
         return tuple({} for _ in self.decomposition_function(comb_class))
 
     def formal_step(self):
-        return "Removed empty rows and columns"
+        return "Remove empty rows and columns"
 
     def backward_map(
         self,
