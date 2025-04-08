@@ -1,6 +1,0 @@
-cayley_permutations
-gridded_cayley_permutations
-horizontal_ins_enc
-tilescope
-vatters_method
-vertical_insertion_encoding
