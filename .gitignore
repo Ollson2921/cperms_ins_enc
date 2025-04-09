@@ -1,4 +1,4 @@
-*.code-workspace
-*.pyc
-*.DS_Store
-__pycache__/*
+# *.code-workspace
+# *.pyc
+# *.DS_Store
+# __pycache__/*

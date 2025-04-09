@@ -7,7 +7,6 @@ from .strategies import (
 from comb_spec_searcher import (
     StrategyPack,
     AtomStrategy,
-    CombinatorialSpecificationSearcher,
 )
 from searchers.generic_searcher import GenericSearcher
 from check_regular import (

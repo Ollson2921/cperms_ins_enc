@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name="cayley_perms_ins_enc",
+    name="cperms_ins_enc",
     version="1.0",
     description="A module for enumerating Cayley permutations using the insertion encoding.",
     author="Abigail Ollson",

@@ -27,7 +27,7 @@ spec = HorizontalSearcher(basis).auto_search(max_expansion_time=600)
 # spec.show()
 
 ## Print the generating function
-print(spec.get_genf())
+spec.get_genf()
 
 ## Print the counts up to size n
 n = 10

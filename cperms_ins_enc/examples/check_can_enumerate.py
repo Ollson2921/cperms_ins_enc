@@ -11,7 +11,6 @@ from cayley_permutations import string_to_basis
 
 basis = "01"
 
-
 print(
     "Can enumerate with vertical insertion encoding:",
     regular_vertical_insertion_encoding(string_to_basis(basis)),

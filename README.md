@@ -28,8 +28,7 @@ source code, in which case you run the following after cloning the repository:
     ./setup.py develop
     
 
-Using cperms_ins_enc
-#############
+## Using cperms_ins_enc
 
 The cperms_ins_enc library uses the comb_spec_searcher module. To find a specification for a set of pattern avoiding Cayley permutations we first create a searcher. There are two different types, one for vertical insertion encoding and one for horizontal insertion encoding.
 
@@ -37,7 +36,7 @@ The cperms_ins_enc library uses the comb_spec_searcher module. To find a specifi
 
     >>> from cperms_ins_enc import VerticalSearcher, HorizontalSearcher
 
-Each type can enumerate different classes of Cayley permutations. There is a linear time check in the `examples` folder in `check_can_enumerate`. After inputting the basis for a class you want to enumerate the file will tell you if you can enumerate it with each of the methods, where a basis is a string of Cayley permutations.
+Each type can enumerate different classes of Cayley permutations. There is a linear time check in the `check_can_enumerate` file in the `examples` folder to determine if a basis can be enumerated with either type of insertion encoding, where a basis is a string of Cayley permutations.
 
 .. code-block:: python
 
@@ -46,7 +45,7 @@ Each type can enumerate different classes of Cayley permutations. There is a lin
     >>> print("Can enumerate with horizontal insertion encoding:", regular_horizontal_insertion_encoding(string_to_basis(basis)))
     <!-- Finish the output for this -->
 
-We will go through an example of using `VerticalSearcher` to enumerate a class, the process is the same for `HorizontalSearcher` but replacing vertical with horizontal throughout.
+The rest of this README will be an example of using `VerticalSearcher` to enumerate a class. The process is the same for `HorizontalSearcher` but replacing vertical with horizontal throughout.
 We initialise `VerticalSearcher` with the basis. 
 
 .. code-block:: python
@@ -54,21 +53,32 @@ We initialise `VerticalSearcher` with the basis.
     >>> basis = "231, 312, 2121"
     >>> searcher = VerticalSearcher(basis)
 
-Calling the `auto_search` function on `VerticalSearcher` finds the specification for the class.
+Calling the auto_search function on `VerticalSearcher` finds the specification for the class.
+<!-- If a class can not be enumerated with the type of insertion encoding you are using then this will create an error. -->
 
 .. code-block:: python
 
     >>> spec = VatterVerticalSearcher(basis).auto_search(max_expansion_time=600)
 <!-- Paste the output for a class here -->
 
-<!-- ### Enumerating Cayley permutation classes
 
-A class can only be enumerated using the insertion encoding if it is regular for that type of insertion encoding.
-In the ``examples`` folder, the file ``checking_if_regular`` can be used to check if a basis has a regular vertical or horizontal insertion encoding using a linear time algorithm. If a basis fails both of these checks then it can't be enumerated using the methods in this library.
+The specification returned is a CombinatorialSpecification from the comb_spec_searcher module. To view these you can either print the   specification for a string representation or use the show method to visualise the specification in a proof tree format.
 
-If a class has a regular vertical insertion encoding then there are two different algorithms for applying the insertion encoding. Examples of each of these can be found in the ``examples`` folder under ``vertical_vatters_method`` and ``vertical_ins_encoding`` respectively. The first of these,  ``vertical_vatters_method``, is an implementation of the vertical insertion encoding by directly extending Vatter's method for enumerating permutation classes using insertion encoding whereas the ``vertical_ins_encoding`` implements vertical insertion encoding using the tilings method.
-Based on computational experiments, the tilings method is a faster algorithm so we would recommend following the example in the ``vertical_ins_encoding`` file to enumerate classes with this method.
+.. code-block:: python
 
-Tilings are also used to enumerate Cayley permutation classes with the horizontal insertion encoding. An example of this method can be found in the ``horizontal_ins_encoding`` file. 
-Each of these three files will raise an error if the input class will not succeed with that method. On a success, they will print the specification, generating function and counts for the class up to length $n$ for some $n$. -->
+    >>> print(spec)
+<!-- Paste the output for a class here -->
+    >>> spec.show()
+<!-- Paste the output for a class here -->
+
+Any method from CombinatorialSpecification can be used, but in particular the get_genf() function finds the generating function and counts or the counts can be found using the specification as a recurrence up to length `n` for any `n`.
+
+.. code-block:: python
+
+    >>> spec.get_genf()
+<!-- Paste the output for a class here -->
+
+    >>> n = 10
+    >>> print([specification.count_objects_of_size(i) for i in range(n)])
+<!-- Paste the output for a class here -->
 
