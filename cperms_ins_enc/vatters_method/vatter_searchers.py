@@ -8,7 +8,7 @@ from comb_spec_searcher import (
     StrategyPack,
     AtomStrategy,
 )
-from searchers.generic_searcher import GenericSearcher
+from tilescope.generic_searcher import GenericSearcher
 from check_regular import (
     regular_horizontal_insertion_encoding,
     regular_vertical_insertion_encoding,

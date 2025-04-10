@@ -388,7 +388,7 @@ class VerticalConfiguration:
         for cperm in self.cayley_perms(self.bound(basis), []):
             indices_to_remove = []
             for idx in indices:
-                if not cperm.avoids_same_after_deleting(basis, idx):
+                if self.can_be_deleted(idx, basis):
                     indices_to_remove.append(idx)
             for idx in indices_to_remove:
                 indices.remove(idx)

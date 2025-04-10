@@ -3,17 +3,18 @@ is a horizontal juxtaposition and if a basis has a regular
 horizontal insertion encoding."""
 
 from typing import List
-from cayley_permutations import CayleyPermutation
+from cayley_permutations import CayleyPermutation, string_to_basis
 from check_regular import check_if_type
 
 
-def regular_horizontal_insertion_encoding(basis: List[CayleyPermutation]) -> bool:
+def regular_horizontal_insertion_encoding(basis: str) -> bool:
     """Checks if a basis has a regular insertion encoding.
 
     Example:
     >>> has_regular_insertion_encoding([CayleyPermutation([0, 1]), CayleyPermutation([1, 0])])
     True
     """
+    basis = string_to_basis(basis)
     for i in range(3):
         for j in range(3):
             if any(check_is_type_of_horizontal_jux(cperm, (i, j)) for cperm in basis):
@@ -42,13 +43,11 @@ def check_is_type_of_horizontal_jux(
     if len(cperm) == 0:
         return True
 
-    for line in range(len(cperm.cperm)):
+    for line in range(len(cperm.cperm) + 1):
         left = cperm.cperm[:line]
         right = cperm.cperm[line:]
-        if (
-            check_if_type(CayleyPermutation([]).standardise(left), class_to_check[0])
-        ) and check_if_type(
-            CayleyPermutation([]).standardise(right), class_to_check[1]
+        if (check_if_type(left, class_to_check[0])) and check_if_type(
+            right, class_to_check[1]
         ):
             return True
     return False

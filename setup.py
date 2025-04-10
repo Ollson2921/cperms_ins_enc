@@ -7,17 +7,10 @@ setup(
     author="Abigail Ollson",
     author_email="a.n.ollson@keele.ac.uk",
     packages=[
-        "cayley_permutations",
-        "gridded_cayley_permutations",
-        "vertical_insertion_encoding",
-        "horizontal_ins_enc",
-        "tilescope",
-        "vatters_method",
+        "cperms_ins_enc",
     ],
-    description="Enumerate Cayley permutations using the insertion encoding.",
     keywords="enumerative combinatorics pattern avoidance cayley permutations insertion encoding",
     install_requires=[
-        "typing",
         "comb_spec_searcher",
-    ],  # external packages as dependencies
+    ],
 )

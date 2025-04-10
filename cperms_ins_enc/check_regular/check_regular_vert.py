@@ -1,18 +1,19 @@
-""" This module is used for checking if a Cayley permutation
-is a vertical juxtaposition and if a basis has a regular 
+"""This module is used for checking if a Cayley permutation
+is a vertical juxtaposition and if a basis has a regular
 vertical insertion encoding."""
 
 from typing import Tuple, List
-from cayley_permutations import CayleyPermutation
+from cayley_permutations import CayleyPermutation, string_to_basis
 
 
-def regular_vertical_insertion_encoding(basis: List[CayleyPermutation]) -> bool:
+def regular_vertical_insertion_encoding(basis: str) -> bool:
     """Checks if a basis has a regular insertion encoding.
 
     Example:
     >>> has_regular_insertion_encoding([CayleyPermutation([0, 1]), CayleyPermutation([1, 0])])
     True
     """
+    basis = string_to_basis(basis)
     for i in range(3):
         for j in range(3):
             if any(checks_type(cperm, (i, j)) for cperm in basis):

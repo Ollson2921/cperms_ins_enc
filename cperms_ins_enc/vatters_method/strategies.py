@@ -7,8 +7,6 @@ from comb_spec_searcher import (
     DisjointUnionStrategy,
     CartesianProductStrategy,
     StrategyFactory,
-    StrategyPack,
-    AtomStrategy,
 )
 from cayley_permutations import CayleyPermutation
 from .vert_config import VerticalConfiguration

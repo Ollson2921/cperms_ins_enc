@@ -10,16 +10,15 @@ print the specification, print the generating function, and print how many Cayle
 permutations there are in the class up to size n for any n.
 """
 
-from searchers import HorizontalSearcher
+from tilescope import HorizontalSearcher
 
 basis = "01, 10"
 
 from check_regular import (
     regular_horizontal_insertion_encoding,
 )
-from cayley_permutations import string_to_basis
 
-print(regular_horizontal_insertion_encoding(string_to_basis(basis)))
+print(regular_horizontal_insertion_encoding(basis))
 
 spec = HorizontalSearcher(basis).auto_search(max_expansion_time=600)
 

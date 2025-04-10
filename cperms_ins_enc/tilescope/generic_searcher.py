@@ -1,9 +1,10 @@
+import abc
 from comb_spec_searcher import CombinatorialSpecificationSearcher
 from cayley_permutations import string_to_basis
 from gridded_cayley_permutations import Tiling, GriddedCayleyPerm
 
 
-class GenericSearcher:
+class GenericSearcher(abc.ABC):
     def __init__(self, basis: str):
         self.basis = string_to_basis(basis)
         if not self.regular_check():
@@ -11,17 +12,21 @@ class GenericSearcher:
                 f"The class Av{tuple(self.basis)} can not be enumerated with {self.type_of_encoding()} insertion encoding"
             )
 
+    @abc.abstractmethod
     def type_of_encoding(self):
-        raise NotImplementedError("This method is not implemented yet.")
+        """Returns the type of encoding."""
 
+    @abc.abstractmethod
     def start_class(self):
-        raise NotImplementedError("This method is not implemented yet.")
+        """Returns the starting class - a tiling or configuration avoiding a basis."""
 
+    @abc.abstractmethod
     def regular_check(self):
-        raise NotImplementedError("This method is not implemented yet.")
+        """Checks if the class can be enumerated with the given insertion encoding."""
 
+    @abc.abstractmethod
     def pack(self):
-        raise NotImplementedError("This method is not implemented yet.")
+        """Returns the strategy pack."""
 
     def comb_spec_searcher(self) -> CombinatorialSpecificationSearcher:
         """Returns the CombinatorialSpecificationSearcher object for this searcher."""
