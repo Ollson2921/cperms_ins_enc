@@ -1,6 +1,7 @@
 from typing import List, Iterable, Iterator
 from math import ceil
 from ..cayley_permutations import CayleyPermutation, Av
+from .vert_config import VerticalConfiguration
 
 
 class Letter:
@@ -64,7 +65,7 @@ class Letter:
         return cls(letter, int(index), int(repeat))
 
 
-class HorizontalConfiguration:
+class HorizontalConfiguration(VerticalConfiguration):
     """A configuration is a mixture of points and slots.
     cperm is a list of values which form the start of the Cayley permutation.
     slots is a list of values where the slots currently are. If the value
@@ -253,6 +254,44 @@ class HorizontalConfiguration:
                         + 0.5
                     )
         return cls(new_cperm, new_slots)
+
+    def candidates_to_delete(self) -> List[int]:
+        """Returns indices in the Cayley permutation which are repeated or are
+        not directly adjacent to two slots
+
+        Example: HorizontalConfiguration(CayleyPermutation([0, 1, 1, 2, 3]), [0.5, 1.5, 2]).candidates_to_delete()
+
+        """
+        candidates = []
+        for idx, val in enumerate(self.cperm):
+            if self.cperm.cperm.count(val) > 1:
+                candidates.append(idx)
+                continue
+            if (
+                idx + 0.5 in self.slots
+                and idx - 0.5 in self.slots
+                and idx not in self.slots
+            ):
+                candidates.append(idx)
+        return candidates
+
+    def delete_index(self, index):
+        """Delete the index from the Cayley permutation part of the configuration."""
+        val_deleted = self.cperm[index]
+        new_cperm = self.cperm[:index] + self.cperm[index + 1 :]
+        if val_deleted in new_cperm:
+            new_slots = self.slots
+        else:
+            new_slots = [val if val < val_deleted else val - 1 for val in self.slots]
+        return HorizontalConfiguration(
+            CayleyPermutation.standardise(new_cperm), new_slots
+        )
+
+    def bound(self, basis: List[CayleyPermutation]) -> int:
+        """How far need to check if can remove an index."""
+        p = max(map(len, basis))
+        k = len(self.slots) + len(self.cperm)
+        return p + k - 2
 
     @classmethod
     def closest_value_smaller(cls, slot: float, cperm: List[int]) -> float:
