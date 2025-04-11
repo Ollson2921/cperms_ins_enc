@@ -14,7 +14,7 @@ from cperms_ins_enc import VatterHorizontalSearcher
 
 basis = "12_11"
 
-spec = VatterHorizontalSearcher(basis).auto_search(max_expansion_time=600)
+spec = VatterHorizontalSearcher(basis).auto_search(max_expansion_time=6000)
 
 
 ## Print the specification
