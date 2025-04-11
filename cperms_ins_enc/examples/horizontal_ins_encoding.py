@@ -12,26 +12,16 @@ permutations there are in the class up to size n for any n.
 
 from cperms_ins_enc import HorizontalSearcher
 
-basis = "01, 10"
-
-from cperms_ins_enc import (
-    regular_horizontal_insertion_encoding,
-)
-
-print(regular_horizontal_insertion_encoding(basis))
+basis = "01_10"
 
 spec = HorizontalSearcher(basis).auto_search(max_expansion_time=600)
 
 ## Print the specification
-# spec.show()
+spec.show()
 
 ## Print the generating function
 spec.get_genf()
 
 ## Print the counts up to size n
 n = 10
-for i in range(n):
-    print(
-        f"Size {i}: ",
-        spec.count_objects_of_size(i),
-    )
+print([spec.count_objects_of_size(i) for i in range(n)])

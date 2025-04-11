@@ -15,8 +15,8 @@ def regular_horizontal_insertion_encoding(basis: str) -> bool:
     True
     """
     basis = string_to_basis(str(basis))
-    for i in range(3):
-        for j in range(3):
+    for i in range(2):
+        for j in range(2):
             if any(check_is_type_of_horizontal_jux(cperm, (i, j)) for cperm in basis):
                 continue
             return False
@@ -32,7 +32,6 @@ def check_is_type_of_horizontal_jux(
     In the list the first element is left, the second element is right.
     0 -> strictly decreasing
     1 -> strictly increasing
-    2 -> constant
 
     Examples:
     >>> check_is_type_of_horizontal_jux(CayleyPermutation([0, 1, 2]), [1, 1])
@@ -43,7 +42,7 @@ def check_is_type_of_horizontal_jux(
     if len(cperm) == 0:
         return True
 
-    for line in range(len(cperm.cperm) + 1):
+    for line in range(-1, len(cperm.cperm) + 1):
         left = cperm.cperm[:line]
         right = cperm.cperm[line:]
         if (check_if_type(left, class_to_check[0])) and check_if_type(

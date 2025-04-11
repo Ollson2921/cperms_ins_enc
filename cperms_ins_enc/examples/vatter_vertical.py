@@ -12,7 +12,7 @@ permutations there are in the class up to size n for any n.
 
 from cperms_ins_enc import VatterVerticalSearcher
 
-basis = "12_11"
+basis = "231, 312, 2121"
 
 spec = VatterVerticalSearcher(basis).auto_search(max_expansion_time=600)
 

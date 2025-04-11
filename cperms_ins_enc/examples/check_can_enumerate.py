@@ -9,7 +9,7 @@ from cperms_ins_enc import (
     regular_horizontal_insertion_encoding,
 )
 
-basis = "01"
+basis = "231, 312, 2121"
 
 print(
     "Can enumerate with vertical insertion encoding:",
