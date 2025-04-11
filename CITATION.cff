@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Bean"
+  given-names: "Christian"
+- family-names: "Ollson"
+  given-names: "Abigail"
+title: "cperms_ins_enc"
+version: 1.0.0
+date-released: 2025-04-11
+url: "https://github.com/Ollson2921/cperms_ins_enc"
