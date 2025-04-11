@@ -10,7 +10,7 @@ print the specification, print the generating function, and print how many Cayle
 permutations there are in the class up to size n for any n.
 """
 
-from vatters_method import VatterHorizontalSearcher
+from cperms_ins_enc import VatterHorizontalSearcher
 
 basis = "12_11"
 

@@ -10,7 +10,7 @@ print the specification, print the generating function, and print how many Cayle
 permutations there are in the class up to size n for any n.
 """
 
-from tilescope import VerticalSearcher
+from cperms_ins_enc import VerticalSearcher
 
 basis = "231,312,2121"
 

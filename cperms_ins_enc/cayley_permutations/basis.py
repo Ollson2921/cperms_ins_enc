@@ -1,4 +1,4 @@
-from cayley_permutations import CayleyPermutation
+from .cayley import CayleyPermutation
 from typing import Tuple
 import re
 

@@ -4,7 +4,7 @@ The string `basis` can be changed to any string of basis patterns which are one-
 zero-based and separated by anything.
 """
 
-from check_regular import (
+from cperms_ins_enc import (
     regular_vertical_insertion_encoding,
     regular_horizontal_insertion_encoding,
 )

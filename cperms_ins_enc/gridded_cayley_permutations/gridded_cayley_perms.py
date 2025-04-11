@@ -2,7 +2,7 @@
 
 from typing import Iterator, List, Tuple, Iterable, Set
 from itertools import combinations
-from cayley_permutations import CayleyPermutation
+from ..cayley_permutations import CayleyPermutation
 
 
 class GriddedCayleyPerm:

@@ -1,7 +1,7 @@
 """This module contains the CayleyPermutation class and functions for working with them."""
 
 from itertools import combinations
-from typing import Iterable, Iterator, Tuple, List
+from typing import Iterable, Tuple, List
 
 
 class CayleyPermutation:
@@ -299,7 +299,7 @@ class CayleyPermutation:
 
     def __str__(self):
         if len(self) == 0:
-            return "\u03B5"
+            return "\u03b5"
         return "".join(str(x) if x < 10 else f"({str(x)})" for x in self.cperm)
 
     def __repr__(self):

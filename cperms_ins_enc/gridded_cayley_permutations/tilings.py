@@ -5,7 +5,7 @@ from itertools import product
 from math import factorial
 from comb_spec_searcher import CombinatorialClass
 
-from cayley_permutations import CayleyPermutation
+from ..cayley_permutations import CayleyPermutation
 from .row_col_map import RowColMap
 from .gridded_cayley_perms import GriddedCayleyPerm
 from .simplify_obstructions_and_requirements import SimplifyObstructionsAndRequirements

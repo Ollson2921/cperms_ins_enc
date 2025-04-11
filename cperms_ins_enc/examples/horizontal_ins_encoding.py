@@ -10,11 +10,11 @@ print the specification, print the generating function, and print how many Cayle
 permutations there are in the class up to size n for any n.
 """
 
-from tilescope import HorizontalSearcher
+from cperms_ins_enc import HorizontalSearcher
 
 basis = "01, 10"
 
-from check_regular import (
+from cperms_ins_enc import (
     regular_horizontal_insertion_encoding,
 )
 

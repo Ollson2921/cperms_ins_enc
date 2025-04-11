@@ -1,9 +1,8 @@
 from typing import Dict, Iterable, Iterator, Optional, Tuple
 from comb_spec_searcher import DisjointUnionStrategy, StrategyFactory
 
-from gridded_cayley_permutations import Tiling
-from gridded_cayley_permutations import GriddedCayleyPerm
-from cayley_permutations import CayleyPermutation
+from ...gridded_cayley_permutations import GriddedCayleyPerm, Tiling
+from ...cayley_permutations import CayleyPermutation
 
 Cell = Tuple[int, int]
 

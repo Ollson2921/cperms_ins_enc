@@ -9,15 +9,14 @@
 from typing import Dict, Iterable, Iterator, Optional, Tuple
 from comb_spec_searcher import DisjointUnionStrategy, StrategyFactory
 
-from gridded_cayley_permutations import Tiling
-from gridded_cayley_permutations.point_placements import (
+from ...gridded_cayley_permutations import Tiling, GriddedCayleyPerm
+from ...gridded_cayley_permutations.point_placements import (
     PointPlacement,
     Directions,
     Left_bot,
     Left,
 )
-from gridded_cayley_permutations import GriddedCayleyPerm
-from cayley_permutations import CayleyPermutation
+from ...cayley_permutations import CayleyPermutation
 
 
 Cell = Tuple[int, int]

@@ -1,6 +1,6 @@
 from itertools import combinations
 from typing import Dict, Tuple
-from cayley_permutations import CayleyPermutation
+from ..cayley_permutations import CayleyPermutation
 from .row_col_map import RowColMap
 from .tilings import Tiling
 from .gridded_cayley_perms import GriddedCayleyPerm

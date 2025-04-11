@@ -1,7 +1,6 @@
 import abc
 from comb_spec_searcher import CombinatorialSpecificationSearcher
-from cayley_permutations import string_to_basis
-from gridded_cayley_permutations import Tiling, GriddedCayleyPerm
+from ..cayley_permutations import string_to_basis
 
 
 class GenericSearcher(abc.ABC):

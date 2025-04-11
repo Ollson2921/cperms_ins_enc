@@ -4,8 +4,8 @@ from itertools import product
 from functools import cache
 from collections import defaultdict
 
-from gridded_cayley_permutations import GriddedCayleyPerm
-from cayley_permutations import CayleyPermutation
+from .gridded_cayley_perms import GriddedCayleyPerm
+from ..cayley_permutations import CayleyPermutation
 
 Gcptuple = Tuple[GriddedCayleyPerm, ...]
 Requirements = Tuple[Gcptuple, ...]

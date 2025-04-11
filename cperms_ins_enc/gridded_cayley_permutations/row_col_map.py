@@ -1,6 +1,6 @@
 from typing import Dict, Iterable, List, Tuple, Iterator, TYPE_CHECKING
 from itertools import product, chain
-from gridded_cayley_permutations import GriddedCayleyPerm
+from .gridded_cayley_perms import GriddedCayleyPerm
 
 if TYPE_CHECKING:
     from .tilings import Tiling

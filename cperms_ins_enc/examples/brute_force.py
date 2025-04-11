@@ -1,4 +1,4 @@
-from cayley_permutations import Av, string_to_basis, CayleyPermutation
+from cperms_ins_enc import Av, string_to_basis, CayleyPermutation
 
 
 basis = "0132, 231, 41302"

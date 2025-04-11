@@ -4,8 +4,7 @@ from typing import Dict, Iterator, Optional, Tuple
 from comb_spec_searcher import DisjointUnionStrategy
 from comb_spec_searcher.exception import StrategyDoesNotApply
 
-from gridded_cayley_permutations import Tiling
-from gridded_cayley_permutations import GriddedCayleyPerm
+from ...gridded_cayley_permutations import Tiling, GriddedCayleyPerm
 
 Cell = Tuple[int, int]
 

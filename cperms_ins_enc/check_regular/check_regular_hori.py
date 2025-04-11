@@ -3,8 +3,8 @@ is a horizontal juxtaposition and if a basis has a regular
 horizontal insertion encoding."""
 
 from typing import List
-from cayley_permutations import CayleyPermutation, string_to_basis
-from check_regular import check_if_type
+from ..cayley_permutations import CayleyPermutation, string_to_basis
+from .check_regular_vert import check_if_type
 
 
 def regular_horizontal_insertion_encoding(basis: str) -> bool:
@@ -14,7 +14,7 @@ def regular_horizontal_insertion_encoding(basis: str) -> bool:
     >>> has_regular_insertion_encoding([CayleyPermutation([0, 1]), CayleyPermutation([1, 0])])
     True
     """
-    basis = string_to_basis(basis)
+    basis = string_to_basis(str(basis))
     for i in range(3):
         for j in range(3):
             if any(check_is_type_of_horizontal_jux(cperm, (i, j)) for cperm in basis):

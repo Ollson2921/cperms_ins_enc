@@ -1,8 +1,8 @@
-from check_regular import (
+from cperms_ins_enc import (
     regular_vertical_insertion_encoding,
     regular_horizontal_insertion_encoding,
+    CayleyPermutation,
 )
-from cayley_permutations import CayleyPermutation
 from itertools import combinations
 
 v_reg = 0
