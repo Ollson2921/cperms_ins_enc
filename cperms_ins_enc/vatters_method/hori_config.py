@@ -65,7 +65,7 @@ class Letter:
         return cls(letter, int(index), int(repeat))
 
 
-class HorizontalConfiguration(VerticalConfiguration):
+class HorizontalConfiguration:
     """A configuration is a mixture of points and slots.
     cperm is a list of values which form the start of the Cayley permutation.
     slots is a list of values where the slots currently are. If the value
@@ -255,24 +255,73 @@ class HorizontalConfiguration(VerticalConfiguration):
                     )
         return cls(new_cperm, new_slots)
 
+    def cperm_idx_from_config_idx(self, config_idx: int) -> int:
+        return config_idx
+
+    def cayley_perms(
+        self, size: int, basis: List[CayleyPermutation]
+    ) -> Iterator[CayleyPermutation]:
+        """
+        Returns the next Cayley permutations up to length 'size'
+        which avoid the basis.
+        """
+        if size < len(self):
+            return
+        if not self.avoids_basis(basis):
+            return
+        if self.is_cayley_perm():
+            if self.avoids_basis(basis):
+                yield self.cperm
+        for child in self.children():
+            yield from child.cayley_perms(size, basis)
+
+    def deleteable_indices(self, basis: List[CayleyPermutation]) -> List[int]:
+        """Returns list of indices from candidates to delete that the
+        HorizontalConfiguration still avoids the basis after being deleted."""
+        indices = self.candidates_to_delete()
+        for cperm in self.cayley_perms(self.bound(basis), []):
+            indices_to_remove = []
+            for idx in indices:
+                if self.can_be_deleted(idx, basis):
+                    indices_to_remove.append(idx)
+            for idx in indices_to_remove:
+                indices.remove(idx)
+            if not indices:
+                break
+        return indices
+
+    def avoids_basis(self, basis: List[CayleyPermutation]) -> bool:
+        """Returns True if the values in the HorizontalConfiguration avoids the basis."""
+        if not self.cperm.contains(basis):
+            return True
+        return False
+
+    def can_be_deleted(self, idx: int, basis: List[CayleyPermutation]) -> bool:
+        """Returns True if the VerticalConfiguration can be deleted
+        at index 'idx' and still avoid the basis."""
+        return all(
+            cperm.avoids_same_after_deleting(basis, idx)
+            for cperm in self.cayley_perms(self.bound(basis), [])
+        )
+
     def candidates_to_delete(self) -> List[int]:
         """Returns indices in the Cayley permutation which are repeated or are
         not directly adjacent to two slots
 
-        Example: HorizontalConfiguration(CayleyPermutation([0, 1, 1, 2, 3]), [0.5, 1.5, 2]).candidates_to_delete()
-
+        Example:
+        >>> print(HorizontalConfiguration(CayleyPermutation([0, 1, 2, 3, 4, 5, 6]), [0.5, 3, 4.5, 5]).candidates_to_delete())
+        [0, 1, 2, 4, 6]
         """
         candidates = []
         for idx, val in enumerate(self.cperm):
             if self.cperm.cperm.count(val) > 1:
                 candidates.append(idx)
                 continue
-            if (
-                idx + 0.5 in self.slots
-                and idx - 0.5 in self.slots
-                and idx not in self.slots
-            ):
-                candidates.append(idx)
+            if val + 0.5 in self.slots and val - 0.5 in self.slots:
+                continue
+            if val in self.slots:
+                continue
+            candidates.append(idx)
         return candidates
 
     def delete_index(self, index):
@@ -290,7 +339,7 @@ class HorizontalConfiguration(VerticalConfiguration):
     def bound(self, basis: List[CayleyPermutation]) -> int:
         """How far need to check if can remove an index."""
         p = max(map(len, basis))
-        k = len(self.slots) + len(self.cperm)
+        k = len(self)
         return p + k - 2
 
     @classmethod

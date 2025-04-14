@@ -25,8 +25,4 @@ spec.get_genf()
 
 ## Print the counts up to size n
 n = 10
-for i in range(n):
-    print(
-        f"Size {i}: ",
-        spec.count_objects_of_size(i),
-    )
+print([spec.count_objects_of_size(i) for i in range(n)])

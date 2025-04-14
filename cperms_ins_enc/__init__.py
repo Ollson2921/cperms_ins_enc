@@ -4,4 +4,8 @@ from .check_regular import (
     regular_vertical_insertion_encoding,
 )
 from .tilescope import HorizontalSearcher, VerticalSearcher
-from .vatters_method import VatterVerticalSearcher, VatterHorizontalSearcher
+from .vatters_method import (
+    VatterVerticalSearcher,
+    VatterHorizontalSearcher,
+    HorizontalConfiguration,
+)
