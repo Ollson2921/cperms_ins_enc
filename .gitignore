@@ -1,4 +1,31 @@
-*.code-workspace
-*.pyc
+# Byte-compiled / optimized / DLL files
+__pycache__/
+cayley_permutations/__pycache__/
+gridded_cayley_permutations/__pycache__/
+check_regular/__pycache__/
+examples/__pycache__/
+tilescope/__pycache__/
+vatters_method/__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 *.DS_Store
-__pycache__/*

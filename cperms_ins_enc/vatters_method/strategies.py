@@ -155,7 +155,7 @@ class HoriDeleteIndexStrategy(VertDeleteIndexStrategy):
         self, comb_class: ConfigAvoidingBasis
     ) -> Tuple[ConfigAvoidingBasis, ...] | None:
         deleted = comb_class.config.delete_index(self.index)
-        atom = HorizontalConfiguration(CayleyPermutation([1]))
+        atom = HorizontalConfiguration(CayleyPermutation([1]), [])
         return (
             ConfigAvoidingBasis(deleted, comb_class.basis),
             ConfigAvoidingBasis(atom, comb_class.basis),

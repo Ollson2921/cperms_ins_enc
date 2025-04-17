@@ -385,16 +385,11 @@ class VerticalConfiguration:
         """Returns list of indices from candidates to delete that the
         VerticalConfiguration still avoids the basis after being deleted."""
         indices = self.candidates_to_delete()
-        for cperm in self.cayley_perms(self.bound(basis), []):
-            indices_to_remove = []
-            for idx in indices:
-                if self.can_be_deleted(idx, basis):
-                    indices_to_remove.append(idx)
-            for idx in indices_to_remove:
-                indices.remove(idx)
-            if not indices:
-                break
-        return indices
+        to_remove = []
+        for idx in indices:
+            if self.can_be_deleted(idx, basis):
+                to_remove.append(idx)
+        return to_remove
 
     def bound(self, basis: List[CayleyPermutation]) -> int:
         """How far need to check if can remove an index."""

@@ -10,32 +10,19 @@ print the specification, print the generating function, and print how many Cayle
 permutations there are in the class up to size n for any n.
 """
 
-from cperms_ins_enc import (
-    VatterHorizontalSearcher,
-    HorizontalConfiguration,
-    CayleyPermutation,
-)
+from cperms_ins_enc import VatterHorizontalSearcher
+
+basis = "12_11"
+
+spec = VatterHorizontalSearcher(basis).auto_search(max_expansion_time=6000)
 
 
-config = HorizontalConfiguration(CayleyPermutation([0, 1, 2, 3, 4, 5, 6]), [0.5])
-basis = [CayleyPermutation([0, 0])]
-print(config.candidates_to_delete())
-print(config.deleteable_indices(basis))
+## Print the specification
+spec.show()
 
-for cperm in config.cayley_perms(config.bound(basis), []):
-    print(cperm)
+## Print the generating function
+spec.get_genf()
 
-# basis = "12_11"
-
-# spec = VatterHorizontalSearcher(basis).auto_search(max_expansion_time=6000)
-
-
-# ## Print the specification
-# spec.show()
-
-# ## Print the generating function
-# spec.get_genf()
-
-# ## Print the counts up to size n
-# n = 10
-# print([spec.count_objects_of_size(i) for i in range(n)])
+## Print the counts up to size n
+n = 10
+print([spec.count_objects_of_size(i) for i in range(n)])

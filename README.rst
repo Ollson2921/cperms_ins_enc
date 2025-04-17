@@ -4,7 +4,7 @@ cperms_ins_enc
 
 cperms_ins_enc is a python library for enumerating Cayley permutations with the insertion encoding.
 
-A Cayley permutation is a word :math:`\pi \in \mathbb{N}^*` such that every number between 1 and the maximum value of :math:`\pi` appears at least once. Cayley permutations can be seen as a generalisation of permutations where repeated values are allowed. Definitions of pattern containment and Cayley permutation classes follow the same ideas as defined for permutations where the patterns contained are also Cayley permutations, so the Cayley permutation class Av(11) describes all permutations. 
+A Cayley permutation is a word `π ∈ ℕ*` such that every number between 1 and the maximum value of `π` appears at least once. Cayley permutations can be seen as a generalisation of permutations where repeated values are allowed. Definitions of pattern containment and Cayley permutation classes follow the same ideas as defined for permutations where the patterns contained are also Cayley permutations, so the Cayley permutation class Av(11) describes all permutations. 
 
 
 There are two types of insertion encoding for enumerating Cayley permutations. The vertical insertion encoding inserts new maxima in the Cayley permutation and horizontal insertion encoding inserts new rightmost values.
@@ -53,7 +53,7 @@ Each type can enumerate different classes of Cayley permutations. There is a lin
     Can enumerate with vertical insertion encoding: True
     Can enumerate with horizontal insertion encoding: True
 
-The rest of this README will be an example of using ``VerticalSearcher`` to enumerate a class. The process is the same for ``HorizontalSearcher`` but replacing vertical with horizontal throughout.
+The rest of this README will be an example of using ``VerticalSearcher`` to enumerate the class of hare pop-stack sortable Cayley permutations. The process is the same for any other class by changing the basis and can be done with ``HorizontalSearcher`` by replacing vertical with horizontal throughout.
 We initialise ``VerticalSearcher`` with the basis. 
 
 .. code-block:: python
