@@ -16,21 +16,10 @@ def regular_vertical_insertion_encoding(basis: str) -> bool:
     basis = string_to_basis(str(basis))
     for i in range(3):
         for j in range(3):
-            if any(checks_type(cperm, (i, j)) for cperm in basis):
+            if any(checks_type(cperm.cperm, (i, j)) for cperm in basis):
                 continue
             return False
     return True
-
-
-def check_if_type(cperm: List[int], jux: int) -> bool:
-    """Checks if the Cayley permutation is of the type of sequence specified by the integer."""
-    if jux == 0:
-        return is_decreasing(cperm)
-    if jux == 1:
-        return is_increasing(cperm)
-    if jux == 2:
-        return is_constant(cperm)
-    raise ValueError("Type must be 0, 1, or 2.")
 
 
 def checks_type(cperm: CayleyPermutation, class_to_check: Tuple[int, int]) -> bool:
@@ -50,20 +39,12 @@ def checks_type(cperm: CayleyPermutation, class_to_check: Tuple[int, int]) -> bo
     """
     if len(cperm) == 0:
         return True
-    max_val = max(cperm.cperm)
-    for line in range(-1, max_val + 1):
-        above = []
-        below = []
-        for val in cperm.cperm:
-            if val > line:
-                above.append(val)
-            if val <= line:
-                below.append(val)
-        if (check_if_type(above, class_to_check[0])) and check_if_type(
-            below, class_to_check[1]
-        ):
-            return True
-    return False
+    if class_to_check[1] == 0:
+        return dec_bottom(cperm, class_to_check[0])
+    elif class_to_check[1] == 1:
+        return inc_bottom(cperm, class_to_check[0])
+    elif class_to_check[1] == 2:
+        return con_bottom(cperm, class_to_check[0])
 
 
 def is_increasing(cperm: List[int]) -> bool:
@@ -81,20 +62,74 @@ def is_constant(cperm: List[int]) -> bool:
     return all(x == y for x, y in zip(cperm, cperm[1:]))
 
 
-def incinc(cperm: List[int]) -> bool:
-    """Returns True if the Cayley permutation is increasing ontop
-    increasing on the bottom."""
+def seq_type(cperm: List[int], seqtype: int) -> bool:
+    """Returns True if the Cayley permutation is of the type specified by the integer.
+    0 -> strictly decreasing
+    1 -> strictly increasing
+    2 -> constant."""
+    if seqtype == 0:
+        return is_decreasing(cperm)
+    elif seqtype == 1:
+        return is_increasing(cperm)
+    elif seqtype == 2:
+        return is_constant(cperm)
+    else:
+        raise ValueError("Type must be 0, 1, or 2.")
+
+
+def inc_bottom(cperm: List[int], seqtype: int) -> bool:
+    """Returns True if the Cayley permutation is increasing on bottom
+    and 'seqtype' on the top where:
+    0 -> strictly decreasing
+    1 -> strictly increasing
+    2 -> constant."""
     if cperm.count(0) != 1:
         return False
-    below = [cperm.index(0)]
-    above = cperm.copy()
-    above.remove(0)
+    below_indices = [cperm.index(0)]
+    above_vals = [val for val in cperm if val != 0]
     for val in range(1, max(cperm) + 1):
         if cperm.count(val) > 1:
             return False
         new_idx = cperm.index(val)
-        if new_idx < below[-1]:
+        if new_idx < below_indices[-1]:
             break
-        above.remove(val)
-        below.append(new_idx)
-    return is_increasing(above)
+        above_vals.remove(val)
+        below_indices.append(new_idx)
+    return seq_type(above_vals, seqtype)
+
+
+def con_bottom(cperm: List[int], seqtype: int) -> bool:
+    """Returns True if the Cayley permutation is constant on bottom
+    and 'seqtype' on the top where:
+    0 -> strictly decreasing
+    1 -> strictly increasing
+    2 -> constant."""
+    above_vals = [val for val in cperm if val != 0]
+    return seq_type(above_vals, seqtype)
+
+
+def dec_bottom(cperm: List[int], seqtype: int) -> bool:
+    """Returns True if the Cayley permutation is decreasing on bottom
+    and 'seqtype' on the top where:
+    0 -> strictly decreasing
+    1 -> strictly increasing
+    2 -> constant."""
+    if cperm.count(0) != 1:
+        return False
+    below_indices = [cperm.index(0)]
+    above_vals = [val for val in cperm if val != 0]
+    for val in range(1, max(cperm) + 1):
+        if cperm.count(val) > 1:
+            return False
+        new_idx = cperm.index(val)
+        if new_idx > below_indices[-1]:
+            break
+        above_vals.remove(val)
+        below_indices.append(new_idx)
+    return seq_type(above_vals, seqtype)
+
+
+print(
+    "Can enumerate with vertical insertion encoding:",
+    regular_vertical_insertion_encoding("231, 312, 2121"),
+)
