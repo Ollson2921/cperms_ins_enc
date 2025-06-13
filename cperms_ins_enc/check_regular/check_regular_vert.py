@@ -79,3 +79,22 @@ def is_decreasing(cperm: List[int]) -> bool:
 def is_constant(cperm: List[int]) -> bool:
     """Returns True if the Cayley permutation is constant."""
     return all(x == y for x, y in zip(cperm, cperm[1:]))
+
+
+def incinc(cperm: List[int]) -> bool:
+    """Returns True if the Cayley permutation is increasing ontop
+    increasing on the bottom."""
+    if cperm.count(0) != 1:
+        return False
+    below = [cperm.index(0)]
+    above = cperm.copy()
+    above.remove(0)
+    for val in range(1, max(cperm) + 1):
+        if cperm.count(val) > 1:
+            return False
+        new_idx = cperm.index(val)
+        if new_idx < below[-1]:
+            break
+        above.remove(val)
+        below.append(new_idx)
+    return is_increasing(above)
