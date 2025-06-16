@@ -1,4 +1,4 @@
-"""This module is used for checking if a Cayley permutation
+"""This module is used for checking if a sequence
 is a horizontal juxtaposition and if a basis has a regular
 horizontal insertion encoding."""
 
@@ -10,8 +10,7 @@ def regular_horizontal_insertion_encoding(basis: str) -> bool:
     """Checks if a basis has a regular insertion encoding.
 
     Example:
-    >>> has_regular_insertion_encoding([CayleyPermutation([0, 1]),
-    CayleyPermutation([1, 0])])
+    >>> has_regular_insertion_encoding("012, 210")
     True
     """
     basis = string_to_basis(str(basis))
@@ -25,16 +24,16 @@ def regular_horizontal_insertion_encoding(basis: str) -> bool:
 
 def checks_type(cperm: list[int], class_to_check: tuple[int, int]) -> bool:
     """
-    Returns True if the Cayley permutation is a vertical juxtaposition
+    Returns True if the sequence is a vertical juxtaposition
     of the type specified by the tuple.
     In the tuple the first element is above, the second element is below.
     0 -> strictly decreasing
     1 -> strictly increasing
 
     Examples:
-    >>> checks_type(CayleyPermutation([0, 1, 2]), (1, 1))
+    >>> checks_type([0, 1, 2], (1, 1))
     True
-    >>> checks_type(CayleyPermutation([0, 1, 2]), (0, 0))
+    >>> checks_type([0, 1, 2], (0, 0))
     False
     """
     if len(cperm) == 0 or len(cperm) == 1:
@@ -48,22 +47,26 @@ def checks_type(cperm: list[int], class_to_check: tuple[int, int]) -> bool:
 
 
 def inc_left(cperm: list[int], seqtype: int) -> bool:
-    """Returns True if the left part of the Cayley permutation is strictly
+    """Returns True if the left part of the sequence is strictly
     increasing and right is of type 'seqtype'."""
     left = cperm[0]
     for idx in range(1, len(cperm)):
         if left >= cperm[idx]:
             break
         left = cperm[idx]
+    else:
+        return True
     return seq_type(cperm[idx:], seqtype)
 
 
 def dec_left(cperm: list[int], seqtype: int) -> bool:
-    """Returns True if the left part of the Cayley permutation is strictly
+    """Returns True if the left part of the sequence is strictly
     increasing and right is of type 'seqtype'."""
     left = cperm[0]
     for idx in range(1, len(cperm)):
         if left <= cperm[idx]:
             break
         left = cperm[idx]
+    else:
+        return True
     return seq_type(cperm[idx:], seqtype)

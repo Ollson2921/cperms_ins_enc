@@ -1,4 +1,4 @@
-"""This module is used for checking if a Cayley permutation
+"""This module is used for checking if a sequence
 is a vertical juxtaposition and if a basis has a regular
 vertical insertion encoding."""
 
@@ -9,8 +9,7 @@ def regular_vertical_insertion_encoding(basis: str) -> bool:
     """Checks if a basis has a regular insertion encoding.
 
     Example:
-    >>> has_regular_insertion_encoding([CayleyPermutation([0, 1]),
-      CayleyPermutation([1, 0])])
+    >>> has_regular_insertion_encoding("01_10")
     True
     """
     basis = string_to_basis(str(basis))
@@ -24,7 +23,7 @@ def regular_vertical_insertion_encoding(basis: str) -> bool:
 
 def checks_type(cperm: list[int], class_to_check: tuple[int, int]) -> bool:
     """
-    Returns True if the Cayley permutation is a vertical juxtaposition
+    Returns True if the sequence is a vertical juxtaposition
     of the type specified by the tuple.
     In the tuple the first element is above, the second element is below.
     0 -> strictly decreasing
@@ -32,25 +31,39 @@ def checks_type(cperm: list[int], class_to_check: tuple[int, int]) -> bool:
     2 -> constant
 
     Examples:
-    >>> checks_type(CayleyPermutation([0, 1, 2]), (1, 1))
+    >>> checks_type([0, 1, 2], (1, 1))
     True
-    >>> checks_type(CayleyPermutation([0, 1, 2]), (0, 0))
+    >>> checks_type([0, 1, 2], (0, 0))
     False
     """
     if len(cperm) == 0 or len(cperm) == 1:
         return True
-    elif class_to_check[1] == 0:
-        return dec_bottom(cperm, class_to_check[0])
-    elif class_to_check[1] == 1:
-        return inc_bottom(cperm, class_to_check[0])
+    elif class_to_check[0] == 2:
+        if class_to_check[1] == 2:
+            return con_con(cperm)
+        elif class_to_check[1] == 0:
+            return dec_con(cperm)
+        elif class_to_check[1] == 1:
+            return inc_con(cperm)
     elif class_to_check[1] == 2:
-        return con_bottom(cperm, class_to_check[0])
+        if class_to_check[0] == 0:
+            return con_dec(cperm)
+        elif class_to_check[0] == 1:
+            return con_inc(cperm)
+    elif class_to_check[0] == 0 and class_to_check[1] == 1:
+        return inc_dec(cperm)
+    elif class_to_check[0] == 1 and class_to_check[1] == 0:
+        return dec_inc(cperm)
+    elif class_to_check[0] == 0 and class_to_check[1] == 0:
+        return dec_dec(cperm)
+    elif class_to_check[0] == 1 and class_to_check[1] == 1:
+        return inc_inc(cperm)
     else:
-        raise ValueError("Invalid class_to_check value. Must be 0, 1 or 2.")
+        raise ValueError("Invalid class_to_check value. Must be 0, 1, or 2.")
 
 
 def is_increasing(cperm: list[int]) -> bool:
-    """Returns True if the Cayley permutation is strictly increasing."""
+    """Returns True if the sequence is strictly increasing."""
     if len(cperm) == 0:
         return True
     left = cperm[0]
@@ -62,7 +75,7 @@ def is_increasing(cperm: list[int]) -> bool:
 
 
 def is_decreasing(cperm: list[int]) -> bool:
-    """Returns True if the Cayley permutation is strictly decreasing."""
+    """Returns True if the sequence is strictly decreasing."""
     if len(cperm) == 0:
         return True
     left = cperm[0]
@@ -74,7 +87,7 @@ def is_decreasing(cperm: list[int]) -> bool:
 
 
 def is_constant(cperm: list[int]) -> bool:
-    """Returns True if the Cayley permutation is constant."""
+    """Returns True if the sequence is constant."""
     if len(cperm) == 0:
         return True
     left = cperm[0]
@@ -85,7 +98,7 @@ def is_constant(cperm: list[int]) -> bool:
 
 
 def seq_type(cperm: list[int], seqtype: int) -> bool:
-    """Returns True if the Cayley permutation is of the type specified by the
+    """Returns True if the sequence is of the type specified by the
     integer.
     0 -> strictly decreasing
     1 -> strictly increasing
@@ -100,8 +113,56 @@ def seq_type(cperm: list[int], seqtype: int) -> bool:
         raise ValueError("Type must be 0, 1, or 2.")
 
 
+def inc_inc(cperm: list[int]) -> bool:
+    """Returns True if the sequence is increasing on bottom
+    and increasing on top.
+    NOTE: input list must be a Cayley permutation.
+
+    Creates bottom sequence with the first values in cperm
+    that are at the same index as their value. The first value
+    that is not at the same index is added to the top sequence
+    and a line is drawn under it. Any other value must form an
+    increasing sequence above or below that line.
+    """
+    top_seq = []
+    bottom_seq = []
+    for idx, val in enumerate(cperm):
+        if val == idx:
+            bottom_seq.append(val)
+        else:
+            top_seq.append(val)
+            break
+    line = top_seq[0]
+    start_index = len(bottom_seq) + 1
+
+    for val in cperm[start_index:]:
+        if val < line:
+            if val <= bottom_seq[-1]:
+                return False
+            bottom_seq.append(val)
+        else:
+            if val <= top_seq[-1]:
+                return False
+            top_seq.append(val)
+    print("bottom_seq", bottom_seq)
+    print("top_seq", top_seq)
+    return True
+
+
+def dec_dec(cperm: list[int]) -> bool:
+    """Returns True if the sequence is decreasing on bottom
+    and decreasing on top.
+    NOTE: input list must be a Cayley permutation.
+
+    Does the same as inc_inc, but in reverse order.
+    """
+    reversed_cperm = cperm[::-1]
+    print("cperm", reversed_cperm)
+    return inc_inc(reversed_cperm)
+
+
 def inc_bottom(cperm: list[int], seqtype: int) -> bool:
-    """Returns True if the Cayley permutation is increasing on bottom
+    """Returns True if the sequence is increasing on bottom
     and 'seqtype' on the top where:
     0 -> strictly decreasing
     1 -> strictly increasing
@@ -121,18 +182,46 @@ def inc_bottom(cperm: list[int], seqtype: int) -> bool:
     return seq_type(above_vals, seqtype)
 
 
-def con_bottom(cperm: list[int], seqtype: int) -> bool:
-    """Returns True if the Cayley permutation is constant on bottom
-    and 'seqtype' on the top where:
-    0 -> strictly decreasing
-    1 -> strictly increasing
-    2 -> constant."""
-    above_vals = [val for val in cperm if val != 0]
-    return seq_type(above_vals, seqtype)
+def inc_dec(cperm: list[int]) -> bool:
+    """Returns True if the sequence is increasing on bottom
+    and decreasing on top."""
+    middle_val = cperm[-1]
+    last_val_top = middle_val
+    last_val_bottom = middle_val
+    for val in cperm[-2::-1]:
+        if val < middle_val:
+            if val >= last_val_bottom:
+                return False
+            last_val_bottom = val
+        else:
+            if val <= last_val_top:
+                return False
+            last_val_top = val
+    return True
+
+
+def dec_inc(cperm: list[int]) -> bool:
+    """Returns True if the sequence is decreasing on bottom
+    and increasing on top."""
+    middle_val = cperm[0]
+    last_val_top = middle_val
+    last_val_bottom = middle_val
+    for val in cperm[1:]:
+        if val < middle_val:
+            if val >= last_val_bottom:
+                return False
+            last_val_bottom = val
+            print("bottom", val)
+        else:
+            if val <= last_val_top:
+                return False
+            last_val_top = val
+            print("top", val)
+    return True
 
 
 def dec_bottom(cperm: list[int], seqtype: int) -> bool:
-    """Returns True if the Cayley permutation is decreasing on bottom
+    """Returns True if the sequence is decreasing on bottom
     and 'seqtype' on the top where:
     0 -> strictly decreasing
     1 -> strictly increasing
@@ -150,3 +239,66 @@ def dec_bottom(cperm: list[int], seqtype: int) -> bool:
         above_vals.remove(val)
         below_indices.append(new_idx)
     return seq_type(above_vals, seqtype)
+
+
+def con_con(cperm: list[int]) -> bool:
+    """Returns True if the sequence is constant on bottom
+    and constant on top."""
+    max_val = max(cperm)
+    if max_val == 0:
+        return True
+    for val in cperm:
+        if val != max_val and val != 0:
+            return False
+    return True
+
+
+def con_inc(cperm: list[int]) -> bool:
+    """Returns True if the sequence is constant on bottom
+    and increasing on top."""
+    initial_val = 0
+    for val in cperm:
+        if val != 0:
+            if val <= initial_val:
+                return False
+            initial_val = val
+    return True
+
+
+def con_dec(cperm: list[int]) -> bool:
+    """Returns True if the sequence is constant on bottom
+    and decreasing on top.
+    Looks at vals in reverse order."""
+    initial_val = 0
+    for val in cperm[-1::-1]:
+        if val != 0:
+            if val <= initial_val:
+                return False
+            initial_val = val
+    return True
+
+
+def inc_con(cperm: list[int]) -> bool:
+    """Returns True if the sequence is increasing on bottom
+    and constant on top."""
+    max_val = max(cperm)
+    initial_val = max_val
+    for val in cperm[-1::-1]:
+        if val != max_val:
+            if val >= initial_val:
+                return False
+            initial_val = val
+    return True
+
+
+def dec_con(cperm: list[int]) -> bool:
+    """Returns True if the sequence is decreasing on bottom
+    and constant on top."""
+    max_val = max(cperm)
+    initial_val = max_val
+    for val in cperm:
+        if val != max_val:
+            if val >= initial_val:
+                return False
+            initial_val = val
+    return True
