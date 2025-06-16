@@ -3,7 +3,57 @@ is a horizontal juxtaposition and if a basis has a regular
 horizontal insertion encoding."""
 
 from cperms_ins_enc import string_to_basis
-from cperms_ins_enc.check_regular import seq_type
+
+
+def is_increasing(cperm: list[int]) -> bool:
+    """Returns True if the sequence is strictly increasing."""
+    if len(cperm) == 0:
+        return True
+    left = cperm[0]
+    for idx in range(1, len(cperm)):
+        if left >= cperm[idx]:
+            return False
+        left = cperm[idx]
+    return True
+
+
+def is_decreasing(cperm: list[int]) -> bool:
+    """Returns True if the sequence is strictly decreasing."""
+    if len(cperm) == 0:
+        return True
+    left = cperm[0]
+    for idx in range(1, len(cperm)):
+        if left <= cperm[idx]:
+            return False
+        left = cperm[idx]
+    return True
+
+
+def is_constant(cperm: list[int]) -> bool:
+    """Returns True if the sequence is constant."""
+    if len(cperm) == 0:
+        return True
+    left = cperm[0]
+    for idx in range(1, len(cperm)):
+        if left != cperm[idx]:
+            return False
+    return True
+
+
+def seq_type(cperm: list[int], seqtype: int) -> bool:
+    """Returns True if the sequence is of the type specified by the
+    integer.
+    0 -> strictly decreasing
+    1 -> strictly increasing
+    2 -> constant."""
+    if seqtype == 0:
+        return is_decreasing(cperm)
+    elif seqtype == 1:
+        return is_increasing(cperm)
+    elif seqtype == 2:
+        return is_constant(cperm)
+    else:
+        raise ValueError("Type must be 0, 1, or 2.")
 
 
 def regular_horizontal_insertion_encoding(basis: str) -> bool:

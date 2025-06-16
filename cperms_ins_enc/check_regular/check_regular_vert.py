@@ -62,57 +62,6 @@ def checks_type(cperm: list[int], class_to_check: tuple[int, int]) -> bool:
         raise ValueError("Invalid class_to_check value. Must be 0, 1, or 2.")
 
 
-def is_increasing(cperm: list[int]) -> bool:
-    """Returns True if the sequence is strictly increasing."""
-    if len(cperm) == 0:
-        return True
-    left = cperm[0]
-    for idx in range(1, len(cperm)):
-        if left >= cperm[idx]:
-            return False
-        left = cperm[idx]
-    return True
-
-
-def is_decreasing(cperm: list[int]) -> bool:
-    """Returns True if the sequence is strictly decreasing."""
-    if len(cperm) == 0:
-        return True
-    left = cperm[0]
-    for idx in range(1, len(cperm)):
-        if left <= cperm[idx]:
-            return False
-        left = cperm[idx]
-    return True
-
-
-def is_constant(cperm: list[int]) -> bool:
-    """Returns True if the sequence is constant."""
-    if len(cperm) == 0:
-        return True
-    left = cperm[0]
-    for idx in range(1, len(cperm)):
-        if left != cperm[idx]:
-            return False
-    return True
-
-
-def seq_type(cperm: list[int], seqtype: int) -> bool:
-    """Returns True if the sequence is of the type specified by the
-    integer.
-    0 -> strictly decreasing
-    1 -> strictly increasing
-    2 -> constant."""
-    if seqtype == 0:
-        return is_decreasing(cperm)
-    elif seqtype == 1:
-        return is_increasing(cperm)
-    elif seqtype == 2:
-        return is_constant(cperm)
-    else:
-        raise ValueError("Type must be 0, 1, or 2.")
-
-
 def inc_inc(cperm: list[int]) -> bool:
     """Returns True if the sequence is increasing on bottom
     and increasing on top.
@@ -132,20 +81,22 @@ def inc_inc(cperm: list[int]) -> bool:
         else:
             top_seq.append(val)
             break
+    if not top_seq:
+        return True
     line = top_seq[0]
     start_index = len(bottom_seq) + 1
 
     for val in cperm[start_index:]:
         if val < line:
-            if val <= bottom_seq[-1]:
+            if not bottom_seq:
+                bottom_seq.append(val)
+            elif val <= bottom_seq[-1]:
                 return False
             bottom_seq.append(val)
         else:
             if val <= top_seq[-1]:
                 return False
             top_seq.append(val)
-    print("bottom_seq", bottom_seq)
-    print("top_seq", top_seq)
     return True
 
 
@@ -157,29 +108,7 @@ def dec_dec(cperm: list[int]) -> bool:
     Does the same as inc_inc, but in reverse order.
     """
     reversed_cperm = cperm[::-1]
-    print("cperm", reversed_cperm)
     return inc_inc(reversed_cperm)
-
-
-def inc_bottom(cperm: list[int], seqtype: int) -> bool:
-    """Returns True if the sequence is increasing on bottom
-    and 'seqtype' on the top where:
-    0 -> strictly decreasing
-    1 -> strictly increasing
-    2 -> constant."""
-    if cperm.count(0) != 1:
-        return False
-    below_indices = [cperm.index(0)]
-    above_vals = [val for val in cperm if val != 0]
-    for val in range(1, max(cperm) + 1):
-        if cperm.count(val) > 1:
-            return False
-        new_idx = cperm.index(val)
-        if new_idx < below_indices[-1]:
-            break
-        above_vals.remove(val)
-        below_indices.append(new_idx)
-    return seq_type(above_vals, seqtype)
 
 
 def inc_dec(cperm: list[int]) -> bool:
@@ -211,34 +140,11 @@ def dec_inc(cperm: list[int]) -> bool:
             if val >= last_val_bottom:
                 return False
             last_val_bottom = val
-            print("bottom", val)
         else:
             if val <= last_val_top:
                 return False
             last_val_top = val
-            print("top", val)
     return True
-
-
-def dec_bottom(cperm: list[int], seqtype: int) -> bool:
-    """Returns True if the sequence is decreasing on bottom
-    and 'seqtype' on the top where:
-    0 -> strictly decreasing
-    1 -> strictly increasing
-    2 -> constant."""
-    if cperm.count(0) != 1:
-        return False
-    below_indices = [cperm.index(0)]
-    above_vals = [val for val in cperm if val != 0]
-    for val in range(1, max(cperm) + 1):
-        if cperm.count(val) > 1:
-            return False
-        new_idx = cperm.index(val)
-        if new_idx > below_indices[-1]:
-            break
-        above_vals.remove(val)
-        below_indices.append(new_idx)
-    return seq_type(above_vals, seqtype)
 
 
 def con_con(cperm: list[int]) -> bool:
