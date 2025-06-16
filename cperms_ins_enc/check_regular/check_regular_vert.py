@@ -2,15 +2,15 @@
 is a vertical juxtaposition and if a basis has a regular
 vertical insertion encoding."""
 
-from typing import Tuple, List
-from cperms_ins_enc import CayleyPermutation, string_to_basis
+from cperms_ins_enc import string_to_basis
 
 
 def regular_vertical_insertion_encoding(basis: str) -> bool:
     """Checks if a basis has a regular insertion encoding.
 
     Example:
-    >>> has_regular_insertion_encoding([CayleyPermutation([0, 1]), CayleyPermutation([1, 0])])
+    >>> has_regular_insertion_encoding([CayleyPermutation([0, 1]),
+      CayleyPermutation([1, 0])])
     True
     """
     basis = string_to_basis(str(basis))
@@ -22,7 +22,7 @@ def regular_vertical_insertion_encoding(basis: str) -> bool:
     return True
 
 
-def checks_type(cperm: CayleyPermutation, class_to_check: Tuple[int, int]) -> bool:
+def checks_type(cperm: list[int], class_to_check: tuple[int, int]) -> bool:
     """
     Returns True if the Cayley permutation is a vertical juxtaposition
     of the type specified by the tuple.
@@ -37,33 +37,56 @@ def checks_type(cperm: CayleyPermutation, class_to_check: Tuple[int, int]) -> bo
     >>> checks_type(CayleyPermutation([0, 1, 2]), (0, 0))
     False
     """
-    if len(cperm) == 0:
+    if len(cperm) == 0 or len(cperm) == 1:
         return True
-    if class_to_check[1] == 0:
+    elif class_to_check[1] == 0:
         return dec_bottom(cperm, class_to_check[0])
     elif class_to_check[1] == 1:
         return inc_bottom(cperm, class_to_check[0])
     elif class_to_check[1] == 2:
         return con_bottom(cperm, class_to_check[0])
+    else:
+        raise ValueError("Invalid class_to_check value. Must be 0, 1 or 2.")
 
 
-def is_increasing(cperm: List[int]) -> bool:
+def is_increasing(cperm: list[int]) -> bool:
     """Returns True if the Cayley permutation is strictly increasing."""
-    return all(x < y for x, y in zip(cperm, cperm[1:]))
+    if len(cperm) == 0:
+        return True
+    left = cperm[0]
+    for idx in range(1, len(cperm)):
+        if left >= cperm[idx]:
+            return False
+        left = cperm[idx]
+    return True
 
 
-def is_decreasing(cperm: List[int]) -> bool:
+def is_decreasing(cperm: list[int]) -> bool:
     """Returns True if the Cayley permutation is strictly decreasing."""
-    return all(x > y for x, y in zip(cperm, cperm[1:]))
+    if len(cperm) == 0:
+        return True
+    left = cperm[0]
+    for idx in range(1, len(cperm)):
+        if left <= cperm[idx]:
+            return False
+        left = cperm[idx]
+    return True
 
 
-def is_constant(cperm: List[int]) -> bool:
+def is_constant(cperm: list[int]) -> bool:
     """Returns True if the Cayley permutation is constant."""
-    return all(x == y for x, y in zip(cperm, cperm[1:]))
+    if len(cperm) == 0:
+        return True
+    left = cperm[0]
+    for idx in range(1, len(cperm)):
+        if left != cperm[idx]:
+            return False
+    return True
 
 
-def seq_type(cperm: List[int], seqtype: int) -> bool:
-    """Returns True if the Cayley permutation is of the type specified by the integer.
+def seq_type(cperm: list[int], seqtype: int) -> bool:
+    """Returns True if the Cayley permutation is of the type specified by the
+    integer.
     0 -> strictly decreasing
     1 -> strictly increasing
     2 -> constant."""
@@ -77,7 +100,7 @@ def seq_type(cperm: List[int], seqtype: int) -> bool:
         raise ValueError("Type must be 0, 1, or 2.")
 
 
-def inc_bottom(cperm: List[int], seqtype: int) -> bool:
+def inc_bottom(cperm: list[int], seqtype: int) -> bool:
     """Returns True if the Cayley permutation is increasing on bottom
     and 'seqtype' on the top where:
     0 -> strictly decreasing
@@ -98,7 +121,7 @@ def inc_bottom(cperm: List[int], seqtype: int) -> bool:
     return seq_type(above_vals, seqtype)
 
 
-def con_bottom(cperm: List[int], seqtype: int) -> bool:
+def con_bottom(cperm: list[int], seqtype: int) -> bool:
     """Returns True if the Cayley permutation is constant on bottom
     and 'seqtype' on the top where:
     0 -> strictly decreasing
@@ -108,7 +131,7 @@ def con_bottom(cperm: List[int], seqtype: int) -> bool:
     return seq_type(above_vals, seqtype)
 
 
-def dec_bottom(cperm: List[int], seqtype: int) -> bool:
+def dec_bottom(cperm: list[int], seqtype: int) -> bool:
     """Returns True if the Cayley permutation is decreasing on bottom
     and 'seqtype' on the top where:
     0 -> strictly decreasing
@@ -127,9 +150,3 @@ def dec_bottom(cperm: List[int], seqtype: int) -> bool:
         above_vals.remove(val)
         below_indices.append(new_idx)
     return seq_type(above_vals, seqtype)
-
-
-print(
-    "Can enumerate with vertical insertion encoding:",
-    regular_vertical_insertion_encoding("231, 312, 2121"),
-)
