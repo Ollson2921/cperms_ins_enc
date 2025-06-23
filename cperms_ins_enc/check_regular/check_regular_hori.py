@@ -66,13 +66,13 @@ def regular_horizontal_insertion_encoding(basis: str) -> bool:
     basis = string_to_basis(str(basis))
     for i in range(2):
         for j in range(2):
-            if any(checks_type(cperm, (i, j)) for cperm in basis):
+            if any(checks_hori_type(cperm, (i, j)) for cperm in basis):
                 continue
             return False
     return True
 
 
-def checks_type(cperm: list[int], class_to_check: tuple[int, int]) -> bool:
+def checks_hori_type(cperm: list[int], class_to_check: tuple[int, int]) -> bool:
     """
     Returns True if the sequence is a vertical juxtaposition
     of the type specified by the tuple.
