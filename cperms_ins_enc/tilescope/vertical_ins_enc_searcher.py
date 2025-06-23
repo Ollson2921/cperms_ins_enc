@@ -4,6 +4,7 @@ from .strategies import (
     FactorStrategy,
     VerticalInsertionEncodingPlacementFactory,
     VerticalInsertionEncodingRequirementInsertionFactory,
+    RGFVerticalInsertionEncodingPlacementFactory,
 )
 from ..check_regular import regular_vertical_insertion_encoding
 from .generic_searcher import GenericSearcher
@@ -34,6 +35,32 @@ class VerticalSearcher(GenericSearcher):
             expansion_strats=[[VerticalInsertionEncodingPlacementFactory()]],
             ver_strats=[AtomStrategy()],
             name="Vertical Insertion Encoding",
+            symmetries=[],
+            iterative=False,
+        )
+
+
+class RGFVerticalSearcher(VerticalSearcher):
+    """A searcher for the vertical insertion encoding for
+    enumerating restricted growth functions."""
+
+    def regular_check(self):
+        """TODO: update for RGFs."""
+        return True
+
+    def type_of_encoding(self):
+        return "RGF vertical"
+
+    def pack(self):
+        return StrategyPack(
+            initial_strats=[
+                FactorStrategy(),
+                VerticalInsertionEncodingRequirementInsertionFactory(),
+            ],
+            inferral_strats=[RemoveEmptyRowsAndColumnsStrategy()],
+            expansion_strats=[[RGFVerticalInsertionEncodingPlacementFactory()]],
+            ver_strats=[AtomStrategy()],
+            name="RGF Vertical Insertion Encoding",
             symmetries=[],
             iterative=False,
         )

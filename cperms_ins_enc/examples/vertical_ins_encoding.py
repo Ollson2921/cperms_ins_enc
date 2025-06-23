@@ -10,18 +10,19 @@ print the specification, print the generating function, and print how many Cayle
 permutations there are in the class up to size n for any n.
 """
 
-from cperms_ins_enc import VerticalSearcher
+from cperms_ins_enc import VerticalSearcher, RGFVerticalSearcher
 
 basis = "231,312,2121"
+# basis = "123, 321"
 
-spec = VerticalSearcher(basis).auto_search(max_expansion_time=600)
+spec = RGFVerticalSearcher(basis).auto_search(max_expansion_time=600)
 
 ## Print the specification
 spec.show()
 
-# ## Print the generating function
-spec.get_genf()
+# # ## Print the generating function
+# spec.get_genf()
 
-# ## Print the counts up to size n
-n = 10
-print([spec.count_objects_of_size(i) for i in range(n)])
+# # ## Print the counts up to size n
+# n = 10
+# print([spec.count_objects_of_size(i) for i in range(n)])

@@ -170,6 +170,28 @@ class PointPlacement:
             for cell in cells
         )
 
+    def point_placement_in_rgf(
+        self,
+        requirement_list: Tuple[GriddedCayleyPerm, ...],
+        indices: Tuple[int, ...],
+        direction: int,
+    ) -> Tuple[Tiling, ...]:
+        """Point placement for restricted growth functions."""
+        if direction not in self.DIRECTIONS:
+            raise ValueError(f"Direction {direction} is not a valid direction.")
+        cells = []
+        for idx, gcp in zip(indices, requirement_list):
+            cells.append(gcp.positions[idx])
+        cells = sorted(set(cells))
+        print(f"Cells: {cells}")
+        print(self.tiling)
+        input()
+        ## subset of cells
+        return tuple(
+            self.point_placement_in_cell(requirement_list, indices, direction, cell)
+            for cell in cells
+        )
+
     def point_placement_in_cell(
         self,
         requirement_list: Tuple[GriddedCayleyPerm, ...],
