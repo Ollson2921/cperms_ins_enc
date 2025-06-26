@@ -62,7 +62,7 @@ def checks_type(cperm: list[int], class_to_check: tuple[int, int]) -> bool:
         raise ValueError("Invalid class_to_check value. Must be 0, 1, or 2.")
 
 
-def inc_inc(cperm: list[int]) -> bool:
+def inc_inc(cperm: list[int], min_height: int = 0) -> bool:
     """Returns True if the sequence is increasing on bottom
     and increasing on top.
     NOTE: input list must be a Cayley permutation.
@@ -80,6 +80,8 @@ def inc_inc(cperm: list[int]) -> bool:
             bottom_seq.append(val)
         else:
             top_seq.append(val)
+            if val < min_height:
+                return False
             break
     if not top_seq:
         return True
@@ -129,7 +131,7 @@ def inc_dec(cperm: list[int]) -> bool:
     return True
 
 
-def dec_inc(cperm: list[int]) -> bool:
+def dec_inc(cperm: list[int], min_height: int = 0) -> bool:
     """Returns True if the sequence is decreasing on bottom
     and increasing on top."""
     middle_val = cperm[0]
@@ -141,6 +143,8 @@ def dec_inc(cperm: list[int]) -> bool:
                 return False
             last_val_bottom = val
         else:
+            if val <= min_height:
+                return False
             if val <= last_val_top:
                 return False
             last_val_top = val
