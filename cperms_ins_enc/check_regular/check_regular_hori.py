@@ -5,59 +5,80 @@ horizontal insertion encoding."""
 from cperms_ins_enc import string_to_basis
 
 
-def is_increasing(cperm: list[int]) -> bool:
-    """Returns True if the sequence is strictly increasing."""
+def is_increasing(cperm: list[int], vals_seen=set()) -> bool:
+    """Returns True if the sequence is strictly increasing.
+    Also checks that no vals in vals_seen occur in the sequence."""
+    if cperm[0] in vals_seen:
+        return False
     if len(cperm) == 0:
         return True
     left = cperm[0]
     for idx in range(1, len(cperm)):
         if left >= cperm[idx]:
             return False
+        if cperm[idx] in vals_seen:
+            return False
         left = cperm[idx]
     return True
 
 
-def is_decreasing(cperm: list[int]) -> bool:
-    """Returns True if the sequence is strictly decreasing."""
-    if len(cperm) == 0:
+def is_decreasing(cperm: list[int], vals_seen=set()) -> bool:
+    """Returns True if the sequence is strictly decreasing.
+    Also checks that no vals in vals_seen occur in the sequence."""
+    if cperm[0] in vals_seen:
+        return False
+    if len(cperm) == 0 and cperm[0] not in vals_seen:
         return True
     left = cperm[0]
     for idx in range(1, len(cperm)):
         if left <= cperm[idx]:
             return False
+        if cperm[idx] in vals_seen:
+            return False
         left = cperm[idx]
     return True
 
 
-def is_constant(cperm: list[int]) -> bool:
-    """Returns True if the sequence is constant."""
-    if len(cperm) == 0:
+def is_constant(cperm: list[int], vals_seen=set()) -> bool:
+    """Returns True if the sequence is constant.
+    Also checks that no vals in vals_seen occur in the sequence."""
+    if cperm[0] in vals_seen:
+        return False
+    if len(cperm) == 0 and cperm[0] not in vals_seen:
         return True
     left = cperm[0]
     for idx in range(1, len(cperm)):
         if left != cperm[idx]:
             return False
+        if cperm[idx] in vals_seen:
+            return False
     return True
 
 
-def seq_type(cperm: list[int], seqtype: int) -> bool:
+def seq_type(cperm: list[int], seqtype: int, vals_seen=set()) -> bool:
     """Returns True if the sequence is of the type specified by the
     integer.
     0 -> strictly decreasing
     1 -> strictly increasing
-    2 -> constant."""
+    2 -> constant.
+    Also checks that no vals in vals_seen occur in the sequence."""
     if seqtype == 0:
-        return is_decreasing(cperm)
+        return is_decreasing(cperm, vals_seen)
     elif seqtype == 1:
-        return is_increasing(cperm)
+        return is_increasing(cperm, vals_seen)
     elif seqtype == 2:
-        return is_constant(cperm)
+        return is_constant(cperm, vals_seen)
     else:
         raise ValueError("Type must be 0, 1, or 2.")
 
 
 def regular_horizontal_insertion_encoding(basis: str) -> bool:
     """Checks if a basis has a regular insertion encoding.
+    The basis must have permutations which are of the form
+    increasing | increasing
+    decreasing | decreasing
+    increasing | decreasing
+    decreasing | increasing
 
     Example:
     >>> has_regular_insertion_encoding("012, 210")
@@ -98,25 +119,33 @@ def checks_hori_type(cperm: list[int], class_to_check: tuple[int, int]) -> bool:
 
 def inc_left(cperm: list[int], seqtype: int) -> bool:
     """Returns True if the left part of the sequence is strictly
-    increasing and right is of type 'seqtype'."""
+    increasing and right is of type 'seqtype'.
+    0 -> strictly decreasing
+    1 -> strictly increasing"""
     left = cperm[0]
+    vals_seen = set([left])
     for idx in range(1, len(cperm)):
         if left >= cperm[idx]:
             break
         left = cperm[idx]
+        vals_seen.add(left)
     else:
         return True
-    return seq_type(cperm[idx:], seqtype)
+    return seq_type(cperm[idx:], seqtype, vals_seen)
 
 
 def dec_left(cperm: list[int], seqtype: int) -> bool:
     """Returns True if the left part of the sequence is strictly
-    increasing and right is of type 'seqtype'."""
+    increasing and right is of type 'seqtype'.
+    0 -> strictly decreasing
+    1 -> strictly increasing"""
     left = cperm[0]
+    vals_seen = set([left])
     for idx in range(1, len(cperm)):
         if left <= cperm[idx]:
             break
         left = cperm[idx]
+        vals_seen.add(left)
     else:
         return True
-    return seq_type(cperm[idx:], seqtype)
+    return seq_type(cperm[idx:], seqtype, vals_seen)
