@@ -12,7 +12,7 @@ permutations there are in the class up to size n for any n.
 
 from cperms_ins_enc import HorizontalSearcher
 
-basis = "01_10"
+basis = "132, 213"
 
 spec = HorizontalSearcher(basis).auto_search(max_expansion_time=600)
 
