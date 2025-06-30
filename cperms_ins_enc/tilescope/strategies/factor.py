@@ -13,8 +13,6 @@ class AbstractFactorStrategy:
         ignore_parent: bool = True,
         workable: bool = True,
     ):
-        # TODO: input should include partition: Iterable[Iterable[Cell]] to
-        #       allow for interleaving factors.
         super().__init__(
             ignore_parent=ignore_parent, workable=workable, inferrable=True
         )
@@ -88,3 +86,18 @@ class FactorStrategy(
     AbstractFactorStrategy, CartesianProductStrategy[Tiling, GriddedCayleyPerm]
 ):
     pass
+
+
+class RGFFactorStrategy(AbstractFactorStrategy):
+
+    def decomposition_function(self, comb_class: Tiling) -> Tuple[Tiling, ...]:
+        factors = Factors(comb_class).rgf_find_factors()
+        if not factors:
+            raise StrategyDoesNotApply("No factors found.")
+        return factors
+
+    def formal_step(self) -> str:
+        """
+        Return a string that describe the operation performed on the tiling.
+        """
+        return "Factor by removing points from the tiling"

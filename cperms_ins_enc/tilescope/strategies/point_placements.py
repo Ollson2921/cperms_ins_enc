@@ -105,7 +105,13 @@ class RGFRequirementPlacementStrategy(RequirementPlacementStrategy):
     def decomposition_function(self, comb_class: Tiling) -> Tuple[Tiling, ...]:
         return (comb_class.add_obstructions(self.gcps),) + self.algorithm(
             comb_class
-        ).point_placement_in_rgf(self.gcps, self.indices, self.direction)
+        ).vertical_insertion_encoding_in_rgf(self.gcps, self.indices, self.direction)
+
+    def formal_step(self):
+        return "RGF row placement strategy"
+
+    def __str__(self):
+        return self.formal_step()
 
 
 class VerticalInsertionEncodingPlacementFactory(StrategyFactory[Tiling]):
@@ -129,10 +135,8 @@ class VerticalInsertionEncodingPlacementFactory(StrategyFactory[Tiling]):
         return "Place next point of insertion encoding"
 
 
-class RGFVerticalInsertionEncodingPlacementFactory(
-    VerticalInsertionEncodingPlacementFactory
-):
-    def __call__(self, comb_class: Tiling) -> Iterator[RequirementPlacementStrategy]:
+class RGFVerticalInsertionEncodingPlacementFactory(StrategyFactory[Tiling]):
+    def __call__(self, comb_class: Tiling) -> Iterator[RGFRequirementPlacementStrategy]:
         cells = comb_class.active_cells() - comb_class.point_cells()
         gcps = tuple(
             GriddedCayleyPerm(CayleyPermutation([0]), [cell]) for cell in cells
@@ -140,6 +144,16 @@ class RGFVerticalInsertionEncodingPlacementFactory(
         indices = tuple(0 for _ in gcps)
         direction = Left_bot
         yield RGFRequirementPlacementStrategy(gcps, indices, direction)
+
+    @classmethod
+    def from_dict(cls, d: dict) -> "RGFVerticalInsertionEncodingPlacementFactory":
+        return cls(**d)
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}()"
+
+    def __str__(self) -> str:
+        return "Place next row in RGF"
 
 
 class HorizontalInsertionEncodingPlacementFactory(StrategyFactory[Tiling]):

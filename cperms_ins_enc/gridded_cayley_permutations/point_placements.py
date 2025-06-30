@@ -170,7 +170,7 @@ class PointPlacement:
             for cell in cells
         )
 
-    def point_placement_in_rgf(
+    def vertical_insertion_encoding_in_rgf(
         self,
         requirement_list: Tuple[GriddedCayleyPerm, ...],
         indices: Tuple[int, ...],
@@ -179,18 +179,45 @@ class PointPlacement:
         """Point placement for restricted growth functions."""
         if direction not in self.DIRECTIONS:
             raise ValueError(f"Direction {direction} is not a valid direction.")
-        cells = []
-        for idx, gcp in zip(indices, requirement_list):
-            cells.append(gcp.positions[idx])
-        cells = sorted(set(cells))
-        print(f"Cells: {cells}")
-        print(self.tiling)
-        input()
-        ## subset of cells
-        return tuple(
-            self.point_placement_in_cell(requirement_list, indices, direction, cell)
-            for cell in cells
+        point_placements = []
+        if self.tiling.dimensions[1] == 1:
+            point_placements.append(
+                self.rgf_point_placement_in_first_cell(
+                    requirement_list,
+                    indices,
+                    direction,
+                    min(self.tiling.active_cells()),
+                )
+            )
+        else:
+            point_placements.append(
+                self.rgf_point_placement_in_first_cell(
+                    requirement_list,
+                    indices,
+                    direction,
+                    min(self.tiling.cells_in_row(1)),
+                )
+            )
+            point_placements.extend(
+                self.point_placement_in_cell(requirement_list, indices, direction, cell)
+                for cell in sorted(self.tiling.cells_in_row(0))
+            )
+        return tuple(point_placements)
+
+    def rgf_point_placement_in_first_cell(
+        self,
+        requirement_list: Tuple[GriddedCayleyPerm, ...],
+        indices: Tuple[int, ...],
+        direction: int,
+        cell: Tuple[int, int],
+    ) -> Tiling:
+        tiling = self.point_placement_in_cell(
+            requirement_list, indices, direction, cell
         )
+        extra_forced_obs = []
+        for cell in tiling.cells_in_col(cell[0]):
+            extra_forced_obs.append(GriddedCayleyPerm(CayleyPermutation([0]), [cell]))
+        return tiling.add_obstructions(extra_forced_obs)
 
     def point_placement_in_cell(
         self,
@@ -198,7 +225,7 @@ class PointPlacement:
         indices: Tuple[int, ...],
         direction: int,
         cell: Tuple[int, int],
-    ) -> Tuple[Tiling, ...]:
+    ) -> Tiling:
         multiplex_map = self.multiplex_map(cell)
         multiplex_obs, multiplex_reqs = multiplex_map.preimage_of_tiling(self.tiling)
         point_obs, point_reqs = self.point_obstructions_and_requirements(

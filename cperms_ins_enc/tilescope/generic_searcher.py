@@ -29,6 +29,7 @@ class GenericSearcher(abc.ABC):
 
     def comb_spec_searcher(self) -> CombinatorialSpecificationSearcher:
         """Returns the CombinatorialSpecificationSearcher object for this searcher."""
+        print(self.pack(), self.pack().name)
         return CombinatorialSpecificationSearcher(
             self.start_class(),
             self.pack(),
