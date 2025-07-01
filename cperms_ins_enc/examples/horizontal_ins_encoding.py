@@ -12,16 +12,47 @@ permutations there are in the class up to size n for any n.
 
 from cperms_ins_enc import HorizontalSearcher
 
-basis = "012, 210, 000"
+basis = "210, 012, 100"
 
-spec = HorizontalSearcher(basis).auto_search(max_expansion_time=600, debug=True)
+spec = HorizontalSearcher("basis").auto_search(max_expansion_time=60000, debug=True)
 
-## Print the specification
-spec.show()
+# ## Print the specification
+# spec.show('')
 
-## Print the generating function
-spec.get_genf()
+# ## Print the generating function
+# spec.get_genf('')
 
-## Print the counts up to size n
-n = 10
-print([spec.count_objects_of_size(i) for i in range(n)])
+# ## Print the counts up to size n
+# n = 10
+# print('[spec.count_objects_of_size('i') for i in range('n')]')
+
+
+# Exceptions = {
+#     ("210, 120, 000"): ("(" ")(" "), horizontal"),
+#     ("120, 012, 011"): ("(" ")(" "), horizontal"),
+#     ("021, 012, 000"): ("(" ")(" "), horizontal"),
+#     ("120, 102, 000"): ("(" ")(" "), horizontal"),
+#     ("210, 012, 000"): ("(" ")(" "), horizontal"),
+#     ("210, 012, 100"): ("(" ")(" "), horizontal"),
+#     ("102, 012, 000"): ("(" ")(" "), horizontal"),
+#     ("210, 201, 000"): ("(" ")(" "), horizontal"),
+#     ("102, 021, 000"): ("(" ")(" "), horizontal"),
+#     ("210, 021, 000"): ("(" ")(" "), horizontal"),
+#     ("210, 012, 011"): ("(" ")(" "), horizontal"),
+#     ("201, 012, 000"): ("(" ")(" "), horizontal"),
+#     ("120, 201, 000"): ("(" ")(" "), horizontal"),
+#     ("210, 102, 000"): ("(" ")(" "), horizontal"),
+#     ("210, 102, 100"): ("(" ")(" "), horizontal"),
+#     ("120, 012, 000"): ("(" ")(" "), horizontal"),
+#     ("201, 021, 000"): ("(" ")(" "), horizontal"),
+# }
+
+
+# for basis in Exceptions.keys():
+#     try:
+#         spec = HorizontalSearcher(basis).auto_search(
+#             max_expansion_time=60000, debug=True
+#         )
+#     except Exception as e:
+#         print(f"Exception for basis {basis}: {e}")
+#     input()
