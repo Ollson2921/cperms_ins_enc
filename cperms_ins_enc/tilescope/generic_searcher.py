@@ -5,7 +5,10 @@ from ..cayley_permutations import string_to_basis
 
 class GenericSearcher(abc.ABC):
     def __init__(self, basis: str):
-        self.basis = string_to_basis(basis)
+        if isinstance(basis, str):
+            self.basis = string_to_basis(basis)
+        else:
+            self.basis = basis
         if not self.regular_check():
             raise Exception(
                 f"The class Av{tuple(self.basis)} can not be enumerated with {self.type_of_encoding()} insertion encoding"
@@ -27,18 +30,16 @@ class GenericSearcher(abc.ABC):
     def pack(self):
         """Returns the strategy pack."""
 
-    def comb_spec_searcher(self) -> CombinatorialSpecificationSearcher:
+    def comb_spec_searcher(self, debug=False) -> CombinatorialSpecificationSearcher:
         """Returns the CombinatorialSpecificationSearcher object for this searcher."""
         return CombinatorialSpecificationSearcher(
-            self.start_class(),
-            self.pack(),
+            self.start_class(), self.pack(), debug=debug
         )
 
     def auto_search(
-        self,
-        max_expansion_time=600,
+        self, max_expansion_time=600, debug=False
     ) -> CombinatorialSpecificationSearcher:
         """Search for a specification."""
-        return self.comb_spec_searcher().auto_search(
-            max_expansion_time=max_expansion_time,
+        return self.comb_spec_searcher(debug=debug).auto_search(
+            max_expansion_time=max_expansion_time
         )
