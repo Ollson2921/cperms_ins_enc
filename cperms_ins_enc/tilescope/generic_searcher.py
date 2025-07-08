@@ -5,7 +5,7 @@ from ..cayley_permutations import string_to_basis
 
 class GenericSearcher(abc.ABC):
     def __init__(self, basis: str):
-        self.basis = string_to_basis(basis)
+        self.basis = string_to_basis(basis) if isinstance(basis, str) else basis
         if not self.regular_check():
             raise Exception(
                 f"The class Av{tuple(self.basis)} can not be enumerated with {self.type_of_encoding()} insertion encoding"

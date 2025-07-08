@@ -31,6 +31,7 @@ def rgf_conj_6_classes(basis: str) -> bool:
         return False
     if not any(grid_dec_con(cperm.cperm) for cperm in basis):
         return False
+    return True
 
 
 def rgf_conj_9_classes(basis: str) -> bool:
@@ -42,8 +43,12 @@ def rgf_conj_9_classes(basis: str) -> bool:
     """
     basis = string_to_basis(str(basis))
     if not any(grid_dec_dec(cperm.cperm) for cperm in basis):
+        print("dec_dec")
         return False
     if not any(grid_inc_dec(cperm.cperm) for cperm in basis):
+        print("inc_dec")
+        return False
+    if not any(con_dec(cperm.cperm) for cperm in basis):
         return False
     return rgf_conj_6_classes(basis)
 
@@ -112,15 +117,57 @@ def grid_dec_con(cperm: list[int]) -> bool:
     return dec_con(remaining)
 
 
+# def grid_inc_dec(cperm: list[int]) -> bool:
+#     """Returns True if the sequence is increasing on bottom
+#     and decreasing on top with increasing at the start
+#     (everything in grids)."""
+#     print(cperm)
+#     middle_val = cperm[-1]
+#     print(middle_val)
+#     last_val_top = middle_val
+#     last_val_bottom = middle_val
+#     top_vals = []
+#     for val in cperm[-2::-1]:
+#         if val < middle_val:
+#             if val >= last_val_bottom:
+#                 break
+#             last_val_bottom = val
+#         else:
+#             if val <= last_val_top:
+#                 break
+#             last_val_top = val
+#             top_vals.append(val)
+#     else:
+#         return True
+#     remaining = cperm[:-2]
+# print(remaining, "remaining")
+# print(top_vals, "top vals")
+# if not top_vals:
+#     return is_increasing(remaining)
+# last_val_top = top_vals[-1]
+# first_val = remaining[0]
+# for val in remaining:
+#     if val <= first_val:
+#         return False
+#     if val >= last_val_top:
+#         return False
+#     first_val = val
+# return True
+
+
 def grid_inc_dec(cperm: list[int]) -> bool:
     """Returns True if the sequence is increasing on bottom
-    and decreasing on top."""
-    middle_val = cperm[-1]
+    and decreasing on top with increasing at the start
+    (everything in grids)."""
+    if len(cperm) < 3:
+        return True
+    cperm = cperm[::-1]
+    middle_val = cperm[0]
     last_val_top = middle_val
     last_val_bottom = middle_val
     top_vals = []
-    for val in cperm[-2::-1]:
-        if val < middle_val:
+    for idx, val in enumerate(cperm[1:]):
+        if val <= middle_val:
             if val >= last_val_bottom:
                 break
             last_val_bottom = val
@@ -131,23 +178,17 @@ def grid_inc_dec(cperm: list[int]) -> bool:
             top_vals.append(val)
     else:
         return True
-    remaining = cperm[:-2]
-    if not top_vals:
-        return is_increasing(remaining)
-    last_val_top = top_vals[-1]
-    first_val = remaining[0]
-    for val in remaining:
-        if val <= first_val:
+    remaining = cperm[idx + 1 :]
+    if top_vals:
+        if remaining[0] > top_vals[0]:
             return False
-        if val >= last_val_top:
-            return False
-        first_val = val
-    return True
+    return is_decreasing(remaining)
 
 
 def grid_dec_dec(cperm: list[int]) -> bool:
     """Returns True if the sequence is decreasing on bottom
-    and decreasing on top."""
+    and decreasing on top. with increasing sequence at the start
+    (everything in grids)."""
     cperm = cperm[::-1]
     top_seq = []
     bottom_seq = []
@@ -173,7 +214,8 @@ def grid_dec_dec(cperm: list[int]) -> bool:
             if val <= top_seq[-1]:
                 break
             top_seq.append(val)
-    remaining = cperm[bottom_seq + top_seq + 1 :]
+
+    remaining = cperm[len(bottom_seq) + len(top_seq) + 1 :]
     if not remaining:
         return True
     if not is_decreasing(remaining):
@@ -195,3 +237,14 @@ def grid_dec_dec(cperm: list[int]) -> bool:
 
 
 # print(check_gridding([0, 1, 2, 3, 6, 0, 5, 4, 1, 3, 2], (1, 0)))  # inc_dec fails
+# print(rgf_conj_9_classes("010"))  # True
+# print(rgf_conj_6_classes("010"))  # True
+
+
+# basis = "120, 100, 000"
+# basis = "120, 110, 000"
+
+# print(rgf_conj_6_classes(basis))
+# print(rgf_conj_9_classes(basis))
+
+# print(grid_inc_dec([1, 2, 0])) # should be true
