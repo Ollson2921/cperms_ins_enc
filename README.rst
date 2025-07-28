@@ -65,7 +65,7 @@ Calling the auto_search function on ``VerticalSearcher`` finds the specification
 
 .. code-block:: python
 
-    >>> spec = VatterVerticalSearcher(basis).auto_search(max_expansion_time=600)
+    >>> spec = VerticalSearcher(basis).auto_search(max_expansion_time=600)
     [I 250411 11:33:48 comb_spec_searcher:514] Auto search started
     Initialising CombSpecSearcher for the combinatorial class:
     +---+
@@ -966,9 +966,9 @@ The specification returned is a ``CombinatorialSpecification`` from the comb_spe
     [I 250411 11:35:00 specification_drawer:543] Opening specification in browser
     [I 250411 11:35:04 specification_drawer:529] specification html file removed
 
-    Any method from ``CombinatorialSpecification`` can be used, but in particular the ``get_genf`` function finds the generating function and counts or the counts can be found using the specification as a recurrence up to length :math:`n` for any :math:`n`.
+Any method from ``CombinatorialSpecification`` can be used, but in particular the ``get_genf`` function finds the generating function and counts or the counts can be found using the specification as a recurrence up to length :math:`n` for any :math:`n`.
 
-    .. code-block:: python
+.. code-block:: python
 
         >>> spec.get_genf()
     [I 250411 11:36:55 specification:385] Computing initial conditions
