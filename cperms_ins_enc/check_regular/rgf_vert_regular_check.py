@@ -8,17 +8,19 @@ from cperms_ins_enc.check_regular.check_regular_vert import (
     dec_con,
 )
 from cperms_ins_enc.check_regular.check_regular_hori import is_decreasing
-from cperms_ins_enc import string_to_basis
+from cperms_ins_enc import string_to_basis, CayleyPermutation
 
 
-def rgf_regular_vertical_insertion_encoding(basis: str) -> bool:
+def rgf_regular_vertical_insertion_encoding(
+    basis: str | set[CayleyPermutation],
+) -> bool:
     """Checks if a basis of a RGF class has a regular insertion encoding.
 
     Example:
     >>> rgf_regular_vertical_insertion_encoding("01_10")
     True
     """
-    basis = string_to_basis(str(basis))
+    basis = string_to_basis(basis) if isinstance(basis, str) else basis
     if not any(grid_dec_dec(cperm.cperm) for cperm in basis):
         return False
     if not any(grid_inc_dec(cperm.cperm) for cperm in basis):

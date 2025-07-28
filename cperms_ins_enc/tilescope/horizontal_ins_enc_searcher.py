@@ -6,7 +6,10 @@ from .strategies import (
     HorizontalInsertionEncodingRequirementInsertionFactory,
     RGFHorizontalInsertionEncodingPlacementFactory,
 )
-from ..check_regular import regular_horizontal_insertion_encoding
+from ..check_regular import (
+    regular_horizontal_insertion_encoding,
+    rgf_regular_horizontal_insertion_encoding,
+)
 from .generic_searcher import GenericSearcher
 from ..gridded_cayley_permutations import Tiling, GriddedCayleyPerm
 
@@ -45,8 +48,7 @@ class RGFHorizontalSearcher(HorizontalSearcher):
     enumerating restricted growth functions."""
 
     def regular_check(self):
-        """TODO: update for RGFs."""
-        return True
+        return rgf_regular_horizontal_insertion_encoding(self.basis)
 
     def type_of_encoding(self):
         return "RGF horizontal"

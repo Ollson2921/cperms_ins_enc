@@ -2,7 +2,7 @@
 is a horizontal juxtaposition and if a basis has a regular
 horizontal insertion encoding."""
 
-from cperms_ins_enc import string_to_basis
+from cperms_ins_enc import string_to_basis, CayleyPermutation
 
 
 def is_increasing(cperm: list[int], vals_seen=set()) -> bool:
@@ -78,7 +78,7 @@ def seq_type(cperm: list[int], seqtype: int, vals_seen=set()) -> bool:
         raise ValueError("Type must be 0, 1, or 2.")
 
 
-def regular_horizontal_insertion_encoding(basis: str) -> bool:
+def regular_horizontal_insertion_encoding(basis: str | set[CayleyPermutation]) -> bool:
     """Checks if a basis has a regular insertion encoding.
     The basis must have permutations which are of the form
     increasing | increasing
@@ -90,7 +90,7 @@ def regular_horizontal_insertion_encoding(basis: str) -> bool:
     >>> has_regular_insertion_encoding("012, 210")
     True
     """
-    basis = string_to_basis(str(basis))
+    basis = string_to_basis(basis) if isinstance(basis, str) else basis
     for i in range(2):
         for j in range(2):
             if any(checks_hori_type(cperm, (i, j)) for cperm in basis):
@@ -101,9 +101,10 @@ def regular_horizontal_insertion_encoding(basis: str) -> bool:
 
 def checks_hori_type(cperm: list[int], class_to_check: tuple[int, int]) -> bool:
     """
-    Returns True if the sequence is a vertical juxtaposition
+    Returns True if the sequence is a horizontal juxtaposition
     of the type specified by the tuple.
-    In the tuple the first element is above, the second element is below.
+    In the tuple the first element is on the left, the second element is
+    on the right.
     0 -> strictly decreasing
     1 -> strictly increasing
 
@@ -155,3 +156,23 @@ def dec_left(cperm: list[int], seqtype: int) -> bool:
     else:
         return True
     return seq_type(cperm[idx:], seqtype, vals_seen)
+
+
+def rgf_regular_horizontal_insertion_encoding(
+    basis: str | set[CayleyPermutation],
+) -> bool:
+    """Checks if an RGF class has a regular horizontal insertion encoding.
+    The basis must have permutations which are of the form
+    increasing | increasing
+    increasing | decreasing
+
+    Example:
+    >>> has_regular_insertion_encoding("012, 210")
+    True
+    """
+    basis = string_to_basis(basis) if isinstance(basis, str) else basis
+    for j in range(2):
+        if any(checks_hori_type(cperm, (1, j)) for cperm in basis):
+            continue
+        return False
+    return True

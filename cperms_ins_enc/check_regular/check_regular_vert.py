@@ -2,17 +2,17 @@
 is a vertical juxtaposition and if a basis has a regular
 vertical insertion encoding."""
 
-from cperms_ins_enc import string_to_basis
+from cperms_ins_enc import string_to_basis, CayleyPermutation
 
 
-def regular_vertical_insertion_encoding(basis: str) -> bool:
+def regular_vertical_insertion_encoding(basis: str | set[CayleyPermutation]) -> bool:
     """Checks if a basis has a regular insertion encoding.
 
     Example:
     >>> has_regular_insertion_encoding("01_10")
     True
     """
-    basis = string_to_basis(str(basis))
+    basis = string_to_basis(basis) if isinstance(basis, str) else basis
     for i in range(3):
         for j in range(3):
             if any(checks_vert_type(cperm.cperm, (i, j)) for cperm in basis):

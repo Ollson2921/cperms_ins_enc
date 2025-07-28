@@ -1,3 +1,6 @@
+"""This module is used for counting the number of
+Cayley permutation classes with a regular insertion encoding."""
+
 from cperms_ins_enc import (
     regular_vertical_insertion_encoding,
     regular_horizontal_insertion_encoding,
@@ -24,5 +27,5 @@ for m in range(1, 14):
 
 print("Classes with a vertical insertion encoding", v_reg)
 print("Classes with a horizontal insertion encoding", h_reg)
-print("Classes with both a vertical and horizontal insertion encoding", both)
+print("Classes with either a vertical or horizontal insertion encoding", both)
 print("Total classes", total)
