@@ -7,11 +7,11 @@ from cperms_ins_enc.check_regular.check_regular_vert import (
     inc_con,
     dec_con,
 )
-from cperms_ins_enc.check_regular.check_regular_hori import is_increasing, is_decreasing
+from cperms_ins_enc.check_regular.check_regular_hori import is_decreasing
 from cperms_ins_enc import string_to_basis
 
 
-def rgf_conj_6_classes(basis: str) -> bool:
+def rgf_regular_vertical_insertion_encoding(basis: str) -> bool:
     """Checks if a basis of a RGF class has a regular insertion encoding.
 
     Example:
@@ -19,6 +19,12 @@ def rgf_conj_6_classes(basis: str) -> bool:
     True
     """
     basis = string_to_basis(str(basis))
+    if not any(grid_dec_dec(cperm.cperm) for cperm in basis):
+        return False
+    if not any(grid_inc_dec(cperm.cperm) for cperm in basis):
+        return False
+    if not any(con_dec(cperm.cperm) for cperm in basis):
+        return False
     if not any(con_con(cperm.cperm) for cperm in basis):
         return False
     if not any(con_inc(cperm.cperm) for cperm in basis):
@@ -32,25 +38,6 @@ def rgf_conj_6_classes(basis: str) -> bool:
     if not any(grid_dec_con(cperm.cperm) for cperm in basis):
         return False
     return True
-
-
-def rgf_conj_9_classes(basis: str) -> bool:
-    """Checks if a basis of a RGF class has a regular insertion encoding.
-
-    Example:
-    >>> rgf_regular_vertical_insertion_encoding("01_10")
-    True
-    """
-    basis = string_to_basis(str(basis))
-    if not any(grid_dec_dec(cperm.cperm) for cperm in basis):
-        print("dec_dec")
-        return False
-    if not any(grid_inc_dec(cperm.cperm) for cperm in basis):
-        print("inc_dec")
-        return False
-    if not any(con_dec(cperm.cperm) for cperm in basis):
-        return False
-    return rgf_conj_6_classes(basis)
 
 
 def greedy_grid_left(cperm: list[int], type: tuple[int, int]) -> bool:
@@ -225,6 +212,7 @@ def grid_dec_dec(cperm: list[int]) -> bool:
     return True
 
 
+"""Make these into tests:"""
 # print(greedy_grid_left([0, 1, 2, 3, 4, 2, 5, 1, 6], (0, 1)))  # dec_inc passes
 # print(check_gridding([0, 1, 2, 3, 6, 1, 5, 2, 4], (1, 0)))  # inc_dec passes
 

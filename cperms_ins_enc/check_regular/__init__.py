@@ -3,4 +3,4 @@
 from .check_regular_vert import regular_vertical_insertion_encoding
 
 from .check_regular_hori import regular_horizontal_insertion_encoding
-from .rgf_vert_regular_check import rgf_conj_6_classes, rgf_conj_9_classes
+from .rgf_vert_regular_check import rgf_regular_vertical_insertion_encoding
