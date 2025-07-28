@@ -103,7 +103,7 @@ class RequirementPlacementStrategy(DisjointUnionStrategy[Tiling, GriddedCayleyPe
 
 class VerticalInsertionEncodingPlacementFactory(StrategyFactory[Tiling]):
     def __call__(self, comb_class: Tiling) -> Iterator[RequirementPlacementStrategy]:
-        cells = comb_class.active_cells() - comb_class.point_cells()
+        cells = comb_class.active_cells()
         gcps = tuple(
             GriddedCayleyPerm(CayleyPermutation([0]), [cell]) for cell in cells
         )
@@ -124,7 +124,7 @@ class VerticalInsertionEncodingPlacementFactory(StrategyFactory[Tiling]):
 
 class HorizontalInsertionEncodingPlacementFactory(StrategyFactory[Tiling]):
     def __call__(self, comb_class: Tiling) -> Iterator[RequirementPlacementStrategy]:
-        cells = comb_class.active_cells() - comb_class.point_cells()
+        cells = comb_class.active_cells()
         gcps = tuple(
             GriddedCayleyPerm(CayleyPermutation([0]), [cell]) for cell in cells
         )
