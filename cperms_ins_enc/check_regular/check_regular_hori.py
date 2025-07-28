@@ -8,9 +8,11 @@ from cperms_ins_enc import string_to_basis
 def is_increasing(cperm: list[int], vals_seen=set()) -> bool:
     """Returns True if the sequence is strictly increasing.
     Also checks that no vals in vals_seen occur in the sequence."""
+    if len(cperm) == 0:
+        return True
     if cperm[0] in vals_seen:
         return False
-    if len(cperm) == 0:
+    if len(cperm) == 1:
         return True
     left = cperm[0]
     for idx in range(1, len(cperm)):
@@ -25,9 +27,11 @@ def is_increasing(cperm: list[int], vals_seen=set()) -> bool:
 def is_decreasing(cperm: list[int], vals_seen=set()) -> bool:
     """Returns True if the sequence is strictly decreasing.
     Also checks that no vals in vals_seen occur in the sequence."""
+    if len(cperm) == 0:
+        return True
     if cperm[0] in vals_seen:
         return False
-    if len(cperm) == 0 and cperm[0] not in vals_seen:
+    if len(cperm) == 1:
         return True
     left = cperm[0]
     for idx in range(1, len(cperm)):
@@ -42,9 +46,11 @@ def is_decreasing(cperm: list[int], vals_seen=set()) -> bool:
 def is_constant(cperm: list[int], vals_seen=set()) -> bool:
     """Returns True if the sequence is constant.
     Also checks that no vals in vals_seen occur in the sequence."""
+    if len(cperm) == 0:
+        return True
     if cperm[0] in vals_seen:
         return False
-    if len(cperm) == 0 and cperm[0] not in vals_seen:
+    if len(cperm) == 1:
         return True
     left = cperm[0]
     for idx in range(1, len(cperm)):

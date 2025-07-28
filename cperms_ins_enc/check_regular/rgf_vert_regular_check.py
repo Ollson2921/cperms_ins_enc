@@ -104,44 +104,6 @@ def grid_dec_con(cperm: list[int]) -> bool:
     return dec_con(remaining)
 
 
-# def grid_inc_dec(cperm: list[int]) -> bool:
-#     """Returns True if the sequence is increasing on bottom
-#     and decreasing on top with increasing at the start
-#     (everything in grids)."""
-#     print(cperm)
-#     middle_val = cperm[-1]
-#     print(middle_val)
-#     last_val_top = middle_val
-#     last_val_bottom = middle_val
-#     top_vals = []
-#     for val in cperm[-2::-1]:
-#         if val < middle_val:
-#             if val >= last_val_bottom:
-#                 break
-#             last_val_bottom = val
-#         else:
-#             if val <= last_val_top:
-#                 break
-#             last_val_top = val
-#             top_vals.append(val)
-#     else:
-#         return True
-#     remaining = cperm[:-2]
-# print(remaining, "remaining")
-# print(top_vals, "top vals")
-# if not top_vals:
-#     return is_increasing(remaining)
-# last_val_top = top_vals[-1]
-# first_val = remaining[0]
-# for val in remaining:
-#     if val <= first_val:
-#         return False
-#     if val >= last_val_top:
-#         return False
-#     first_val = val
-# return True
-
-
 def grid_inc_dec(cperm: list[int]) -> bool:
     """Returns True if the sequence is increasing on bottom
     and decreasing on top with increasing at the start
@@ -210,29 +172,3 @@ def grid_dec_dec(cperm: list[int]) -> bool:
     if not line > max(remaining):
         return False
     return True
-
-
-"""Make these into tests:"""
-# print(greedy_grid_left([0, 1, 2, 3, 4, 2, 5, 1, 6], (0, 1)))  # dec_inc passes
-# print(check_gridding([0, 1, 2, 3, 6, 1, 5, 2, 4], (1, 0)))  # inc_dec passes
-
-# print(greedy_grid_left([0, 1, 2, 4, 0, 5, 1, 6, 2], (1, 1)))  # inc_inc passes
-# print(greedy_grid_left([0, 1, 2, 3, 0, 2, 3, 1], (1, 1)))  # inc_inc fails
-
-# print(grid_inc_con([0, 1, 2, 3, 4, 0, 1, 5, 2, 5, 5, 3, 4]))  # inc_con passes
-# print(grid_inc_con([0, 1, 2, 3, 4, 0, 1, 4, 2, 3]))  # inc_con passes
-# print(grid_inc_con([0, 1, 2, 3, 2, 0, 2, 1, 2, 2]))  # inc_con fails
-
-
-# print(check_gridding([0, 1, 2, 3, 6, 0, 5, 4, 1, 3, 2], (1, 0)))  # inc_dec fails
-# print(rgf_conj_9_classes("010"))  # True
-# print(rgf_conj_6_classes("010"))  # True
-
-
-# basis = "120, 100, 000"
-# basis = "120, 110, 000"
-
-# print(rgf_conj_6_classes(basis))
-# print(rgf_conj_9_classes(basis))
-
-# print(grid_inc_dec([1, 2, 0])) # should be true
