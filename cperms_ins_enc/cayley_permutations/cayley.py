@@ -303,7 +303,7 @@ class CayleyPermutation:
         return "".join(str(x) if x < 10 else f"({str(x)})" for x in self.cperm)
 
     def __repr__(self):
-        return "".join(str(x) if x < 10 else f"({str(x)})" for x in self.cperm)
+        return f"CayleyPermutation({repr(tuple(self))})"
 
     def __lt__(self, other: "CayleyPermutation") -> bool:
         return (len(self.cperm), self.cperm) < (len(other.cperm), other.cperm)

@@ -1,6 +1,7 @@
 import abc
 from comb_spec_searcher import CombinatorialSpecificationSearcher
 from ..cayley_permutations import string_to_basis
+from functools import cached_property
 
 
 class GenericSearcher(abc.ABC):
@@ -30,7 +31,8 @@ class GenericSearcher(abc.ABC):
     def pack(self):
         """Returns the strategy pack."""
 
-    def comb_spec_searcher(self, debug=False) -> CombinatorialSpecificationSearcher:
+    @cached_property
+    def comb_spec_searcher(self) -> CombinatorialSpecificationSearcher:
         """Returns the CombinatorialSpecificationSearcher object for this searcher."""
         return CombinatorialSpecificationSearcher(
             self.start_class(), self.pack(), debug=debug
