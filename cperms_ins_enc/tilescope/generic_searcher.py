@@ -5,7 +5,8 @@ from functools import cached_property
 
 
 class GenericSearcher(abc.ABC):
-    def __init__(self, basis: str):
+    def __init__(self, basis: str, debug=False):
+        self.debug = debug
         if isinstance(basis, str):
             self.basis = string_to_basis(basis)
         else:
@@ -35,13 +36,11 @@ class GenericSearcher(abc.ABC):
     def comb_spec_searcher(self) -> CombinatorialSpecificationSearcher:
         """Returns the CombinatorialSpecificationSearcher object for this searcher."""
         return CombinatorialSpecificationSearcher(
-            self.start_class(), self.pack(), debug=debug
+            self.start_class(), self.pack(), debug=self.debug
         )
 
-    def auto_search(
-        self, max_expansion_time=600, debug=False
-    ) -> CombinatorialSpecificationSearcher:
+    def auto_search(self, max_expansion_time=600) -> CombinatorialSpecificationSearcher:
         """Search for a specification."""
-        return self.comb_spec_searcher(debug=debug).auto_search(
+        return self.comb_spec_searcher.auto_search(
             max_expansion_time=max_expansion_time
         )
