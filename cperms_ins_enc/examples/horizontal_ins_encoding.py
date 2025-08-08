@@ -14,7 +14,7 @@ from cperms_ins_enc import HorizontalSearcher
 
 basis = "210, 012, 000"
 
-spec = HorizontalSearcher(basis, debug=False).auto_search(max_expansion_time=60000)
+spec = HorizontalSearcher(basis).auto_search(max_expansion_time=60000)
 
 ## Print the specification
 spec.show()
