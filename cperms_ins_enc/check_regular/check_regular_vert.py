@@ -80,7 +80,7 @@ def inc_inc(cperm: list[int], min_height: int = 0) -> bool:
             bottom_seq.append(val)
         else:
             top_seq.append(val)
-            if val < min_height:
+            if val <= min_height:
                 return False
             break
     if not top_seq:

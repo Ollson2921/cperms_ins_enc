@@ -31,9 +31,9 @@ def rgf_regular_vertical_insertion_encoding(
         return False
     if not any(con_inc(cperm.cperm) for cperm in basis):
         return False
-    if not any(greedy_grid_left(cperm.cperm, (0, 1)) for cperm in basis):
+    if not any(greedy_grid_left(cperm.cperm, 0) for cperm in basis):
         return False
-    if not any(greedy_grid_left(cperm.cperm, (1, 1)) for cperm in basis):
+    if not any(greedy_grid_left(cperm.cperm, 1) for cperm in basis):
         return False
     if not any(grid_inc_con(cperm.cperm) for cperm in basis):
         return False
@@ -42,14 +42,16 @@ def rgf_regular_vertical_insertion_encoding(
     return True
 
 
-def greedy_grid_left(cperm: list[int], type: tuple[int, int]) -> bool:
+def greedy_grid_left(cperm: list[int], type: int) -> bool:
     """Only use when increasing sequence on top
 
     Returns True if the sequence is griddable on a 2x2 grid
     where the bottom left cell is increasing, top left is empty,
-    bottom right is type[0] (increasing or decreasing),
-    and top right is type[1] (increasing, decreasing or constant)."""
-    if len(cperm) == 0 or len(cperm) == 1:
+    bottom right is of type 'type' where
+    0 -> decreasing
+    1 -> increasing
+    and top right is increasing."""
+    if len(cperm) < 3:
         return True
     left = cperm[0]
     for idx in range(1, len(cperm)):
@@ -60,18 +62,21 @@ def greedy_grid_left(cperm: list[int], type: tuple[int, int]) -> bool:
         return True
     min_height = left
     remaining = cperm[idx:]
-    if len(remaining) == 0 or len(remaining) == 1:
+    if len(remaining) < 2:
         return True
-    if type == (0, 1):
+    if type == 0:
         return dec_inc(remaining, min_height)
-    if type == (1, 1):
+    if type == 1:
         return inc_inc(remaining, min_height)
+    raise ValueError(
+        "Type must be 0 for decreasing or 1 for increasing, " f"got {type} instead."
+    )
 
 
 def grid_inc_con(cperm: list[int]) -> bool:
     """Returns True if the sequence is increasing on bottom
     and constant on top."""
-    if len(cperm) == 0 or len(cperm) == 1:
+    if len(cperm) < 3:
         return True
     max_val = max(cperm)
     left = cperm[0]
@@ -89,8 +94,8 @@ def grid_inc_con(cperm: list[int]) -> bool:
 
 def grid_dec_con(cperm: list[int]) -> bool:
     """Returns True if the sequence is increasing on bottom
-    and constant on top."""
-    if len(cperm) == 0 or len(cperm) == 1:
+    and constant on top with an increasing sequence at the start."""
+    if len(cperm) < 3:
         return True
     max_val = max(cperm)
     left = cperm[0]
@@ -140,6 +145,8 @@ def grid_dec_dec(cperm: list[int]) -> bool:
     """Returns True if the sequence is decreasing on bottom
     and decreasing on top. with increasing sequence at the start
     (everything in grids)."""
+    if len(cperm) < 3:
+        return True
     cperm = cperm[::-1]
     top_seq = []
     bottom_seq = []
@@ -147,10 +154,13 @@ def grid_dec_dec(cperm: list[int]) -> bool:
         if val == idx:
             bottom_seq.append(val)
         else:
-            top_seq.append(val)
-            break
+            if len(bottom_seq) > 0 and val <= bottom_seq[-1]:
+                break
+            else:
+                top_seq.append(val)
+                break
     if not top_seq:
-        return is_decreasing(cperm[idx + 1 :])
+        return is_decreasing(cperm[idx:])
     line = top_seq[0]
     start_index = len(bottom_seq) + 1
 
