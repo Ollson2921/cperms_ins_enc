@@ -8,7 +8,6 @@ def string_to_basis(patts: str) -> Tuple[CayleyPermutation, ...]:
     Then simplifies basis by removing any Cayley permutations which are contained in another Cayley
     permutation in the basis."""
     as_cperms = tuple(map(CayleyPermutation.standardise, re.findall(r"\d+", patts)))
-
     min_length = min(len(cperm) for cperm in as_cperms)
     simplified_basis = set([cperm for cperm in as_cperms if len(cperm) == min_length])
     remaining_cperms = sorted(
