@@ -5,6 +5,7 @@ from .strategies import (
     HorizontalInsertionEncodingPlacementFactory,
     HorizontalInsertionEncodingRequirementInsertionFactory,
     RGFHorizontalInsertionEncodingPlacementFactory,
+    MatchingHorizontalInsertionEncodingPlacementFactory,
 )
 from ..check_regular import (
     regular_horizontal_insertion_encoding,
@@ -63,6 +64,28 @@ class RGFHorizontalSearcher(HorizontalSearcher):
             expansion_strats=[[RGFHorizontalInsertionEncodingPlacementFactory()]],
             ver_strats=[AtomStrategy()],
             name="RGF Horizontal Insertion Encoding",
+            symmetries=[],
+            iterative=False,
+        )
+
+
+class MatchingHorizontalSearcher(RGFHorizontalSearcher):
+    """A searcher for the horizontal insertion encoding for
+    enumerating restricted growth functions."""
+
+    def type_of_encoding(self):
+        return "RGFs of matchings horizontal"
+
+    def pack(self):
+        return StrategyPack(
+            initial_strats=[
+                FactorStrategy(),
+                HorizontalInsertionEncodingRequirementInsertionFactory(),
+            ],
+            inferral_strats=[RemoveEmptyRowsAndColumnsStrategy()],
+            expansion_strats=[[MatchingHorizontalInsertionEncodingPlacementFactory()]],
+            ver_strats=[AtomStrategy()],
+            name="RGFs of Matchings Horizontal Insertion Encoding",
             symmetries=[],
             iterative=False,
         )

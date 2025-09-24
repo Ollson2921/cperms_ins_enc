@@ -259,6 +259,136 @@ class PointPlacement:
         requirements = multiplex_reqs + point_reqs
         return Tiling(obstructions, requirements, self.new_dimensions())
 
+    def point_placement_in_matching(
+        self,
+        requirement_list: Tuple[GriddedCayleyPerm, ...],
+        indices: Tuple[int, ...],
+        direction: int,
+    ) -> Tuple[Tiling, ...]:
+        """Point placement for restricted growth functions of matchings.
+
+        Same as for RGFs but for new max add requirement on same row and
+        when doing other point placement add 11 obstruction in every way
+        on same row.
+        """
+        if direction not in self.DIRECTIONS:
+            raise ValueError(f"Direction {direction} is not a valid direction.")
+        top_row = self.tiling.dimensions[1] - 1
+        if top_row == 0:
+            return (
+                self.matching_new_max_point_placement(
+                    requirement_list,
+                    indices,
+                    direction,
+                    min(self.tiling.active_cells()),
+                ),
+            )
+        point_placements = []
+        top_leftmost_cell = min(self.tiling.cells_in_row(top_row))
+        point_placements.append(
+            self.matching_new_max_point_placement(
+                requirement_list,
+                indices,
+                direction,
+                top_leftmost_cell,
+            )
+        )
+        for row in range(top_row):
+            point_placements.extend(
+                self.matching_point_placement_in_cell(
+                    requirement_list, indices, direction, cell
+                )
+                for cell in sorted(self.tiling.cells_in_row(row))
+            )
+        return tuple(point_placements)
+
+    def matching_new_max_point_placement(
+        self,
+        requirement_list: Tuple[GriddedCayleyPerm, ...],
+        indices: Tuple[int, ...],
+        direction: int,
+        cell: Tuple[int, int],
+    ) -> Tiling:
+        """Inserts a new max into an RGF"""
+        tiling = self.point_placement_in_cell(
+            requirement_list, indices, direction, cell
+        )
+        extra_forced_obs = [
+            GriddedCayleyPerm(CayleyPermutation([0]), [(cell[0] + 2, cell[1])])
+        ]
+        for new_cell in tiling.cells_in_col(cell[0]):
+            extra_forced_obs.append(
+                GriddedCayleyPerm(CayleyPermutation([0]), [new_cell])
+            )
+        return tiling.add_obstructions(extra_forced_obs).add_requirements(
+            [[GriddedCayleyPerm(CayleyPermutation([0]), [(cell[0] + 2, cell[1] + 1)])]]
+        )
+
+    def point_placement_in_cell(
+        self,
+        requirement_list: Tuple[GriddedCayleyPerm, ...],
+        indices: Tuple[int, ...],
+        direction: int,
+        cell: Tuple[int, int],
+    ) -> Tiling:
+        """Point placement in a specific cell."""
+        multiplex_map = self.multiplex_map(cell)
+        multiplex_obs, multiplex_reqs = multiplex_map.preimage_of_tiling(self.tiling)
+        point_obs, point_reqs = self.matching_point_obstructions_and_requirements(
+            cell, direction
+        )
+        forced_obs = self.forced_obstructions(
+            cell, requirement_list, indices, direction
+        )
+        obstructions = multiplex_obs + point_obs + forced_obs
+        requirements = multiplex_reqs + point_reqs
+        return Tiling(obstructions, requirements, self.new_dimensions())
+
+    def matching_point_obstructions_and_requirements(
+        self, cell: Tuple[int, int], direction: int
+    ) -> Tuple[OBSTRUCTIONS, REQUIREMENTS]:
+        """Return the obstructions and requirements to create the point."""
+        cell = self.placed_cell(cell)
+        x, y = self.new_dimensions()
+        col_obs = [
+            GriddedCayleyPerm(CayleyPermutation([0]), [(cell[0], i)])
+            for i in range(y)
+            if i != cell[1]
+        ]
+        row_obs = []
+        row = cell[1]
+        for col in range(x):
+            row_obs.append(
+                GriddedCayleyPerm(CayleyPermutation([0, 1]), [(col, row), (col, row)])
+            )
+            row_obs.append(
+                GriddedCayleyPerm(CayleyPermutation([1, 0]), [(col, row), (col, row)])
+            )
+            row_obs.append(
+                GriddedCayleyPerm(CayleyPermutation([0, 0]), [(col, row), (col, row)])
+            )
+        for col1, col2 in combinations(range(x), 2):
+            row_obs.append(
+                GriddedCayleyPerm(CayleyPermutation([0, 1]), [(col1, row), (col2, row)])
+            )
+            row_obs.append(
+                GriddedCayleyPerm(CayleyPermutation([1, 0]), [(col1, row), (col2, row)])
+            )
+            row_obs.append(
+                GriddedCayleyPerm(CayleyPermutation([0, 0]), [(col1, row), (col2, row)])
+            )
+
+        return [
+            [
+                GriddedCayleyPerm(CayleyPermutation((0, 1)), [cell, cell]),
+                GriddedCayleyPerm(CayleyPermutation((0, 0)), [cell, cell]),
+                GriddedCayleyPerm(CayleyPermutation((1, 0)), [cell, cell]),
+            ]
+            + col_obs
+            + row_obs,
+            [[GriddedCayleyPerm(CayleyPermutation([0]), [cell])]],
+        ]
+
     def new_dimensions(self):
         """Returns the new dimensions of the tiling after point placement."""
         return (self.tiling.dimensions[0] + 2, self.tiling.dimensions[1] + 2)

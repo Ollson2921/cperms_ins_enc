@@ -114,6 +114,16 @@ class RGFRequirementPlacementStrategy(RequirementPlacementStrategy):
         return self.formal_step()
 
 
+class MatchingRequirementPlacementStrategy(RGFRequirementPlacementStrategy):
+    def decomposition_function(self, comb_class: Tiling) -> Tuple[Tiling, ...]:
+        return (comb_class.add_obstructions(self.gcps),) + self.algorithm(
+            comb_class
+        ).point_placement_in_matching(self.gcps, self.indices, self.direction)
+
+    def formal_step(self):
+        return "Point placement in RGF of matching"
+
+
 class VerticalInsertionEncodingPlacementFactory(StrategyFactory[Tiling]):
     def __call__(self, comb_class: Tiling) -> Iterator[RequirementPlacementStrategy]:
         cells = comb_class.active_cells()
@@ -188,3 +198,16 @@ class RGFHorizontalInsertionEncodingPlacementFactory(
         indices = tuple(0 for _ in gcps)
         direction = Left
         yield RGFRequirementPlacementStrategy(gcps, indices, direction)
+
+
+class MatchingHorizontalInsertionEncodingPlacementFactory(
+    HorizontalInsertionEncodingPlacementFactory
+):
+    def __call__(self, comb_class: Tiling) -> Iterator[RequirementPlacementStrategy]:
+        cells = comb_class.active_cells() - comb_class.point_cells()
+        gcps = tuple(
+            GriddedCayleyPerm(CayleyPermutation([0]), [cell]) for cell in cells
+        )
+        indices = tuple(0 for _ in gcps)
+        direction = Left
+        yield MatchingRequirementPlacementStrategy(gcps, indices, direction)
