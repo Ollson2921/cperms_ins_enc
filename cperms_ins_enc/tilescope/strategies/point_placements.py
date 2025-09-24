@@ -163,7 +163,7 @@ class HorizontalInsertionEncodingPlacementFactory(StrategyFactory[Tiling]):
             GriddedCayleyPerm(CayleyPermutation([0]), [cell]) for cell in cells
         )
         indices = tuple(0 for _ in gcps)
-        direction = Left_bot
+        direction = Left
         yield RequirementPlacementStrategy(gcps, indices, direction)
 
     @classmethod
@@ -186,5 +186,5 @@ class RGFHorizontalInsertionEncodingPlacementFactory(
             GriddedCayleyPerm(CayleyPermutation([0]), [cell]) for cell in cells
         )
         indices = tuple(0 for _ in gcps)
-        direction = Left_bot
+        direction = Left
         yield RGFRequirementPlacementStrategy(gcps, indices, direction)

@@ -279,6 +279,28 @@ class CayleyPermutation:
             self.cperm[:index] + self.cperm[index + 1 :]
         )
 
+    def is_rgf(self) -> bool:
+        """Returns true if the Cayley permutation is an RGF.
+        To be an RGF, any number in the Cayley permutation must have
+        every number smaller than it at smaller indices.
+
+        Example:
+        >>> CayleyPermutation([0, 1, 2, 1, 0]).is_rgf()
+        True
+        >>> CayleyPermutation([1, 2, 1, 0]).is_rgf()
+        False
+        """
+        if len(self) == 0:
+            return True
+        max_val = max(self)
+        for i in range(max_val + 1):
+            for val in self:
+                if val > i:
+                    return False
+                if val == i:
+                    break
+        return True
+
     def to_jsonable(self) -> dict:
         """Returns a dictionary of the Cayley permutation."""
         return {"cperm": self.cperm}

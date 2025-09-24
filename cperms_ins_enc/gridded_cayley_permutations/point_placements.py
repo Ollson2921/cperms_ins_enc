@@ -230,9 +230,13 @@ class PointPlacement:
         tiling = self.point_placement_in_cell(
             requirement_list, indices, direction, cell
         )
-        extra_forced_obs = []
-        for cell in tiling.cells_in_col(cell[0]):
-            extra_forced_obs.append(GriddedCayleyPerm(CayleyPermutation([0]), [cell]))
+        extra_forced_obs = [
+            GriddedCayleyPerm(CayleyPermutation([0]), [(cell[0] + 2, cell[1])])
+        ]
+        for new_cell in tiling.cells_in_col(cell[0]):
+            extra_forced_obs.append(
+                GriddedCayleyPerm(CayleyPermutation([0]), [new_cell])
+            )
         return tiling.add_obstructions(extra_forced_obs)
 
     def point_placement_in_cell(
