@@ -79,6 +79,7 @@ class PointPlacement:
     def point_obstructions_and_requirements(
         self, cell: Tuple[int, int], direction: int
     ) -> Tuple[OBSTRUCTIONS, REQUIREMENTS]:
+        """Return the obstructions and requirements to create the point."""
         cell = self.placed_cell(cell)
         x, y = self.new_dimensions()
         col_obs = [
@@ -115,9 +116,11 @@ class PointPlacement:
         ]
 
     def placed_cell(self, cell: Tuple[int, int]) -> Tuple[int, int]:
+        """Return the cell of the placed point in the new tiling."""
         return (cell[0] + 1, cell[1] + 1)
 
     def multiplex_map(self, cell: Tuple[int, int]) -> MultiplexMap:
+        """Return the multiplex map for the cell."""
         return MultiplexMap(cell, self.tiling.dimensions)
 
     def forced_obstructions(
@@ -127,6 +130,7 @@ class PointPlacement:
         indices: Tuple[int, ...],
         direction: int,
     ) -> OBSTRUCTIONS:
+        """Return the forced obstructions from the direction given."""
         multiplex_map = self.multiplex_map(cell)
         cell = self.placed_cell(cell)
         obstructions = []
@@ -159,6 +163,7 @@ class PointPlacement:
         indices: Tuple[int, ...],
         direction: int,
     ) -> Tuple[Tiling, ...]:
+        """Point placement for general tilings."""
         if direction not in self.DIRECTIONS:
             raise ValueError(f"Direction {direction} is not a valid direction.")
         cells = []
@@ -170,47 +175,58 @@ class PointPlacement:
             for cell in cells
         )
 
-    def vertical_insertion_encoding_in_rgf(
+    def point_placement_in_rgf(
         self,
         requirement_list: Tuple[GriddedCayleyPerm, ...],
         indices: Tuple[int, ...],
         direction: int,
     ) -> Tuple[Tiling, ...]:
-        """Point placement for restricted growth functions."""
+        """Point placement for restricted growth functions.
+
+        If vertical and only one row then just do a new max placement.
+        If horizontal and only one row then will only be a 1x1 tiling anyway
+        so also a new max placement.
+
+        Else, for both do a new max in the leftmost active cell  in the
+        top row and repeat vals in all other active cells in other rows.
+        """
         if direction not in self.DIRECTIONS:
             raise ValueError(f"Direction {direction} is not a valid direction.")
-        point_placements = []
-        if self.tiling.dimensions[1] == 1:
-            point_placements.append(
-                self.rgf_point_placement_in_first_cell(
+        top_row = self.tiling.dimensions[1] - 1
+        if top_row == 0:
+            return (
+                self.new_max_point_placement(
                     requirement_list,
                     indices,
                     direction,
                     min(self.tiling.active_cells()),
-                )
+                ),
             )
-        else:
-            point_placements.append(
-                self.rgf_point_placement_in_first_cell(
-                    requirement_list,
-                    indices,
-                    direction,
-                    min(self.tiling.cells_in_row(1)),
-                )
+        point_placements = []
+        top_leftmost_cell = min(self.tiling.cells_in_row(top_row))
+        point_placements.append(
+            self.new_max_point_placement(
+                requirement_list,
+                indices,
+                direction,
+                top_leftmost_cell,
             )
+        )
+        for row in range(top_row):
             point_placements.extend(
                 self.point_placement_in_cell(requirement_list, indices, direction, cell)
-                for cell in sorted(self.tiling.cells_in_row(0))
+                for cell in sorted(self.tiling.cells_in_row(row))
             )
         return tuple(point_placements)
 
-    def rgf_point_placement_in_first_cell(
+    def new_max_point_placement(
         self,
         requirement_list: Tuple[GriddedCayleyPerm, ...],
         indices: Tuple[int, ...],
         direction: int,
         cell: Tuple[int, int],
     ) -> Tiling:
+        """Inserts a new max into an RGF"""
         tiling = self.point_placement_in_cell(
             requirement_list, indices, direction, cell
         )
@@ -226,6 +242,7 @@ class PointPlacement:
         direction: int,
         cell: Tuple[int, int],
     ) -> Tiling:
+        """Point placement in a specific cell."""
         multiplex_map = self.multiplex_map(cell)
         multiplex_obs, multiplex_reqs = multiplex_map.preimage_of_tiling(self.tiling)
         point_obs, point_reqs = self.point_obstructions_and_requirements(
@@ -239,4 +256,5 @@ class PointPlacement:
         return Tiling(obstructions, requirements, self.new_dimensions())
 
     def new_dimensions(self):
+        """Returns the new dimensions of the tiling after point placement."""
         return (self.tiling.dimensions[0] + 2, self.tiling.dimensions[1] + 2)
