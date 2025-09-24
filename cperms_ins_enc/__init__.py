@@ -10,6 +10,7 @@ from .tilescope import (
     VerticalSearcher,
     RGFHorizontalSearcher,
     RGFVerticalSearcher,
+    MatchingHorizontalSearcher,
 )
 from .vatters_method import (
     VatterVerticalSearcher,

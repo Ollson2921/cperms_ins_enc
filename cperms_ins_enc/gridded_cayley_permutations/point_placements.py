@@ -324,7 +324,7 @@ class PointPlacement:
             [[GriddedCayleyPerm(CayleyPermutation([0]), [(cell[0] + 2, cell[1] + 1)])]]
         )
 
-    def point_placement_in_cell(
+    def matching_point_placement_in_cell(
         self,
         requirement_list: Tuple[GriddedCayleyPerm, ...],
         indices: Tuple[int, ...],
