@@ -295,7 +295,7 @@ class PointPlacement:
         )
         for row in range(top_row):
             point_placements.extend(
-                self.matching_point_placement_in_cell(
+                self.point_placement_in_cell(
                     requirement_list, indices, direction, cell
                 )
                 for cell in sorted(self.tiling.cells_in_row(row))
@@ -310,7 +310,7 @@ class PointPlacement:
         cell: Tuple[int, int],
     ) -> Tiling:
         """Inserts a new max into an RGF"""
-        tiling = self.point_placement_in_cell(
+        tiling = self.matching_new_max_point_placement_in_cell(
             requirement_list, indices, direction, cell
         )
         extra_forced_obs = [
@@ -324,7 +324,7 @@ class PointPlacement:
             [[GriddedCayleyPerm(CayleyPermutation([0]), [(cell[0] + 2, cell[1] + 1)])]]
         )
 
-    def matching_point_placement_in_cell(
+    def matching_new_max_point_placement_in_cell(
         self,
         requirement_list: Tuple[GriddedCayleyPerm, ...],
         indices: Tuple[int, ...],
@@ -334,7 +334,7 @@ class PointPlacement:
         """Point placement in a specific cell."""
         multiplex_map = self.multiplex_map(cell)
         multiplex_obs, multiplex_reqs = multiplex_map.preimage_of_tiling(self.tiling)
-        point_obs, point_reqs = self.matching_point_obstructions_and_requirements(
+        point_obs, point_reqs = self.matching_new_max_point_obstructions_and_requirements(
             cell, direction
         )
         forced_obs = self.forced_obstructions(
@@ -344,7 +344,7 @@ class PointPlacement:
         requirements = multiplex_reqs + point_reqs
         return Tiling(obstructions, requirements, self.new_dimensions())
 
-    def matching_point_obstructions_and_requirements(
+    def matching_new_max_point_obstructions_and_requirements(
         self, cell: Tuple[int, int], direction: int
     ) -> Tuple[OBSTRUCTIONS, REQUIREMENTS]:
         """Return the obstructions and requirements to create the point."""
@@ -373,9 +373,6 @@ class PointPlacement:
             )
             row_obs.append(
                 GriddedCayleyPerm(CayleyPermutation([1, 0]), [(col1, row), (col2, row)])
-            )
-            row_obs.append(
-                GriddedCayleyPerm(CayleyPermutation([0, 0]), [(col1, row), (col2, row)])
             )
 
         return [

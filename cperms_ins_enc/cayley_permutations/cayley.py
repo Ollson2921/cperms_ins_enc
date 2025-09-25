@@ -290,7 +290,7 @@ class CayleyPermutation:
         >>> CayleyPermutation([1, 2, 1, 0]).is_rgf()
         False
         """
-        if len(self) == 0:
+        if len(self) == 0 or len(self) == 1:
             return True
         max_val = max(self)
         for i in range(max_val + 1):
@@ -299,6 +299,18 @@ class CayleyPermutation:
                     return False
                 if val == i:
                     break
+        return True
+
+    def is_rgf_of_matching(self) -> bool:
+        """Returns true if the Cayley permutations is an RGF
+        of a matching - if every numjber appears exactly twice."""
+        if len(self) == 0:
+            return True
+        if not self.is_rgf():
+            return False
+        for i in range(max(self) + 1):
+            if self.cperm.count(i) != 2:
+                return False
         return True
 
     def to_jsonable(self) -> dict:
