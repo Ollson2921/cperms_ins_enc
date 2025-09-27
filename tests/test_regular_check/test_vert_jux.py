@@ -2,7 +2,7 @@ from itertools import combinations
 from typing import List, Iterator
 from cperms_ins_enc.check_regular.check_regular_vert import checks_vert_type
 
-from cperms_ins_enc import CayleyPermutation, Av
+from cayley_permutations import CayleyPermutation, Av
 
 decreasing = [CayleyPermutation([1, 1]), CayleyPermutation([1, 2])]
 increasing = [CayleyPermutation([1, 1]), CayleyPermutation([2, 1])]
