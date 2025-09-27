@@ -1,6 +1,6 @@
 import abc
 from comb_spec_searcher import CombinatorialSpecificationSearcher
-from ..cayley_permutations import string_to_basis
+from cayley_permutations import string_to_basis
 from functools import cached_property
 
 

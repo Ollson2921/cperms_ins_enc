@@ -11,7 +11,7 @@ from ..check_regular import (
     rgf_regular_vertical_insertion_encoding,
 )
 from .generic_searcher import GenericSearcher
-from ..gridded_cayley_permutations import Tiling, GriddedCayleyPerm
+from gridded_cayley_permutations import Tiling, GriddedCayleyPerm
 
 
 class VerticalSearcher(GenericSearcher):

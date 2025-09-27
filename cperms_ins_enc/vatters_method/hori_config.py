@@ -1,7 +1,6 @@
 from typing import List, Iterable, Iterator
 from math import ceil
-from ..cayley_permutations import CayleyPermutation, Av
-from .vert_config import VerticalConfiguration
+from cayley_permutations import CayleyPermutation, Av
 
 
 class Letter:

@@ -8,7 +8,7 @@ from comb_spec_searcher import (
     CartesianProductStrategy,
     StrategyFactory,
 )
-from ..cayley_permutations import CayleyPermutation
+from cayley_permutations import CayleyPermutation
 from .vert_config import VerticalConfiguration
 from .hori_config import HorizontalConfiguration
 

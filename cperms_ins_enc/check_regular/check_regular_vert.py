@@ -2,7 +2,7 @@
 is a vertical juxtaposition and if a basis has a regular
 vertical insertion encoding."""
 
-from cperms_ins_enc import string_to_basis, CayleyPermutation
+from cayley_permutations import string_to_basis, CayleyPermutation
 
 
 def regular_vertical_insertion_encoding(basis: str | set[CayleyPermutation]) -> bool:
@@ -15,7 +15,7 @@ def regular_vertical_insertion_encoding(basis: str | set[CayleyPermutation]) -> 
     basis = string_to_basis(basis) if isinstance(basis, str) else basis
     for i in range(3):
         for j in range(3):
-            if any(checks_vert_type(cperm.cperm, (i, j)) for cperm in basis):
+            if any(checks_vert_type(cperm, (i, j)) for cperm in basis):
                 continue
             return False
     return True

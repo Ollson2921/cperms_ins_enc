@@ -3,8 +3,8 @@
 from typing import Dict, Iterator, Optional, Tuple
 from comb_spec_searcher import CartesianProductStrategy
 from comb_spec_searcher.exception import StrategyDoesNotApply
-from ...gridded_cayley_permutations import Tiling, GriddedCayleyPerm
-from ...gridded_cayley_permutations.factors import Factors
+from gridded_cayley_permutations import Tiling, GriddedCayleyPerm
+from gridded_cayley_permutations.factors import Factors
 
 
 class AbstractFactorStrategy:

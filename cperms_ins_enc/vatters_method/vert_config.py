@@ -1,7 +1,7 @@
 """This module contains the Letter class, VerticalConfiguration class and the Word class."""
 
 from typing import Iterator, List, Dict, Union
-from ..cayley_permutations import Av, CayleyPermutation
+from cayley_permutations import Av, CayleyPermutation
 
 
 class Letter:

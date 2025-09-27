@@ -13,7 +13,7 @@ from ..check_regular import (
     regular_horizontal_insertion_encoding,
     regular_vertical_insertion_encoding,
 )
-from ..cayley_permutations import CayleyPermutation
+from cayley_permutations import CayleyPermutation
 from .vert_config import VerticalConfiguration
 from .hori_config import HorizontalConfiguration
 

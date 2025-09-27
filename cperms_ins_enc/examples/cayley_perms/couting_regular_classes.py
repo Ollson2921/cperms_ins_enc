@@ -1,12 +1,12 @@
 """This module is used for counting the number of
 Cayley permutation classes with a regular insertion encoding."""
 
+from cayley_permutations import CayleyPermutation
+from itertools import combinations
 from cperms_ins_enc import (
     regular_vertical_insertion_encoding,
     regular_horizontal_insertion_encoding,
-    CayleyPermutation,
 )
-from itertools import combinations
 
 v_reg = 0
 h_reg = 0

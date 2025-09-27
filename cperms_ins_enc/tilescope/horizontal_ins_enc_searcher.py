@@ -5,14 +5,16 @@ from .strategies import (
     HorizontalInsertionEncodingPlacementFactory,
     HorizontalInsertionEncodingRequirementInsertionFactory,
     RGFHorizontalInsertionEncodingPlacementFactory,
-    MatchingHorizontalInsertionEncodingPlacementFactory,
+    MatchingRequirementInsertionFactory,
 )
 from ..check_regular import (
     regular_horizontal_insertion_encoding,
     rgf_regular_horizontal_insertion_encoding,
 )
 from .generic_searcher import GenericSearcher
-from ..gridded_cayley_permutations import Tiling, GriddedCayleyPerm
+from gridded_cayley_permutations import Tiling, GriddedCayleyPerm
+
+from cayley_permutations import CayleyPermutation
 
 
 class HorizontalSearcher(GenericSearcher):
@@ -80,12 +82,23 @@ class MatchingHorizontalSearcher(RGFHorizontalSearcher):
         return StrategyPack(
             initial_strats=[
                 FactorStrategy(),
-                HorizontalInsertionEncodingRequirementInsertionFactory(),
+                MatchingRequirementInsertionFactory(),
             ],
             inferral_strats=[RemoveEmptyRowsAndColumnsStrategy()],
-            expansion_strats=[[MatchingHorizontalInsertionEncodingPlacementFactory()]],
+            expansion_strats=[[RGFHorizontalInsertionEncodingPlacementFactory()]],
             ver_strats=[AtomStrategy()],
             name="RGFs of Matchings Horizontal Insertion Encoding",
             symmetries=[],
             iterative=False,
+        )
+
+    def start_class(self):
+        return (
+            super()
+            .start_class()
+            .add_obstruction(
+                GriddedCayleyPerm(
+                    CayleyPermutation([0, 0, 0]), [(0, 0), (0, 0), (0, 0)]
+                )
+            )
         )

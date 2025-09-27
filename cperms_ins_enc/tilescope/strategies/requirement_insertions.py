@@ -1,8 +1,8 @@
 from typing import Dict, Iterable, Iterator, Optional, Tuple
 from comb_spec_searcher import DisjointUnionStrategy, StrategyFactory
 
-from ...gridded_cayley_permutations import GriddedCayleyPerm, Tiling
-from ...cayley_permutations import CayleyPermutation
+from gridded_cayley_permutations import GriddedCayleyPerm, Tiling
+from cayley_permutations import CayleyPermutation
 
 Cell = Tuple[int, int]
 
@@ -92,6 +92,20 @@ class VerticalInsertionEncodingRequirementInsertionFactory(StrategyFactory[Tilin
         return "Make columns positive"
 
 
+class MatchingsRequirementInsertionStrategy(RequirementInsertionStrategy):
+    def decomposition_function(self, comb_class: Tiling) -> Tuple[Tiling, ...]:
+        reqs = [
+            GriddedCayleyPerm(
+                CayleyPermutation([0, 0]), [gcp.positions[0], gcp.positions[0]]
+            )
+            for gcp in self.gcps
+        ]
+        return (
+            comb_class.add_obstructions(self.gcps),
+            comb_class.add_requirement_list(reqs),
+        )
+
+
 class HorizontalInsertionEncodingRequirementInsertionFactory(StrategyFactory[Tiling]):
     def __call__(self, comb_class: Tiling) -> Iterator[RequirementInsertionStrategy]:
         for row in range(comb_class.dimensions[1]):
@@ -114,3 +128,19 @@ class HorizontalInsertionEncodingRequirementInsertionFactory(StrategyFactory[Til
 
     def __str__(self) -> str:
         return "Make rows positive"
+
+
+class MatchingRequirementInsertionFactory(
+    HorizontalInsertionEncodingRequirementInsertionFactory
+):
+    def __call__(self, comb_class: Tiling) -> Iterator[RequirementInsertionStrategy]:
+        for row in range(comb_class.dimensions[1]):
+            if not comb_class.row_is_positive(row):
+                gcps = tuple(
+                    GriddedCayleyPerm(CayleyPermutation([0]), [cell])
+                    for cell in comb_class.cells_in_row(row)
+                )
+                strategy = MatchingsRequirementInsertionStrategy(
+                    gcps, ignore_parent=True
+                )
+                yield strategy

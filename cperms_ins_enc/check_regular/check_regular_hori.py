@@ -2,7 +2,7 @@
 is a horizontal juxtaposition and if a basis has a regular
 horizontal insertion encoding."""
 
-from cperms_ins_enc import string_to_basis, CayleyPermutation
+from cayley_permutations import string_to_basis, CayleyPermutation
 
 
 def is_increasing(cperm: list[int], vals_seen=set()) -> bool:

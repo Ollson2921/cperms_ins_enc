@@ -8,7 +8,7 @@ from cperms_ins_enc.check_regular.check_regular_vert import (
     dec_con,
 )
 from cperms_ins_enc.check_regular.check_regular_hori import is_decreasing
-from cperms_ins_enc import string_to_basis, CayleyPermutation
+from cayley_permutations import string_to_basis, CayleyPermutation
 
 
 def rgf_regular_vertical_insertion_encoding(
@@ -21,23 +21,23 @@ def rgf_regular_vertical_insertion_encoding(
     True
     """
     basis = string_to_basis(basis) if isinstance(basis, str) else basis
-    if not any(grid_dec_dec(cperm.cperm) for cperm in basis):
+    if not any(grid_dec_dec(cperm) for cperm in basis):
         return False
-    if not any(grid_inc_dec(cperm.cperm) for cperm in basis):
+    if not any(grid_inc_dec(cperm) for cperm in basis):
         return False
-    if not any(con_dec(cperm.cperm) for cperm in basis):
+    if not any(con_dec(cperm) for cperm in basis):
         return False
-    if not any(con_con(cperm.cperm) for cperm in basis):
+    if not any(con_con(cperm) for cperm in basis):
         return False
-    if not any(con_inc(cperm.cperm) for cperm in basis):
+    if not any(con_inc(cperm) for cperm in basis):
         return False
-    if not any(greedy_grid_left(cperm.cperm, 0) for cperm in basis):
+    if not any(greedy_grid_left(cperm, 0) for cperm in basis):
         return False
-    if not any(greedy_grid_left(cperm.cperm, 1) for cperm in basis):
+    if not any(greedy_grid_left(cperm, 1) for cperm in basis):
         return False
-    if not any(grid_inc_con(cperm.cperm) for cperm in basis):
+    if not any(grid_inc_con(cperm) for cperm in basis):
         return False
-    if not any(grid_dec_con(cperm.cperm) for cperm in basis):
+    if not any(grid_dec_con(cperm) for cperm in basis):
         return False
     return True
 

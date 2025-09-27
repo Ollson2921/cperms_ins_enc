@@ -9,17 +9,106 @@
 from typing import Dict, Iterable, Iterator, Optional, Tuple
 from comb_spec_searcher import DisjointUnionStrategy, StrategyFactory
 
-from ...gridded_cayley_permutations import Tiling, GriddedCayleyPerm
-from ...gridded_cayley_permutations.point_placements import (
+from gridded_cayley_permutations import Tiling, GriddedCayleyPerm
+from gridded_cayley_permutations.point_placements import (
     PointPlacement,
     Directions,
-    Left_bot,
-    Left,
+    DIR_LEFT,
+    DIR_LEFT_BOT,
 )
-from ...cayley_permutations import CayleyPermutation
+from cayley_permutations import CayleyPermutation
 
 
 Cell = Tuple[int, int]
+
+
+class RGFVPointPlacement(PointPlacement):
+    def point_placement(
+        self,
+        requirement_list: Tuple[GriddedCayleyPerm, ...],
+        indices: Tuple[int, ...],
+        direction: int,
+    ) -> Tuple[Tiling, ...]:
+        """Point placement for restricted growth functions.
+
+        If vertical and only one row then just do a new max placement.
+        If horizontal and only one row then will only be a 1x1 tiling anyway
+        so also a new max placement.
+
+        Else, for both do a new max in the leftmost active cell  in the
+        top row and repeat vals in all other active cells in other rows.
+        """
+        if direction not in self.DIRECTIONS:
+            raise ValueError(f"Direction {direction} is not a valid direction.")
+        top_row = self.tiling.dimensions[1] - 1
+        if top_row == 0:
+            return (
+                self.new_max_point_placement(
+                    requirement_list,
+                    indices,
+                    direction,
+                    min(self.tiling.active_cells),
+                ),
+            )
+        point_placements = []
+        top_leftmost_cell = min(self.tiling.cells_in_row(top_row))
+        point_placements.append(
+            self.new_max_point_placement(
+                requirement_list,
+                indices,
+                direction,
+                top_leftmost_cell,
+            )
+        )
+        for row in range(top_row):
+            point_placements.extend(
+                self.point_placement_in_cell(requirement_list, indices, direction, cell)
+                for cell in sorted(self.tiling.cells_in_row(row))
+            )
+        return tuple(point_placements)
+
+    def new_max_point_placement(
+        self,
+        requirement_list: Tuple[GriddedCayleyPerm, ...],
+        indices: Tuple[int, ...],
+        direction: int,
+        cell: Tuple[int, int],
+    ) -> Tiling:
+        """Inserts a new max into an RGF"""
+        tiling = self.point_placement_in_cell(
+            requirement_list, indices, direction, cell
+        )
+        extra_forced_obs = [
+            GriddedCayleyPerm(CayleyPermutation([0]), [(cell[0] + 2, cell[1])])
+        ]
+        for new_cell in tiling.cells_in_col(cell[0]):
+            extra_forced_obs.append(
+                GriddedCayleyPerm(CayleyPermutation([0]), [new_cell])
+            )
+        return tiling.add_obstructions(extra_forced_obs)
+
+
+class RGFHPointPlacement(RGFVPointPlacement):
+    def point_placement(
+        self,
+        requirement_list: Tuple[GriddedCayleyPerm, ...],
+        indices: Tuple[int, ...],
+        direction: int,
+    ) -> Tuple[Tiling, ...]:
+        """Point placement for restricted growth functions.
+
+        Every cell is treated as a new max (is leftmost in all of tiling)
+        """
+        if direction not in self.DIRECTIONS:
+            raise ValueError(f"Direction {direction} is not a valid direction.")
+        cells = []
+        for idx, gcp in zip(indices, requirement_list):
+            cells.append(gcp.positions[idx])
+        cells = sorted(set(cells))
+        return tuple(
+            self.new_max_point_placement(requirement_list, indices, direction, cell)
+            for cell in cells
+        )
 
 
 class RequirementPlacementStrategy(DisjointUnionStrategy[Tiling, GriddedCayleyPerm]):
@@ -101,11 +190,9 @@ class RequirementPlacementStrategy(DisjointUnionStrategy[Tiling, GriddedCayleyPe
         return cls(gcps=gcps, **d)
 
 
-class RGFRequirementPlacementStrategy(RequirementPlacementStrategy):
-    def decomposition_function(self, comb_class: Tiling) -> Tuple[Tiling, ...]:
-        return (comb_class.add_obstructions(self.gcps),) + self.algorithm(
-            comb_class
-        ).point_placement_in_rgf(self.gcps, self.indices, self.direction)
+class RGFVRequirementPlacementStrategy(RequirementPlacementStrategy):
+    def algorithm(self, tiling: Tiling) -> PointPlacement:
+        return RGFVPointPlacement(tiling)
 
     def formal_step(self):
         return "Point placement in RGF"
@@ -114,24 +201,25 @@ class RGFRequirementPlacementStrategy(RequirementPlacementStrategy):
         return self.formal_step()
 
 
-class MatchingRequirementPlacementStrategy(RGFRequirementPlacementStrategy):
-    def decomposition_function(self, comb_class: Tiling) -> Tuple[Tiling, ...]:
-        return (comb_class.add_obstructions(self.gcps),) + self.algorithm(
-            comb_class
-        ).point_placement_in_matching(self.gcps, self.indices, self.direction)
+class RGFHRequirementPlacementStrategy(RequirementPlacementStrategy):
+    def algorithm(self, tiling: Tiling) -> PointPlacement:
+        return RGFHPointPlacement(tiling)
 
     def formal_step(self):
-        return "Point placement in RGF of matching"
+        return "Point placement in RGF"
+
+    def __str__(self):
+        return self.formal_step()
 
 
 class VerticalInsertionEncodingPlacementFactory(StrategyFactory[Tiling]):
     def __call__(self, comb_class: Tiling) -> Iterator[RequirementPlacementStrategy]:
-        cells = comb_class.active_cells()
+        cells = comb_class.active_cells
         gcps = tuple(
             GriddedCayleyPerm(CayleyPermutation([0]), [cell]) for cell in cells
         )
         indices = tuple(0 for _ in gcps)
-        direction = Left_bot
+        direction = DIR_LEFT_BOT
         yield RequirementPlacementStrategy(gcps, indices, direction)
 
     @classmethod
@@ -146,14 +234,16 @@ class VerticalInsertionEncodingPlacementFactory(StrategyFactory[Tiling]):
 
 
 class RGFVerticalInsertionEncodingPlacementFactory(StrategyFactory[Tiling]):
-    def __call__(self, comb_class: Tiling) -> Iterator[RGFRequirementPlacementStrategy]:
-        cells = comb_class.active_cells() - comb_class.point_cells()
+    def __call__(
+        self, comb_class: Tiling
+    ) -> Iterator[RGFVRequirementPlacementStrategy]:
+        cells = comb_class.active_cells
         gcps = tuple(
             GriddedCayleyPerm(CayleyPermutation([0]), [cell]) for cell in cells
         )
         indices = tuple(0 for _ in gcps)
-        direction = Left_bot
-        yield RGFRequirementPlacementStrategy(gcps, indices, direction)
+        direction = DIR_LEFT_BOT
+        yield RGFVRequirementPlacementStrategy(gcps, indices, direction)
 
     @classmethod
     def from_dict(cls, d: dict) -> "RGFVerticalInsertionEncodingPlacementFactory":
@@ -168,12 +258,12 @@ class RGFVerticalInsertionEncodingPlacementFactory(StrategyFactory[Tiling]):
 
 class HorizontalInsertionEncodingPlacementFactory(StrategyFactory[Tiling]):
     def __call__(self, comb_class: Tiling) -> Iterator[RequirementPlacementStrategy]:
-        cells = comb_class.active_cells()
+        cells = comb_class.active_cells
         gcps = tuple(
             GriddedCayleyPerm(CayleyPermutation([0]), [cell]) for cell in cells
         )
         indices = tuple(0 for _ in gcps)
-        direction = Left
+        direction = DIR_LEFT
         yield RequirementPlacementStrategy(gcps, indices, direction)
 
     @classmethod
@@ -190,24 +280,13 @@ class HorizontalInsertionEncodingPlacementFactory(StrategyFactory[Tiling]):
 class RGFHorizontalInsertionEncodingPlacementFactory(
     HorizontalInsertionEncodingPlacementFactory
 ):
-    def __call__(self, comb_class: Tiling) -> Iterator[RequirementPlacementStrategy]:
-        cells = comb_class.active_cells() - comb_class.point_cells()
+    def __call__(
+        self, comb_class: Tiling
+    ) -> Iterator[RGFHRequirementPlacementStrategy]:
+        cells = comb_class.active_cells
         gcps = tuple(
             GriddedCayleyPerm(CayleyPermutation([0]), [cell]) for cell in cells
         )
         indices = tuple(0 for _ in gcps)
-        direction = Left
-        yield RGFRequirementPlacementStrategy(gcps, indices, direction)
-
-
-class MatchingHorizontalInsertionEncodingPlacementFactory(
-    HorizontalInsertionEncodingPlacementFactory
-):
-    def __call__(self, comb_class: Tiling) -> Iterator[RequirementPlacementStrategy]:
-        cells = comb_class.active_cells() - comb_class.point_cells()
-        gcps = tuple(
-            GriddedCayleyPerm(CayleyPermutation([0]), [cell]) for cell in cells
-        )
-        indices = tuple(0 for _ in gcps)
-        direction = Left
-        yield MatchingRequirementPlacementStrategy(gcps, indices, direction)
+        direction = DIR_LEFT
+        yield RGFHRequirementPlacementStrategy(gcps, indices, direction)
