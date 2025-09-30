@@ -121,7 +121,9 @@ def checks_hori_type(cperm: list[int], class_to_check: tuple[int, int]) -> bool:
     elif class_to_check[0] == 1:
         return inc_left(cperm, class_to_check[1])
     else:
-        raise ValueError(f"{class_to_check} is an invalid class_to_check value. Must be 0 or 1.")
+        raise ValueError(
+            f"{class_to_check} is an invalid class_to_check value. Must be 0 or 1."
+        )
 
 
 def inc_left(cperm: list[int], seqtype: int) -> bool:
@@ -177,6 +179,7 @@ def rgf_regular_horizontal_insertion_encoding(
         return False
     return True
 
+
 def rgfinc_left(cperm: list[int], seqtype: int) -> bool:
     """Returns True if the left part of the sequence is strictly
     increasing and right is of type 'seqtype'.
@@ -186,10 +189,9 @@ def rgfinc_left(cperm: list[int], seqtype: int) -> bool:
         return True
     left = cperm[0]
     for idx in range(1, len(cperm)):
-        if left > cperm[idx]:
+        if left >= cperm[idx]:
             break
         left = cperm[idx]
     else:
         return True
     return seq_type(cperm[idx:], seqtype, [])
-
