@@ -121,7 +121,7 @@ def checks_hori_type(cperm: list[int], class_to_check: tuple[int, int]) -> bool:
     elif class_to_check[0] == 1:
         return inc_left(cperm, class_to_check[1])
     else:
-        raise ValueError("Invalid class_to_check value. Must be 0 or 1.")
+        raise ValueError(f"{class_to_check} is an invalid class_to_check value. Must be 0 or 1.")
 
 
 def inc_left(cperm: list[int], seqtype: int) -> bool:
@@ -162,7 +162,7 @@ def rgf_regular_horizontal_insertion_encoding(
     basis: str | set[CayleyPermutation],
 ) -> bool:
     """Checks if an RGF class has a regular horizontal insertion encoding.
-    The basis must have permutations which are of the form
+    The basis must have Cayley permutations which are of the form
     increasing | increasing
     increasing | decreasing
 
@@ -172,7 +172,24 @@ def rgf_regular_horizontal_insertion_encoding(
     """
     basis = string_to_basis(basis) if isinstance(basis, str) else basis
     for j in range(2):
-        if any(checks_hori_type(cperm, (1, j)) for cperm in basis):
+        if any(rgfinc_left(cperm, j) for cperm in basis):
             continue
         return False
     return True
+
+def rgfinc_left(cperm: list[int], seqtype: int) -> bool:
+    """Returns True if the left part of the sequence is strictly
+    increasing and right is of type 'seqtype'.
+    0 -> strictly decreasing
+    1 -> strictly increasing"""
+    if len(cperm) == 0 or len(cperm) == 1:
+        return True
+    left = cperm[0]
+    for idx in range(1, len(cperm)):
+        if left > cperm[idx]:
+            break
+        left = cperm[idx]
+    else:
+        return True
+    return seq_type(cperm[idx:], seqtype, [])
+
