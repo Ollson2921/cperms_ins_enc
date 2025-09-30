@@ -95,8 +95,10 @@ class MatchingsRemoveExtraReqsStrategy(
             new_requirements.append(new_req_list)
         if new_requirements == comb_class.requirements:
             raise StrategyDoesNotApply("No extra requirements to remove")
-        return (Tiling(comb_class.obstructions, new_requirements, comb_class.dimensions),)
-            
+        return (
+            Tiling(comb_class.obstructions, new_requirements, comb_class.dimensions),
+        )
+
     def extra_parameters(
         self, comb_class: Tiling, children: Optional[Tuple[Tiling, ...]] = None
     ) -> Tuple[Dict[str, str], ...]:

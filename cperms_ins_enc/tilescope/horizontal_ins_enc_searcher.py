@@ -1,11 +1,17 @@
-from comb_spec_searcher import StrategyPack, AtomStrategy
+from comb_spec_searcher import (
+    CombinatorialSpecificationSearcher,
+    StrategyPack,
+    AtomStrategy,
+)
+from comb_spec_searcher.rule_db import RuleDBForest
 from .strategies import (
     RemoveEmptyRowsAndColumnsStrategy,
     FactorStrategy,
     HorizontalInsertionEncodingPlacementFactory,
     HorizontalInsertionEncodingRequirementInsertionFactory,
     RGFHorizontalInsertionEncodingPlacementFactory,
-    MatchingRequirementInsertionFactory, MatchingsRemoveExtraReqsStrategy
+    MatchingRequirementInsertionFactory,
+    MatchingsRemoveExtraReqsStrategy,
 )
 from ..check_regular import (
     regular_horizontal_insertion_encoding,
@@ -13,7 +19,7 @@ from ..check_regular import (
 )
 from .generic_searcher import GenericSearcher
 from gridded_cayley_permutations import Tiling, GriddedCayleyPerm
-
+from functools import cached_property
 from cayley_permutations import CayleyPermutation
 
 
@@ -71,9 +77,6 @@ class RGFHorizontalSearcher(HorizontalSearcher):
         )
 
 
-
-
-
 class MatchingHorizontalSearcher(RGFHorizontalSearcher):
     """A searcher for the horizontal insertion encoding for
     enumerating restricted growth functions."""
@@ -87,7 +90,10 @@ class MatchingHorizontalSearcher(RGFHorizontalSearcher):
                 FactorStrategy(),
                 MatchingRequirementInsertionFactory(),
             ],
-            inferral_strats=[RemoveEmptyRowsAndColumnsStrategy(), MatchingsRemoveExtraReqsStrategy()],
+            inferral_strats=[
+                RemoveEmptyRowsAndColumnsStrategy(),
+                MatchingsRemoveExtraReqsStrategy(),
+            ],
             expansion_strats=[[RGFHorizontalInsertionEncodingPlacementFactory()]],
             ver_strats=[AtomStrategy()],
             name="RGFs of Matchings Horizontal Insertion Encoding",
@@ -104,4 +110,12 @@ class MatchingHorizontalSearcher(RGFHorizontalSearcher):
                     CayleyPermutation([0, 0, 0]), [(0, 0), (0, 0), (0, 0)]
                 )
             )
+        )
+
+    @cached_property
+    def comb_spec_searcher(self) -> CombinatorialSpecificationSearcher:
+        """Returns the CombinatorialSpecificationSearcher object for this searcher."""
+        print(self.pack(), self.pack().name)
+        return CombinatorialSpecificationSearcher(
+            self.start_class(), self.pack(), debug=self.debug, ruledb=RuleDBForest()
         )
