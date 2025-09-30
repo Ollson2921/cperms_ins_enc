@@ -7,9 +7,9 @@ from cperms_ins_enc.check_regular.rgf_vert_regular_check import (
 
 
 def test_the_checks():
-    assert greedy_grid_left([0, 1, 2, 3, 4, 2, 5, 1, 6], (0, 1))  # dec_inc passes
-    assert greedy_grid_left([0, 1, 2, 4, 0, 5, 1, 6, 2], (1, 1))  # inc_inc passes
-    assert not greedy_grid_left([0, 1, 2, 3, 0, 2, 3, 1], (1, 1))  # inc_inc fails
+    assert greedy_grid_left([0, 1, 2, 3, 4, 2, 5, 1, 6], 0)  # dec_inc passes
+    assert greedy_grid_left([0, 1, 2, 4, 0, 5, 1, 6, 2], 1)  # inc_inc passes
+    assert not greedy_grid_left([0, 1, 2, 3, 0, 2, 3, 1], 1)  # inc_inc fails
 
     assert grid_inc_con([0, 1, 2, 3, 4, 0, 1, 5, 2, 5, 5, 3, 4])  # inc_con passes
     assert grid_inc_con([0, 1, 2, 3, 4, 0, 1, 4, 2, 3])  # inc_con passes

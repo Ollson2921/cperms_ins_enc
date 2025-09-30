@@ -4,9 +4,9 @@ from cperms_ins_enc.check_regular.check_regular_vert import checks_vert_type
 
 from cayley_permutations import CayleyPermutation, Av
 
-decreasing = [CayleyPermutation([1, 1]), CayleyPermutation([1, 2])]
-increasing = [CayleyPermutation([1, 1]), CayleyPermutation([2, 1])]
-constant = [CayleyPermutation([2, 1]), CayleyPermutation([1, 2])]
+decreasing = [CayleyPermutation([0, 0]), CayleyPermutation([0, 1])]
+increasing = [CayleyPermutation([0, 0]), CayleyPermutation([1, 0])]
+constant = [CayleyPermutation([1, 0]), CayleyPermutation([0, 1])]
 
 
 def shuffle(list_a: List[int], list_b: List[int]) -> Iterator[List[int]]:
@@ -49,7 +49,6 @@ def generate_vertical_jux(top_sequence, bottom_sequence, size):
                 for shuff in shuffle(a_perm, b_perm_new):
                     vertical_jux.add(CayleyPermutation(shuff))
     return vertical_jux
-
 
 def test_inc_inc():
     """Test vertical jux of form inc on top, inc on bottom pass check."""
