@@ -116,10 +116,10 @@ def checks_hori_type(cperm: list[int], class_to_check: tuple[int, int]) -> bool:
     """
     if len(cperm) == 0 or len(cperm) == 1:
         return True
-    if class_to_check[1] == 0:
-        return dec_left(cperm, class_to_check[0])
-    elif class_to_check[1] == 1:
-        return inc_left(cperm, class_to_check[0])
+    if class_to_check[0] == 0:
+        return dec_left(cperm, class_to_check[1])
+    elif class_to_check[0] == 1:
+        return inc_left(cperm, class_to_check[1])
     else:
         raise ValueError("Invalid class_to_check value. Must be 0 or 1.")
 

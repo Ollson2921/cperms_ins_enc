@@ -11,5 +11,5 @@ from .point_placements import (
     RGFVerticalInsertionEncodingPlacementFactory,
     RGFHorizontalInsertionEncodingPlacementFactory,
 )
-from .remove_empty_rows_and_cols import RemoveEmptyRowsAndColumnsStrategy
+from .remove_empty_rows_and_cols import RemoveEmptyRowsAndColumnsStrategy, MatchingsRemoveExtraReqsStrategy
 from .factor import FactorStrategy
