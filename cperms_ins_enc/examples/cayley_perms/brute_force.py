@@ -1,3 +1,6 @@
+"""Check the Cayley permutations in a class, the counts and if a specific
+Cayley permutation is in the class by brute force."""
+
 from cayley_permutations import Av, string_to_basis, CayleyPermutation
 
 

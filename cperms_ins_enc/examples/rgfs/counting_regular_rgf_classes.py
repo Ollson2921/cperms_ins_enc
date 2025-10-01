@@ -1,12 +1,12 @@
 """This file counts the number of RGF classes
 that have a regular insertion encoding, either vertical or horizontal."""
 
+from cayley_permutations import CayleyPermutation
+from itertools import combinations
 from cperms_ins_enc import (
     rgf_regular_vertical_insertion_encoding,
     rgf_regular_horizontal_insertion_encoding,
-    CayleyPermutation,
 )
-from itertools import combinations
 
 v_reg = 0
 h_reg = 0
