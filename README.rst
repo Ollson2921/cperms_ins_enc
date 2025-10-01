@@ -36,7 +36,8 @@ source code, in which case you run the following after cloning the repository:
 Using cperms_ins_enc
 ========================
 
-The cperms_ins_enc module uses the comb_spec_searcher module. To find a specification for a set of pattern avoiding Cayley permutations we first create a searcher. There are five different types;
+The cperms_ins_enc module uses the comb_spec_searcher module. To find a specification for a set of pattern avoiding Cayley permutations we first create a searcher. There are five different types:
+
     - ```VerticalSearcher``` for vertical insertion of Cayley permutations,
     - ```HorizontalSearcher``` for horizontal insertion of Cayley permutations,
     - ```RGFVerticalSearcher``` for vertical insertion of restricted growth functions,
