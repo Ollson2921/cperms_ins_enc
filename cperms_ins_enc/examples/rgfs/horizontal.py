@@ -13,52 +13,17 @@ size n for any n.
 
 from cperms_ins_enc import RGFHorizontalSearcher
 
-# basis = "231,312,2121"
-# basis = "100,120,210"
+basis = "100,120,210"
 
-# spec = RGFHorizontalSearcher(basis).auto_search(max_expansion_time=600)
+spec = RGFHorizontalSearcher(basis).auto_search(max_expansion_time=600)
 
-# # Print the specification
-# spec.show()
+# Print the specification
+spec.show()
 
-# # Print the generating function
-# spec.get_genf()
+# Print the generating function
+spec.get_genf()
 
-# # Print the counts up to size n
-# n = 8
-# spec_counts = [spec.count_objects_of_size(i) for i in range(n)]
-# print(spec_counts)
-
-# from cayley_permutations import Av, string_to_basis, CayleyPermutation
-
-# counts = []
-# for n in range(8):
-#     count = 0
-#     for cperm in Av(string_to_basis(basis)).generate_cperms(n):
-#         if cperm.is_rgf():
-#             count += 1
-#     counts.append(count)
-# print(counts)
-# assert spec_counts == counts
-
-from itertools import combinations
-from cayley_permutations import Av, string_to_basis, CayleyPermutation
-from cperms_ins_enc.check_regular import rgf_regular_horizontal_insertion_encoding
-
-for n in range(1, 14):
-    for basis in combinations(CayleyPermutation.of_size(3), n):
-        if rgf_regular_horizontal_insertion_encoding(basis) is False:
-            continue
-        spec = RGFHorizontalSearcher(basis).auto_search(max_expansion_time=6000)
-        n = 8
-        spec_counts = [spec.count_objects_of_size(i) for i in range(n)]
-        print(spec_counts)
-        counts = []
-        for n in range(8):
-            count = 0
-            for cperm in Av(basis).generate_cperms(n):
-                if cperm.is_rgf():
-                    count += 1
-            counts.append(count)
-        print(counts)
-        assert spec_counts == counts
+# Print the counts up to size n
+n = 10
+spec_counts = [spec.count_objects_of_size(i) for i in range(n)]
+print(spec_counts)

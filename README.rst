@@ -2,12 +2,13 @@
 cperms_ins_enc
 ###############################
 
-cperms_ins_enc is a python library for enumerating Cayley permutations with the insertion encoding.
+cperms_ins_enc is a python library for enumerating Cayley permutations, restricted growth functions and restricted growth functions of (perfect) matchings with the insertion encoding.
 
-A Cayley permutation is a word `π ∈ ℕ*` such that every number between 1 and the maximum value of `π` appears at least once. Cayley permutations can be seen as a generalisation of permutations where repeated values are allowed. Definitions of pattern containment and Cayley permutation classes follow the same ideas as defined for permutations where the patterns contained are also Cayley permutations, so the Cayley permutation class Av(11) describes all permutations. 
+A Cayley permutation is a word `π ∈ ℕ*` such that every number between 1 and the maximum value of `π` appears at least once. Cayley permutations can be seen as a generalisation of permutations where repeated values are allowed. Definitions of pattern containment and Cayley permutation classes follow the same ideas as defined for permutations where the patterns contained are also Cayley permutations, so the Cayley permutation class Av(11) describes all permutations. Cayley permutations are in bijection with ordered set partitions.
 
+Restricted growth functions are a subset of Cayley permutations such that the first occurrence of a value `n` must occur after an occurrence of every value smaller than `n`. They are in bijection with unordered set partitions. Restricted growth functions of matchings are in bijection with unordered set partitions with every block of size 2, so have exactly two occurrences of every value.
 
-There are two types of insertion encoding for enumerating Cayley permutations. The vertical insertion encoding inserts new maxima in the Cayley permutation and horizontal insertion encoding inserts new rightmost values.
+There are two types of insertion encoding for enumerating Cayley permutations. The vertical insertion encoding inserts new maxima in the Cayley permutation and horizontal insertion encoding inserts new rightmost values. This library implements both types of insertion encoding for Cayley permutations and restricted growth functions and the horizontal insertion encoding for restricted growth functions of matchings.
  
 If you need support, you can join us in our `Discord support server`_.
 
@@ -35,13 +36,19 @@ source code, in which case you run the following after cloning the repository:
 Using cperms_ins_enc
 ========================
 
-The cperms_ins_enc module uses the comb_spec_searcher module. To find a specification for a set of pattern avoiding Cayley permutations we first create a searcher. There are two different types, one for vertical insertion encoding and one for horizontal insertion encoding.
+The cperms_ins_enc module uses the comb_spec_searcher module. To find a specification for a set of pattern avoiding Cayley permutations we first create a searcher. There are five different types;
+- ```VerticalSearcher``` for vertical insertion of Cayley permutations,
+- ```HorizontalSearcher``` for horizontal insertion of Cayley permutations,
+- ```RGFVerticalSearcher``` for vertical insertion of restricted growth functions,
+- ```RGFHorizontalSearcher``` for horizontal insertion of restricted growth functions,
+- ```MatchingHorizontalSearcher``` for horizontal insertion of restricted growth functions of matchings.
+For example, the code below shows how to import the two different searchers for enumerating Cayley permutations.
 
 .. code-block:: python
 
     >>> from cperms_ins_enc import VerticalSearcher, HorizontalSearcher
 
-Each type can enumerate different classes of Cayley permutations. There is a linear time check in the ``check_can_enumerate`` file in the ``examples`` folder to determine if a basis can be enumerated with either type of insertion encoding, where a basis is a string of Cayley permutations.
+Each searcher can enumerate different classes of Cayley permutations. The ```examples``` folder contains a ```cayley_perms``` folder and an ```rgfs``` folder for enumerating the two different types of words. In each folder, the file ``check_can_enumerate`` contains a linear time on the basis to determine if the class avoiding it can be enumerated with either type of insertion encoding, where a basis is a string of Cayley permutations. Below is an example for a class of Cayley permutations.
 
 .. code-block:: python
 
@@ -53,7 +60,7 @@ Each type can enumerate different classes of Cayley permutations. There is a lin
     Can enumerate with vertical insertion encoding: True
     Can enumerate with horizontal insertion encoding: True
 
-The rest of this README will be an example of using ``VerticalSearcher`` to enumerate the class of hare pop-stack sortable Cayley permutations. The process is the same for any other class by changing the basis and can be done with ``HorizontalSearcher`` by replacing vertical with horizontal throughout.
+The rest of this README will be an example of using ``VerticalSearcher`` to enumerate the class of hare pop-stack sortable Cayley permutations. The process is the same for any other class by changing the basis and can be done with any of the other searchers by replacing ``VerticalSearcher`` with the appropriate searcher from the list above. 
 We initialise ``VerticalSearcher`` with the basis. 
 
 .. code-block:: python
