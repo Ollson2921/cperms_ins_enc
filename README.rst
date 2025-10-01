@@ -37,11 +37,11 @@ Using cperms_ins_enc
 ========================
 
 The cperms_ins_enc module uses the comb_spec_searcher module. To find a specification for a set of pattern avoiding Cayley permutations we first create a searcher. There are five different types;
-- ```VerticalSearcher``` for vertical insertion of Cayley permutations,
-- ```HorizontalSearcher``` for horizontal insertion of Cayley permutations,
-- ```RGFVerticalSearcher``` for vertical insertion of restricted growth functions,
-- ```RGFHorizontalSearcher``` for horizontal insertion of restricted growth functions,
-- ```MatchingHorizontalSearcher``` for horizontal insertion of restricted growth functions of matchings.
+    - ```VerticalSearcher``` for vertical insertion of Cayley permutations,
+    - ```HorizontalSearcher``` for horizontal insertion of Cayley permutations,
+    - ```RGFVerticalSearcher``` for vertical insertion of restricted growth functions,
+    - ```RGFHorizontalSearcher``` for horizontal insertion of restricted growth functions,
+    - ```MatchingHorizontalSearcher``` for horizontal insertion of restricted growth functions of matchings.
 For example, the code below shows how to import the two different searchers for enumerating Cayley permutations.
 
 .. code-block:: python
