@@ -39,7 +39,7 @@ def test_horizontal_rgfs():
     ]
 
 
-def test_horizontal_rgfs():
+def test_matching_rgfs():
     basis = "1201,1320"
     spec = MatchingHorizontalSearcher(basis).auto_search(max_expansion_time=600)
     assert [spec.count_objects_of_size(i) for i in range(11)] == [
