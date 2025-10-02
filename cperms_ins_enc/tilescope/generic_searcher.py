@@ -13,7 +13,8 @@ class GenericSearcher(abc.ABC):
             self.basis = basis
         if not self.regular_check():
             raise Exception(
-                f"The class Av{tuple(self.basis)} can not be enumerated with {self.type_of_encoding()} insertion encoding"
+                f"The class Av{tuple(self.basis)} can not be enumerated with "
+                f"{self.type_of_encoding()} insertion encoding"
             )
 
     @abc.abstractmethod

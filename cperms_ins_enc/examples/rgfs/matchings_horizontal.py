@@ -17,10 +17,10 @@ basis = "1201,1320"
 
 spec = MatchingHorizontalSearcher(basis).auto_search(max_expansion_time=600)
 
-# # Print the specification
+# Print the specification
 spec.show()
 
-# # Print the generating function
+# Print the generating function
 spec.get_genf()
 
 # Print the counts up to size n

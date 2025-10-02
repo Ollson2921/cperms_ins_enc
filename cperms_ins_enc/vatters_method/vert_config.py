@@ -429,7 +429,8 @@ class VerticalConfiguration:
         which avoid the basis from the VerticalConfiguration.
 
         Example:
-        >>> for config in VerticalConfiguration([0, 1, "🔹"]).cayley_perms(4, [CayleyPermutation([1, 0])]):
+        >>> c = VerticalConfiguration([0, 1, "🔹"])
+        >>> for config in c.cayley_perms(4, [CayleyPermutation([1, 0])]):
         ...     print(config)
         012
         0123
@@ -481,7 +482,8 @@ class VerticalConfiguration:
         return len(self.config) - self.number_of_slots()
 
     def all_possible_letters(self) -> List[Letter]:
-        """Returns a list of all possible letters that can be inserted into the VerticalConfiguration.
+        """Returns a list of all possible letters that can be
+        inserted into the VerticalConfiguration.
 
         Examples:
         >>> for letter in VerticalConfiguration([0, 1, "🔹", 2]).all_possible_letters():
@@ -614,7 +616,8 @@ class Word:
     ) -> VerticalConfiguration:
         """
         Applies the letters from a word to a VerticalConfiguration.
-        If no VerticalConfiguration is given, it applies the letters to the empty VerticalConfiguration.
+        If no VerticalConfiguration is given, it applies the letters
+        to the empty VerticalConfiguration.
 
         Examples:
         >>> print(Word([Letter("m", 1, 1), Letter("l", 2, 1)]).permutation())

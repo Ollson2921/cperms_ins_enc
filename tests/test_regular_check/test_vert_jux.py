@@ -50,6 +50,7 @@ def generate_vertical_jux(top_sequence, bottom_sequence, size):
                     vertical_jux.add(CayleyPermutation(shuff))
     return vertical_jux
 
+
 def test_inc_inc():
     """Test vertical jux of form inc on top, inc on bottom pass check."""
     for size in range(1, 6):

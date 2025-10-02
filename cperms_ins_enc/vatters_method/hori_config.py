@@ -186,21 +186,6 @@ class HorizontalConfiguration:
             configuration = configuration.undo_last_ins()
         return Word(word)
 
-    def cayley_perms(
-        self, size: int, basis: Iterable[CayleyPermutation]
-    ) -> Iterator[CayleyPermutation]:
-        """Returns the next Cayley permutations up to length 'size'
-        which avoid the basis from the configuration."""
-        if size < len(self.cperm):
-            return
-        if not self.cperm.avoids(basis):
-            return
-        if self.is_cayley_perm():
-            if self.cperm.avoids(basis):
-                yield CayleyPermutation(self.cperm)
-        for child in self.children():
-            yield from child.cayley_perms(size, basis)
-
     def all_possible_letters(self) -> List[Letter]:
         letters = []
         for i, val in enumerate(self.slots):
@@ -239,7 +224,8 @@ class HorizontalConfiguration:
             if isinstance(slot, int):
                 if slot not in standardisation_map.keys():
                     raise ValueError(
-                        "A constant slot must be a repeat of a value already in the Cayley permnutation."
+                        "A constant slot must be a repeat of a value "
+                        "already in the Cayley permutation."
                     )
                 new_slots.append(standardisation_map[slot])
             else:
@@ -303,7 +289,8 @@ class HorizontalConfiguration:
         not directly adjacent to two slots
 
         Example:
-        >>> print(HorizontalConfiguration(CayleyPermutation([0, 1, 2, 3, 4, 5, 6]), [0.5, 3, 4.5, 5]).candidates_to_delete())
+        >>> print(HorizontalConfiguration(CayleyPermutation([0, 1, 2, 3, 4, 5, 6]),
+          [0.5, 3, 4.5, 5]).candidates_to_delete())
         [0, 1, 2, 4, 6]
         """
         candidates = []
@@ -347,6 +334,7 @@ class HorizontalConfiguration:
         return -1
 
     def is_cayley_perm(self) -> bool:
+        """Returns True if the configuration has no slots."""
         return not self.slots
 
     def __len__(self):

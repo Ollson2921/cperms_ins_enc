@@ -1,7 +1,8 @@
-from cperms_ins_enc.check_regular import regular_horizontal_insertion_encoding, rgf_regular_horizontal_insertion_encoding
+from cperms_ins_enc.check_regular import regular_horizontal_insertion_encoding
 from cperms_ins_enc.check_regular.check_regular_hori import dec_left, rgfinc_left
 
 from cayley_permutations import CayleyPermutation, Av
+
 
 def test_hori_regular_check_fail():
     """Test that this class should fail as they are not permutations"""
@@ -18,7 +19,6 @@ def test_hori_regular_check_pass():
 def test_rgf_hori_regular_check():
     decreasing = [CayleyPermutation([0, 0]), CayleyPermutation([0, 1])]
     increasing = [CayleyPermutation([0, 0]), CayleyPermutation([1, 0])]
-    constant = [CayleyPermutation([1, 0]), CayleyPermutation([0, 1])]
 
     def generate_some_rgf_hori_jux(left_sequence, right_sequence, size):
         """Generates all vertical juxtaposisiont of size 'size' of type
@@ -33,6 +33,10 @@ def test_rgf_hori_regular_check():
 
     for n in range(10):
         for cperm in generate_some_rgf_hori_jux(increasing, increasing, n):
-            assert rgfinc_left(cperm, 1), f"Failed for {cperm}, is not inc_inc horizontal jux."
+            assert rgfinc_left(
+                cperm, 1
+            ), f"Failed for {cperm}, is not inc_inc horizontal jux."
         for cperm in generate_some_rgf_hori_jux(increasing, decreasing, n):
-            assert rgfinc_left(cperm, 0), f"Failed for {cperm}, is not inc_dec horizontal jux."
+            assert rgfinc_left(
+                cperm, 0
+            ), f"Failed for {cperm}, is not inc_dec horizontal jux."

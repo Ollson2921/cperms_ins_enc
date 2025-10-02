@@ -141,7 +141,10 @@ class RequirementPlacementStrategy(DisjointUnionStrategy[Tiling, GriddedCayleyPe
         return tuple({} for _ in self.decomposition_function(comb_class))
 
     def formal_step(self):
-        return f"Placed the point of the requirement {self.gcps} at indices {self.indices} in direction {self.direction}"
+        return (
+            f"Placed the point of the requirement {self.gcps}"
+            + f" at indices {self.indices} in direction {self.direction}"
+        )
 
     def backward_map(
         self,
