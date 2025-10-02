@@ -5,9 +5,11 @@ horizontal insertion encoding."""
 from cayley_permutations import string_to_basis, CayleyPermutation
 
 
-def is_increasing(cperm: list[int], vals_seen=set()) -> bool:
+def is_increasing(cperm: list[int], vals_seen=None) -> bool:
     """Returns True if the sequence is strictly increasing.
     Also checks that no vals in vals_seen occur in the sequence."""
+    if vals_seen is None:
+        vals_seen = set()
     if len(cperm) == 0:
         return True
     if cperm[0] in vals_seen:
@@ -24,9 +26,11 @@ def is_increasing(cperm: list[int], vals_seen=set()) -> bool:
     return True
 
 
-def is_decreasing(cperm: list[int], vals_seen=set()) -> bool:
+def is_decreasing(cperm: list[int], vals_seen=None) -> bool:
     """Returns True if the sequence is strictly decreasing.
     Also checks that no vals in vals_seen occur in the sequence."""
+    if vals_seen is None:
+        vals_seen = set()
     if len(cperm) == 0:
         return True
     if cperm[0] in vals_seen:
@@ -43,9 +47,11 @@ def is_decreasing(cperm: list[int], vals_seen=set()) -> bool:
     return True
 
 
-def is_constant(cperm: list[int], vals_seen=set()) -> bool:
+def is_constant(cperm: list[int], vals_seen=None) -> bool:
     """Returns True if the sequence is constant.
     Also checks that no vals in vals_seen occur in the sequence."""
+    if vals_seen is None:
+        vals_seen = set()
     if len(cperm) == 0:
         return True
     if cperm[0] in vals_seen:
@@ -61,18 +67,20 @@ def is_constant(cperm: list[int], vals_seen=set()) -> bool:
     return True
 
 
-def seq_type(cperm: list[int], seqtype: int, vals_seen=set()) -> bool:
+def seq_type(cperm: list[int], seqtype: int, vals_seen=None) -> bool:
     """Returns True if the sequence is of the type specified by the
     integer.
     0 -> strictly decreasing
     1 -> strictly increasing
     2 -> constant.
     Also checks that no vals in vals_seen occur in the sequence."""
+    if vals_seen is None:
+        vals_seen = set()
     if seqtype == 0:
         return is_decreasing(cperm, vals_seen)
-    elif seqtype == 1:
+    if seqtype == 1:
         return is_increasing(cperm, vals_seen)
-    elif seqtype == 2:
+    if seqtype == 2:
         return is_constant(cperm, vals_seen)
     else:
         raise ValueError("Type must be 0, 1, or 2.")
@@ -118,7 +126,7 @@ def checks_hori_type(cperm: list[int], class_to_check: tuple[int, int]) -> bool:
         return True
     if class_to_check[0] == 0:
         return dec_left(cperm, class_to_check[1])
-    elif class_to_check[0] == 1:
+    if class_to_check[0] == 1:
         return inc_left(cperm, class_to_check[1])
     else:
         raise ValueError(
