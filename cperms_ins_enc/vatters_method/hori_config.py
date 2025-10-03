@@ -154,7 +154,7 @@ class HorizontalConfiguration:
         else:
             # was not a repeated element (no more of that element in the cperm)
             new_cperm = tuple(
-                [val if val < value_removing else val - 1 for val in self.cperm[:-1]]
+                val if val < value_removing else val - 1 for val in self.cperm[:-1]
             )
             remove_slots = [
                 val
