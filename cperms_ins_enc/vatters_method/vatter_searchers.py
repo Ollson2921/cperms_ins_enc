@@ -1,24 +1,29 @@
+"""Searchers for insertion encoding adapted from
+Vatter's method."""
+
+from comb_spec_searcher import (
+    StrategyPack,
+    AtomStrategy,
+)
+from cayley_permutations import CayleyPermutation
+from ..tilescope.generic_searcher import GenericSearcher
+from ..check_regular import (
+    regular_horizontal_insertion_encoding,
+    regular_vertical_insertion_encoding,
+)
+from .vert_config import VerticalConfiguration
+from .hori_config import HorizontalConfiguration
 from .strategies import (
     VertIndexDeletingFactory,
     HoriIndexDeletingFactory,
     ApplyLetterStrategy,
     ConfigAvoidingBasis,
 )
-from comb_spec_searcher import (
-    StrategyPack,
-    AtomStrategy,
-)
-from ..tilescope.generic_searcher import GenericSearcher
-from ..check_regular import (
-    regular_horizontal_insertion_encoding,
-    regular_vertical_insertion_encoding,
-)
-from cayley_permutations import CayleyPermutation
-from .vert_config import VerticalConfiguration
-from .hori_config import HorizontalConfiguration
 
 
 class VatterVerticalSearcher(GenericSearcher):
+    """A searcher for the vertical insertion encoding adapted from Vatter's method."""
+
     def regular_check(self):
         return regular_vertical_insertion_encoding(self.basis)
 
@@ -39,6 +44,7 @@ class VatterVerticalSearcher(GenericSearcher):
 
 
 class VatterHorizontalSearcher(GenericSearcher):
+    """A searcher for the horizontal insertion encoding adapted from Vatter's method."""
 
     def regular_check(self):
         return regular_horizontal_insertion_encoding(self.basis)

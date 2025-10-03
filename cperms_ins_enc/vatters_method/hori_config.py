@@ -1,3 +1,6 @@
+"""Classes for horizontal insertion encoding configurations and words
+for Vatter's method."""
+
 from typing import List, Iterable, Iterator
 from math import ceil
 from cayley_permutations import CayleyPermutation, Av
@@ -82,6 +85,7 @@ class HorizontalConfiguration:
         self.slots = sorted(set(slots))
 
     def apply_m(self, index: int, repeat: int) -> "HorizontalConfiguration":
+        """Add a new value between two new slots."""
         new_cperm, slots, value_added = self.apply_letter(index, repeat)
 
         new_slots = (
@@ -90,16 +94,19 @@ class HorizontalConfiguration:
         return self.__class__(new_cperm, new_slots)
 
     def apply_u(self, index: int, repeat: int) -> "HorizontalConfiguration":
+        """Add a new value above a slot."""
         new_cperm, slots, value_added = self.apply_letter(index, repeat)
         new_slots = slots[:index] + [value_added - 0.5] + slots[index:]
         return self.__class__(new_cperm, new_slots)
 
     def apply_d(self, index: int, repeat: int) -> "HorizontalConfiguration":
+        """Add a new value below a slot."""
         new_cperm, slots, value_added = self.apply_letter(index, repeat)
         new_slots = slots[:index] + [value_added + 0.5] + slots[index:]
         return self.__class__(new_cperm, new_slots)
 
     def apply_f(self, index: int, repeat: int) -> "HorizontalConfiguration":
+        """Add a new value which fills a slot."""
         new_cperm, new_slots, _ = self.apply_letter(index, repeat)
         return self.__class__(new_cperm, new_slots)
 
@@ -133,6 +140,7 @@ class HorizontalConfiguration:
         return CayleyPermutation(new_cperm), new_slots, ceil(value_to_add)
 
     def undo_last_ins(self) -> "HorizontalConfiguration":
+        """Undo the last insertion of a point."""
         value_removing = self.cperm[-1]
         if value_removing in self.cperm[:-1]:
             # was a repeated element (more of that element in the cperm)
@@ -156,6 +164,7 @@ class HorizontalConfiguration:
         return self.__class__(CayleyPermutation(new_cperm), new_slots)
 
     def letter_of_last_ins(self) -> Letter:
+        """Returns the letter corresponding to the last insertion."""
         value_removing = self.cperm[-1]
         if value_removing in self.slots:
             idx2 = 1
@@ -187,6 +196,7 @@ class HorizontalConfiguration:
         return Word(word)
 
     def all_possible_letters(self) -> List[Letter]:
+        """Returns all possible letters that can be applied to the configuration."""
         letters = []
         for i, val in enumerate(self.slots):
             if isinstance(val, int):
@@ -204,6 +214,7 @@ class HorizontalConfiguration:
         return letters
 
     def children(self) -> List["HorizontalConfiguration"]:
+        """Returns all possible configurations that can be reached."""
         return [letter.apply(self) for letter in self.all_possible_letters()]
 
     @classmethod
@@ -216,13 +227,13 @@ class HorizontalConfiguration:
         of the value in the Cayley permutation.
         """
         new_cperm = CayleyPermutation.standardise(config_cperm)
-        standardisation_map = dict()
+        standardisation_map = {}
         for idx, val in enumerate(config_cperm):
             standardisation_map[val] = new_cperm[idx]
         new_slots = []
         for slot in config_slots:
             if isinstance(slot, int):
-                if slot not in standardisation_map.keys():
+                if slot not in standardisation_map:
                     raise ValueError(
                         "A constant slot must be a repeat of a value "
                         "already in the Cayley permutation."
@@ -241,6 +252,7 @@ class HorizontalConfiguration:
         return cls(new_cperm, new_slots)
 
     def cperm_idx_from_config_idx(self, config_idx: int) -> int:
+        """Returns the index of the Cayley permutation corresponding to a configuration index."""
         return config_idx
 
     def cayley_perms(
@@ -359,8 +371,8 @@ class HorizontalConfiguration:
             all_rows.append(middle_row)
         for row_number in range(max(self.cperm) + 1):
             row = " "
-            for idx in range(len(self.cperm)):
-                if self.cperm[idx] == row_number:
+            for idx, val in enumerate(self.cperm):
+                if val == row_number:
                     row += str(row_number)
                 else:
                     row += " "

@@ -1,6 +1,6 @@
-"""This module contains the strategy for removing all the 
+"""This module contains the strategy for removing all the
 empty rows and columns from a tiling and the strategy
-for removing extra requirements when enumerating 
+for removing extra requirements when enumerating
 restricted growth functions of matchings."""
 
 from typing import Dict, Iterator, Optional, Tuple
@@ -15,7 +15,8 @@ Cell = Tuple[int, int]
 class RemoveEmptyRowsAndColumnsStrategy(
     DisjointUnionStrategy[Tiling, GriddedCayleyPerm]
 ):
-""" Strategy for removing empty rows and columns from a tiling."""
+    """Strategy for removing empty rows and columns from a tiling."""
+
     def __init__(
         self,
         ignore_parent: bool = True,
@@ -82,8 +83,9 @@ class RemoveEmptyRowsAndColumnsStrategy(
 class MatchingsRemoveExtraReqsStrategy(
     DisjointUnionStrategy[Tiling, GriddedCayleyPerm]
 ):
-    """ Strategy for removing extra requirements from requirement lists in a tiling
+    """Strategy for removing extra requirements from requirement lists in a tiling
     for enumerating restricted growth functions of matchings."""
+
     def __init__(
         self,
         ignore_parent: bool = True,

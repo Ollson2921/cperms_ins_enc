@@ -1,3 +1,5 @@
+""" "Strategies for tilings for the insertion encoding."""
+
 from .requirement_insertions import (
     RequirementInsertionStrategy,
     VerticalInsertionEncodingRequirementInsertionFactory,

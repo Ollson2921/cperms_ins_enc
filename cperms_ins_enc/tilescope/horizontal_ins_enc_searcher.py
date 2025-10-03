@@ -1,3 +1,8 @@
+"""A searcher for the horizontal insertion encoding."""
+
+from functools import cached_property
+from gridded_cayley_permutations import Tiling, GriddedCayleyPerm
+from cayley_permutations import CayleyPermutation
 from comb_spec_searcher import (
     CombinatorialSpecificationSearcher,
     StrategyPack,
@@ -18,12 +23,11 @@ from ..check_regular import (
     rgf_regular_horizontal_insertion_encoding,
 )
 from .generic_searcher import GenericSearcher
-from gridded_cayley_permutations import Tiling, GriddedCayleyPerm
-from functools import cached_property
-from cayley_permutations import CayleyPermutation
 
 
 class HorizontalSearcher(GenericSearcher):
+    """A searcher for the horizontal insertion encoding."""
+
     def regular_check(self):
         return regular_horizontal_insertion_encoding(self.basis)
 

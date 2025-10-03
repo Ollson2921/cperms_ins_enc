@@ -38,28 +38,53 @@ def checks_vert_type(cperm: list[int], class_to_check: tuple[int, int]) -> bool:
     """
     if len(cperm) == 0 or len(cperm) == 1:
         return True
-    elif class_to_check[0] == 2:
-        if class_to_check[1] == 2:
-            return con_con(cperm)
-        elif class_to_check[1] == 0:
-            return dec_con(cperm)
-        elif class_to_check[1] == 1:
-            return inc_con(cperm)
-    elif class_to_check[1] == 2:
-        if class_to_check[0] == 0:
-            return con_dec(cperm)
-        elif class_to_check[0] == 1:
-            return con_inc(cperm)
-    elif class_to_check[0] == 0 and class_to_check[1] == 1:
+    if class_to_check[0] == 2:
+        return check_con_bottom(cperm, class_to_check[1])
+    if class_to_check[1] == 2:
+        return check_con_top(cperm, class_to_check[0])
+    if class_to_check[1] == 1:
+        return check_inc_bottom(cperm, class_to_check[0])
+    if class_to_check[1] == 0:
+        return check_dec_bottom(cperm, class_to_check[0])
+    raise ValueError("Invalid class_to_check value. Must be 0, 1, or 2.")
+
+
+def check_con_bottom(cperm: list[int], class_to_check: int) -> bool:
+    """Checks for if the sequence is constant on bottom"""
+    if class_to_check == 2:
+        return con_con(cperm)
+    if class_to_check == 0:
+        return dec_con(cperm)
+    if class_to_check == 1:
+        return inc_con(cperm)
+    raise ValueError("Invalid class_to_check value. Must be 0, 1, or 2.")
+
+
+def check_con_top(cperm: list[int], class_to_check: int) -> bool:
+    """Checks for if the sequence is constant on top"""
+    if class_to_check == 0:
+        return con_dec(cperm)
+    if class_to_check == 1:
+        return con_inc(cperm)
+    raise ValueError("Invalid class_to_check value. Must be 0, 1, or 2.")
+
+
+def check_inc_bottom(cperm: list[int], class_to_check: int) -> bool:
+    """Checks for if the sequence is increasing on bottom"""
+    if class_to_check == 0:
         return inc_dec(cperm)
-    elif class_to_check[0] == 1 and class_to_check[1] == 0:
-        return dec_inc(cperm)
-    elif class_to_check[0] == 0 and class_to_check[1] == 0:
-        return dec_dec(cperm)
-    elif class_to_check[0] == 1 and class_to_check[1] == 1:
+    if class_to_check == 1:
         return inc_inc(cperm)
-    else:
-        raise ValueError("Invalid class_to_check value. Must be 0, 1, or 2.")
+    raise ValueError("Invalid class_to_check value. Must be 0, 1, or 2.")
+
+
+def check_dec_bottom(cperm: list[int], class_to_check: int) -> bool:
+    """Checks for if the sequence is decreasing on bottom"""
+    if class_to_check == 1:
+        return dec_inc(cperm)
+    if class_to_check == 0:
+        return dec_dec(cperm)
+    raise ValueError("Invalid class_to_check value. Must be 0, 1, or 2.")
 
 
 def inc_inc(cperm: list[int], min_height: int = 0) -> bool:
@@ -158,7 +183,7 @@ def con_con(cperm: list[int]) -> bool:
     if max_val == 0:
         return True
     for val in cperm:
-        if val != max_val and val != 0:
+        if val not in {max_val, 0}:
             return False
     return True
 

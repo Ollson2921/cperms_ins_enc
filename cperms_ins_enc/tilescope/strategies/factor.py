@@ -1,6 +1,6 @@
 """Factors the tiling into sections that are independent of each other."""
 
-from typing import Dict, Iterator, Optional, Tuple
+from typing import Dict, Optional, Tuple
 from comb_spec_searcher import CartesianProductStrategy
 from comb_spec_searcher.exception import StrategyDoesNotApply
 from gridded_cayley_permutations import Tiling, GriddedCayleyPerm
@@ -9,6 +9,7 @@ from gridded_cayley_permutations.factors import Factors
 
 class FactorStrategy(CartesianProductStrategy[Tiling, GriddedCayleyPerm]):
     """Strategy for factoring tilings"""
+
     def __init__(
         self,
         ignore_parent: bool = True,
@@ -59,11 +60,13 @@ class FactorStrategy(CartesianProductStrategy[Tiling, GriddedCayleyPerm]):
         return d
 
     @classmethod
-    def from_dict(cls, d: dict) -> "AbstractFactorStrategy":
+    def from_dict(cls, d: dict) -> "FactorStrategy":
         return cls(**d)
 
 
 class RGFFactorStrategy(FactorStrategy):
+    """Strategy for factoring tilings for the insertion encoding
+    of RGFs."""
 
     def decomposition_function(self, comb_class: Tiling) -> Tuple[Tiling, ...]:
         factors = Factors(comb_class).rgf_find_factors()

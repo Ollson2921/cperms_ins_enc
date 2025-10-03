@@ -151,6 +151,8 @@ class VertDeleteIndexStrategy(
 
 
 class HoriDeleteIndexStrategy(VertDeleteIndexStrategy):
+    """Deletes an index from a horizontal configuration."""
+
     def decomposition_function(
         self, comb_class: ConfigAvoidingBasis
     ) -> Tuple[ConfigAvoidingBasis, ...] | None:
@@ -186,6 +188,8 @@ class VertIndexDeletingFactory(StrategyFactory):
 
 
 class HoriIndexDeletingFactory(VertIndexDeletingFactory):
+    """Creates index deleting strategies for horizontal configurations."""
+
     def __call__(
         self, configuration: ConfigAvoidingBasis
     ) -> Iterator[HoriDeleteIndexStrategy]:

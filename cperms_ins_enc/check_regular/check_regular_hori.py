@@ -82,8 +82,7 @@ def seq_type(cperm: list[int], seqtype: int, vals_seen=None) -> bool:
         return is_increasing(cperm, vals_seen)
     if seqtype == 2:
         return is_constant(cperm, vals_seen)
-    else:
-        raise ValueError("Type must be 0, 1, or 2.")
+    raise ValueError("Type must be 0, 1, or 2.")
 
 
 def regular_horizontal_insertion_encoding(basis: str | set[CayleyPermutation]) -> bool:
@@ -128,10 +127,9 @@ def checks_hori_type(cperm: list[int], class_to_check: tuple[int, int]) -> bool:
         return dec_left(cperm, class_to_check[1])
     if class_to_check[0] == 1:
         return inc_left(cperm, class_to_check[1])
-    else:
-        raise ValueError(
-            f"{class_to_check} is an invalid class_to_check value. Must be 0 or 1."
-        )
+    raise ValueError(
+        f"{class_to_check} is an invalid class_to_check value. Must be 0 or 1."
+    )
 
 
 def inc_left(cperm: list[int], seqtype: int) -> bool:

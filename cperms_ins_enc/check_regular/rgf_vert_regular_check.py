@@ -1,3 +1,6 @@
+"""Functions to check if a basis of a RGF class has a regular insertion encoding."""
+
+from cayley_permutations import string_to_basis, CayleyPermutation
 from cperms_ins_enc.check_regular.check_regular_vert import (
     con_inc,
     con_con,
@@ -8,7 +11,6 @@ from cperms_ins_enc.check_regular.check_regular_vert import (
     dec_con,
 )
 from cperms_ins_enc.check_regular.check_regular_hori import is_decreasing
-from cayley_permutations import string_to_basis, CayleyPermutation
 
 
 def rgf_regular_vertical_insertion_encoding(
@@ -21,15 +23,18 @@ def rgf_regular_vertical_insertion_encoding(
     True
     """
     basis = string_to_basis(basis) if isinstance(basis, str) else basis
+    if not check_jux(basis):
+        return False
+    if not check_grids(basis):
+        return False
+    return True
+
+
+def check_grids(basis: set[CayleyPermutation]) -> bool:
+    """checks for the grid classes"""
     if not any(grid_dec_dec(cperm) for cperm in basis):
         return False
     if not any(grid_inc_dec(cperm) for cperm in basis):
-        return False
-    if not any(con_dec(cperm) for cperm in basis):
-        return False
-    if not any(con_con(cperm) for cperm in basis):
-        return False
-    if not any(con_inc(cperm) for cperm in basis):
         return False
     if not any(greedy_grid_left(cperm, 0) for cperm in basis):
         return False
@@ -42,12 +47,23 @@ def rgf_regular_vertical_insertion_encoding(
     return True
 
 
-def greedy_grid_left(cperm: list[int], type: int) -> bool:
+def check_jux(basis: set[CayleyPermutation]) -> bool:
+    """Checks for the vertical juxtapositions"""
+    if not any(con_dec(cperm) for cperm in basis):
+        return False
+    if not any(con_con(cperm) for cperm in basis):
+        return False
+    if not any(con_inc(cperm) for cperm in basis):
+        return False
+    return True
+
+
+def greedy_grid_left(cperm: list[int], type_of_seq: int) -> bool:
     """Only use when increasing sequence on top
 
     Returns True if the sequence is griddable on a 2x2 grid
     where the bottom left cell is increasing, top left is empty,
-    bottom right is of type 'type' where
+    bottom right is of type 'type_of_seq' where
     0 -> decreasing
     1 -> increasing
     and top right is increasing."""
@@ -64,12 +80,13 @@ def greedy_grid_left(cperm: list[int], type: int) -> bool:
     remaining = cperm[idx:]
     if len(remaining) < 2:
         return True
-    if type == 0:
+    if type_of_seq == 0:
         return dec_inc(remaining, min_height)
-    if type == 1:
+    if type_of_seq == 1:
         return inc_inc(remaining, min_height)
     raise ValueError(
-        "Type must be 0 for decreasing or 1 for increasing, " f"got {type} instead."
+        "Type must be 0 for decreasing or 1 for increasing, "
+        f"got {type_of_seq} instead."
     )
 
 
@@ -150,6 +167,7 @@ def grid_dec_dec(cperm: list[int]) -> bool:
     cperm = cperm[::-1]
     top_seq = []
     bottom_seq = []
+    idx = 0
     for idx, val in enumerate(cperm):
         if val == idx:
             bottom_seq.append(val)
@@ -179,8 +197,6 @@ def grid_dec_dec(cperm: list[int]) -> bool:
     remaining = cperm[len(bottom_seq) + len(top_seq) + 1 :]
     if not remaining:
         return True
-    if not is_decreasing(remaining):
-        return False
-    if not line > max(remaining):
+    if not is_decreasing(remaining) or not line > max(remaining):
         return False
     return True

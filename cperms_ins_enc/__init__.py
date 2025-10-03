@@ -1,3 +1,6 @@
+"""Package for enumerating Cayley permutations and restricted growth functions
+using the insertion encodings."""
+
 from .check_regular import (
     regular_horizontal_insertion_encoding,
     regular_vertical_insertion_encoding,

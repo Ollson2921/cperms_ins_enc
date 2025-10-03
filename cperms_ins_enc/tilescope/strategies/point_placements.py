@@ -23,6 +23,9 @@ Cell = Tuple[int, int]
 
 
 class RGFVPointPlacement(PointPlacement):
+    """Point placement for restricted growth functions
+    vertical insertion encoding."""
+
     def point_placement(
         self,
         requirement_list: Tuple[GriddedCayleyPerm, ...],
@@ -89,6 +92,9 @@ class RGFVPointPlacement(PointPlacement):
 
 
 class RGFHPointPlacement(RGFVPointPlacement):
+    """Point placement for restricted growth functions
+    horizontal insertion encoding."""
+
     def point_placement(
         self,
         requirement_list: Tuple[GriddedCayleyPerm, ...],
@@ -112,6 +118,8 @@ class RGFHPointPlacement(RGFVPointPlacement):
 
 
 class RequirementPlacementStrategy(DisjointUnionStrategy[Tiling, GriddedCayleyPerm]):
+    """Strategy for placing requirements in a tiling."""
+
     DIRECTIONS = Directions
 
     def __init__(
@@ -194,6 +202,9 @@ class RequirementPlacementStrategy(DisjointUnionStrategy[Tiling, GriddedCayleyPe
 
 
 class RGFVRequirementPlacementStrategy(RequirementPlacementStrategy):
+    """Strategy for placing requirements in a tiling for restricted growth functions
+    vertical insertion encoding."""
+
     def algorithm(self, tiling: Tiling) -> PointPlacement:
         return RGFVPointPlacement(tiling)
 
@@ -205,6 +216,9 @@ class RGFVRequirementPlacementStrategy(RequirementPlacementStrategy):
 
 
 class RGFHRequirementPlacementStrategy(RequirementPlacementStrategy):
+    """Strategy for placing requirements in a tiling for restricted growth functions
+    horizontal insertion encoding."""
+
     def algorithm(self, tiling: Tiling) -> PointPlacement:
         return RGFHPointPlacement(tiling)
 
@@ -216,6 +230,9 @@ class RGFHRequirementPlacementStrategy(RequirementPlacementStrategy):
 
 
 class VerticalInsertionEncodingPlacementFactory(StrategyFactory[Tiling]):
+    """Factory for creating RequirementPlacementStrategy to place points
+    for the vertical insertion encoding."""
+
     def __call__(self, comb_class: Tiling) -> Iterator[RequirementPlacementStrategy]:
         cells = comb_class.active_cells
         gcps = tuple(
@@ -237,6 +254,9 @@ class VerticalInsertionEncodingPlacementFactory(StrategyFactory[Tiling]):
 
 
 class RGFVerticalInsertionEncodingPlacementFactory(StrategyFactory[Tiling]):
+    """Factory for creating RequirementPlacementStrategy to place points
+    for the vertical insertion encoding for enumerating restricted growth functions."""
+
     def __call__(
         self, comb_class: Tiling
     ) -> Iterator[RGFVRequirementPlacementStrategy]:
@@ -260,6 +280,9 @@ class RGFVerticalInsertionEncodingPlacementFactory(StrategyFactory[Tiling]):
 
 
 class HorizontalInsertionEncodingPlacementFactory(StrategyFactory[Tiling]):
+    """Factory for creating RequirementPlacementStrategy to place points
+    for the horizontal insertion encoding."""
+
     def __call__(self, comb_class: Tiling) -> Iterator[RequirementPlacementStrategy]:
         cells = comb_class.active_cells
         gcps = tuple(
@@ -283,6 +306,10 @@ class HorizontalInsertionEncodingPlacementFactory(StrategyFactory[Tiling]):
 class RGFHorizontalInsertionEncodingPlacementFactory(
     HorizontalInsertionEncodingPlacementFactory
 ):
+    """Factory for creating RequirementPlacementStrategy to place points
+    for the horizontal insertion encoding for enumerating restricted growth functions.
+    """
+
     def __call__(
         self, comb_class: Tiling
     ) -> Iterator[RGFHRequirementPlacementStrategy]:

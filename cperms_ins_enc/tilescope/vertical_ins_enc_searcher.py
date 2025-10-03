@@ -1,4 +1,7 @@
+"""A searcher for the vertical insertion encoding."""
+
 from comb_spec_searcher import StrategyPack, AtomStrategy
+from gridded_cayley_permutations import Tiling, GriddedCayleyPerm
 from .strategies import (
     RemoveEmptyRowsAndColumnsStrategy,
     FactorStrategy,
@@ -11,10 +14,11 @@ from ..check_regular import (
     rgf_regular_vertical_insertion_encoding,
 )
 from .generic_searcher import GenericSearcher
-from gridded_cayley_permutations import Tiling, GriddedCayleyPerm
 
 
 class VerticalSearcher(GenericSearcher):
+    """A searcher for the vertical insertion encoding."""
+
     def regular_check(self):
         return regular_vertical_insertion_encoding(self.basis)
 
