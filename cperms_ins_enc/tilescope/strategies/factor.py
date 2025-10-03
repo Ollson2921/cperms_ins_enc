@@ -7,7 +7,8 @@ from gridded_cayley_permutations import Tiling, GriddedCayleyPerm
 from gridded_cayley_permutations.factors import Factors
 
 
-class AbstractFactorStrategy:
+class FactorStrategy(CartesianProductStrategy[Tiling, GriddedCayleyPerm]):
+    """Strategy for factoring tilings"""
     def __init__(
         self,
         ignore_parent: bool = True,
@@ -38,26 +39,6 @@ class AbstractFactorStrategy:
         """
         return "Factor the tiling into factors"
 
-    def backward_map(
-        self,
-        comb_class: Tiling,
-        objs: Tuple[Optional[GriddedCayleyPerm], ...],
-        children: Optional[Tuple[Tiling, ...]] = None,
-    ) -> Iterator[GriddedCayleyPerm]:
-        if children is None:
-            children = self.decomposition_function(comb_class)
-        raise NotImplementedError
-
-    def forward_map(
-        self,
-        comb_class: Tiling,
-        obj: GriddedCayleyPerm,
-        children: Optional[Tuple[Tiling, ...]] = None,
-    ) -> Tuple[GriddedCayleyPerm, ...]:
-        if children is None:
-            children = self.decomposition_function(comb_class)
-        raise NotImplementedError
-
     def __str__(self) -> str:
         return self.formal_step()
 
@@ -82,13 +63,7 @@ class AbstractFactorStrategy:
         return cls(**d)
 
 
-class FactorStrategy(
-    AbstractFactorStrategy, CartesianProductStrategy[Tiling, GriddedCayleyPerm]
-):
-    pass
-
-
-class RGFFactorStrategy(AbstractFactorStrategy):
+class RGFFactorStrategy(FactorStrategy):
 
     def decomposition_function(self, comb_class: Tiling) -> Tuple[Tiling, ...]:
         factors = Factors(comb_class).rgf_find_factors()

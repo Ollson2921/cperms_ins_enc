@@ -1,4 +1,7 @@
-"""Removes all the empty rows and columns from a tiling."""
+"""This module contains the strategy for removing all the 
+empty rows and columns from a tiling and the strategy
+for removing extra requirements when enumerating 
+restricted growth functions of matchings."""
 
 from typing import Dict, Iterator, Optional, Tuple
 from comb_spec_searcher import DisjointUnionStrategy
@@ -12,6 +15,7 @@ Cell = Tuple[int, int]
 class RemoveEmptyRowsAndColumnsStrategy(
     DisjointUnionStrategy[Tiling, GriddedCayleyPerm]
 ):
+""" Strategy for removing empty rows and columns from a tiling."""
     def __init__(
         self,
         ignore_parent: bool = True,
@@ -78,6 +82,8 @@ class RemoveEmptyRowsAndColumnsStrategy(
 class MatchingsRemoveExtraReqsStrategy(
     DisjointUnionStrategy[Tiling, GriddedCayleyPerm]
 ):
+    """ Strategy for removing extra requirements from requirement lists in a tiling
+    for enumerating restricted growth functions of matchings."""
     def __init__(
         self,
         ignore_parent: bool = True,
@@ -91,7 +97,7 @@ class MatchingsRemoveExtraReqsStrategy(
             if len(req_list) == 1:
                 new_requirements.append(req_list)
                 continue
-            new_req_list = [req for req in req_list if len(req.positions) == 1]
+            new_req_list = tuple([req for req in req_list if len(req.positions) == 1])
             new_requirements.append(new_req_list)
         if new_requirements == comb_class.requirements:
             raise StrategyDoesNotApply("No extra requirements to remove")

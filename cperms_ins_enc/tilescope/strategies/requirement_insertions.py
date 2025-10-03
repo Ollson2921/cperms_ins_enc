@@ -1,3 +1,4 @@
+"""Strategies for inserting requirements into a tiling."""
 from typing import Dict, Iterable, Iterator, Optional, Tuple
 from comb_spec_searcher import DisjointUnionStrategy, StrategyFactory
 
@@ -8,6 +9,7 @@ Cell = Tuple[int, int]
 
 
 class RequirementInsertionStrategy(DisjointUnionStrategy[Tiling, GriddedCayleyPerm]):
+    """ Strategy for inserting requirements into a tiling."""
     def __init__(self, gcps: Iterable[GriddedCayleyPerm], ignore_parent: bool = False):
         super().__init__(ignore_parent=ignore_parent)
         self.gcps = frozenset(gcps)
@@ -68,6 +70,8 @@ class RequirementInsertionStrategy(DisjointUnionStrategy[Tiling, GriddedCayleyPe
 
 
 class VerticalInsertionEncodingRequirementInsertionFactory(StrategyFactory[Tiling]):
+    """Factory for creating RequirementInsertionStrategy to make columns positive
+    for the vertical insertion encoding."""
     def __call__(self, comb_class: Tiling) -> Iterator[RequirementInsertionStrategy]:
         for col in range(comb_class.dimensions[0]):
             if not comb_class.col_is_positive(col):
@@ -91,22 +95,9 @@ class VerticalInsertionEncodingRequirementInsertionFactory(StrategyFactory[Tilin
     def __str__(self) -> str:
         return "Make columns positive"
 
-
-class MatchingsRequirementInsertionStrategy(RequirementInsertionStrategy):
-    def decomposition_function(self, comb_class: Tiling) -> Tuple[Tiling, ...]:
-        reqs = [
-            GriddedCayleyPerm(
-                CayleyPermutation([0, 0]), [gcp.positions[0], gcp.positions[0]]
-            )
-            for gcp in self.gcps
-        ]
-        return (
-            comb_class.add_obstructions(self.gcps),
-            comb_class.add_requirement_list(reqs),
-        )
-
-
 class HorizontalInsertionEncodingRequirementInsertionFactory(StrategyFactory[Tiling]):
+    """Factory for creating RequirementInsertionStrategy to make rows positive
+    for the horizontal insertion encoding."""
     def __call__(self, comb_class: Tiling) -> Iterator[RequirementInsertionStrategy]:
         for row in range(comb_class.dimensions[1]):
             if not comb_class.row_is_positive(row):
@@ -130,9 +121,29 @@ class HorizontalInsertionEncodingRequirementInsertionFactory(StrategyFactory[Til
         return "Make rows positive"
 
 
+
+class MatchingsRequirementInsertionStrategy(RequirementInsertionStrategy):
+    """ Strategy for inserting requirements into a tiling
+    for enumerating restricted growth functions of matchings."""
+    def decomposition_function(self, comb_class: Tiling) -> Tuple[Tiling, ...]:
+        reqs = [
+            GriddedCayleyPerm(
+                CayleyPermutation([0, 0]), [gcp.positions[0], gcp.positions[0]]
+            )
+            for gcp in self.gcps
+        ]
+        return (
+            comb_class.add_obstructions(self.gcps),
+            comb_class.add_requirement_list(reqs),
+        )
+
+
 class MatchingRequirementInsertionFactory(
     HorizontalInsertionEncodingRequirementInsertionFactory
 ):
+    """Factory for creating MatchingsRequirementInsertionStrategy to make rows positive
+    for the horizontal insertion encoding for enumerating restricted growth functions
+    of matchings."""
     def __call__(self, comb_class: Tiling) -> Iterator[RequirementInsertionStrategy]:
         for row in range(comb_class.dimensions[1]):
             if not comb_class.row_is_positive(row):
