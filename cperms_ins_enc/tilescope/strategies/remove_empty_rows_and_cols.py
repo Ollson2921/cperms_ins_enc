@@ -99,7 +99,7 @@ class MatchingsRemoveExtraReqsStrategy(
             if len(req_list) == 1:
                 new_requirements.append(req_list)
                 continue
-            new_req_list = tuple([req for req in req_list if len(req.positions) == 1])
+            new_req_list = tuple(req for req in req_list if len(req.positions) == 1)
             new_requirements.append(new_req_list)
         if new_requirements == comb_class.requirements:
             raise StrategyDoesNotApply("No extra requirements to remove")

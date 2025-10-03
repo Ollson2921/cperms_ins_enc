@@ -85,7 +85,9 @@ def seq_type(cperm: list[int], seqtype: int, vals_seen=None) -> bool:
     raise ValueError("Type must be 0, 1, or 2.")
 
 
-def regular_horizontal_insertion_encoding(basis: str | set[CayleyPermutation]) -> bool:
+def regular_horizontal_insertion_encoding(
+    basis: str | tuple[CayleyPermutation],
+) -> bool:
     """Checks if a basis has a regular insertion encoding.
     The basis must have permutations which are of the form
     increasing | increasing
@@ -118,7 +120,7 @@ def checks_hori_type(cperm: list[int], class_to_check: tuple[int, int]) -> bool:
     Examples:
     >>> checks_type([0, 1, 2], (1, 1))
     True
-    >>> checks_type([0, 1, 2], (0, 0))
+    >>> checks_type([2, 1, 0], (1, 1))
     False
     """
     if len(cperm) == 0 or len(cperm) == 1:
@@ -167,7 +169,7 @@ def dec_left(cperm: list[int], seqtype: int) -> bool:
 
 
 def rgf_regular_horizontal_insertion_encoding(
-    basis: str | set[CayleyPermutation],
+    basis: str | tuple[CayleyPermutation],
 ) -> bool:
     """Checks if an RGF class has a regular horizontal insertion encoding.
     The basis must have Cayley permutations which are of the form

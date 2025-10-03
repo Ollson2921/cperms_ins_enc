@@ -14,7 +14,7 @@ from cperms_ins_enc.check_regular.check_regular_hori import is_decreasing
 
 
 def rgf_regular_vertical_insertion_encoding(
-    basis: str | set[CayleyPermutation],
+    basis: str | tuple[CayleyPermutation],
 ) -> bool:
     """Checks if a basis of a RGF class has a regular insertion encoding.
 
@@ -25,20 +25,18 @@ def rgf_regular_vertical_insertion_encoding(
     basis = string_to_basis(basis) if isinstance(basis, str) else basis
     if not check_jux(basis):
         return False
+    if not check_greedy_grids(basis):
+        return False
     if not check_grids(basis):
         return False
     return True
 
 
-def check_grids(basis: set[CayleyPermutation]) -> bool:
+def check_grids(basis: tuple[CayleyPermutation]) -> bool:
     """checks for the grid classes"""
     if not any(grid_dec_dec(cperm) for cperm in basis):
         return False
     if not any(grid_inc_dec(cperm) for cperm in basis):
-        return False
-    if not any(greedy_grid_left(cperm, 0) for cperm in basis):
-        return False
-    if not any(greedy_grid_left(cperm, 1) for cperm in basis):
         return False
     if not any(grid_inc_con(cperm) for cperm in basis):
         return False
@@ -47,7 +45,16 @@ def check_grids(basis: set[CayleyPermutation]) -> bool:
     return True
 
 
-def check_jux(basis: set[CayleyPermutation]) -> bool:
+def check_greedy_grids(basis: tuple[CayleyPermutation]) -> bool:
+    """Checks for the grid classes which are greedy left gridded."""
+    if not any(greedy_grid_left(cperm, 0) for cperm in basis):
+        return False
+    if not any(greedy_grid_left(cperm, 1) for cperm in basis):
+        return False
+    return True
+
+
+def check_jux(basis: tuple[CayleyPermutation]) -> bool:
     """Checks for the vertical juxtapositions"""
     if not any(con_dec(cperm) for cperm in basis):
         return False
@@ -162,6 +169,7 @@ def grid_dec_dec(cperm: list[int]) -> bool:
     """Returns True if the sequence is decreasing on bottom
     and decreasing on top. with increasing sequence at the start
     (everything in grids)."""
+    # pylint: disable=too-many-branches
     if len(cperm) < 3:
         return True
     cperm = cperm[::-1]
@@ -174,9 +182,8 @@ def grid_dec_dec(cperm: list[int]) -> bool:
         else:
             if len(bottom_seq) > 0 and val <= bottom_seq[-1]:
                 break
-            else:
-                top_seq.append(val)
-                break
+            top_seq.append(val)
+            break
     if not top_seq:
         return is_decreasing(cperm[idx:])
     line = top_seq[0]

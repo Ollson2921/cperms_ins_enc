@@ -108,6 +108,7 @@ class VertDeleteIndexStrategy(
         workable: bool = True,
     ):
         # pylint: disable=too-many-arguments
+        # pylint: disable=too-many-positional-arguments
         self.index = indx
         super().__init__(ignore_parent, inferrable, possibly_empty, workable)
 

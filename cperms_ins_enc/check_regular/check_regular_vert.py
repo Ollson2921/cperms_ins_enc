@@ -5,7 +5,7 @@ vertical insertion encoding."""
 from cayley_permutations import string_to_basis, CayleyPermutation
 
 
-def regular_vertical_insertion_encoding(basis: str | set[CayleyPermutation]) -> bool:
+def regular_vertical_insertion_encoding(basis: str | tuple[CayleyPermutation]) -> bool:
     """Checks if a basis has a regular insertion encoding.
 
     Example:

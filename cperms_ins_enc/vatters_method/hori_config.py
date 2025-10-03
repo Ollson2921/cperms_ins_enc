@@ -4,6 +4,7 @@ for Vatter's method."""
 from typing import List, Iterable, Iterator
 from math import ceil
 from cayley_permutations import CayleyPermutation, Av
+from .vert_config import Word as VWord
 
 
 class Letter:
@@ -77,7 +78,9 @@ class HorizontalConfiguration:
     The configuration with just a slot is HorizontalConfiguration(CayleyPermutation([]), [-0.5])
     """
 
-    def __init__(self, cperm: CayleyPermutation, slots: Iterable[int]):
+    # pylint: disable=too-many-public-methods
+
+    def __init__(self, cperm: CayleyPermutation, slots: Iterable[float]):
         self.cperm = cperm
         if not isinstance(cperm, CayleyPermutation):
             print(cperm, "is not a Cayley permutation.")
@@ -110,7 +113,9 @@ class HorizontalConfiguration:
         new_cperm, new_slots, _ = self.apply_letter(index, repeat)
         return self.__class__(new_cperm, new_slots)
 
-    def apply_letter(self, index: int, repeat: int) -> "HorizontalConfiguration":
+    def apply_letter(
+        self, index: int, repeat: int
+    ) -> tuple[CayleyPermutation, List[float], int]:
         """Find value of the slot at that index. To place a point, add that value
         to the end of the cperm and anything strictly larger than it increases by
         1 (if it was a constant slot then anything else on that level would not
@@ -131,7 +136,7 @@ class HorizontalConfiguration:
         else:
             new_cperm = [
                 val if val <= value_to_add else val + 1 for val in self.cperm
-            ] + [ceil(value_to_add)]
+            ] + [int(ceil(value_to_add))]
             slots = [val if val <= value_to_add else val + 1 for val in self.slots]
         if repeat:
             new_slots = slots[:index] + [ceil(value_to_add)] + slots[index + 1 :]
@@ -148,9 +153,9 @@ class HorizontalConfiguration:
             new_slots = self.slots + [value_removing]
         else:
             # was not a repeated element (no more of that element in the cperm)
-            new_cperm = [
-                val if val < value_removing else val - 1 for val in self.cperm[:-1]
-            ]
+            new_cperm = tuple(
+                [val if val < value_removing else val - 1 for val in self.cperm[:-1]]
+            )
             remove_slots = [
                 val
                 for val in self.slots
@@ -241,14 +246,14 @@ class HorizontalConfiguration:
                 new_slots.append(standardisation_map[slot])
             else:
                 if slot == -0.5:
-                    new_slots.append(-0.5)
+                    new_slots += [-0.5]
                 else:
-                    new_slots.append(
+                    new_slots += [
                         standardisation_map[
                             cls.closest_value_smaller(slot, config_cperm)
                         ]
                         + 0.5
-                    )
+                    ]
         return cls(new_cperm, new_slots)
 
     def cperm_idx_from_config_idx(self, config_idx: int) -> int:
@@ -307,7 +312,7 @@ class HorizontalConfiguration:
         """
         candidates = []
         for idx, val in enumerate(self.cperm):
-            if self.cperm.cperm.count(val) > 1:
+            if self.cperm.count(val) > 1:
                 candidates.append(idx)
                 continue
             if val + 0.5 in self.slots and val - 0.5 in self.slots:
@@ -371,7 +376,7 @@ class HorizontalConfiguration:
             all_rows.append(middle_row)
         for row_number in range(max(self.cperm) + 1):
             row = " "
-            for idx, val in enumerate(self.cperm):
+            for _, val in enumerate(self.cperm):
                 if val == row_number:
                     row += str(row_number)
                 else:
@@ -388,20 +393,11 @@ class HorizontalConfiguration:
         return "\n".join(reversed(all_rows))
 
 
-class Word:
+class Word(VWord):
     """
     A Word is a list that begins empty and a list of Letters
     are added to it.
-
-    Examples:
-    >>> print(Word([Letter("m", 1, 1), Letter("l", 2, 1)]))
-    m_(1, 1)l_(2, 1)
-    >>> print(Word([Letter("r", 1, 1), Letter("f", 1, 0)]))
-    r_(1, 1)f_(1, 0)
     """
-
-    def __init__(self, letters: List[Letter]):
-        self.letters = letters
 
     def cayley_permutation(
         self,
@@ -418,47 +414,11 @@ class Word:
             new_config = lett.apply(new_config)
         return new_config
 
-    def max_index(self) -> int:
-        """
-        Returns maximum index of the letters in a word.
-
-        Examples:
-        >>> Word([Letter("m", 1, 1), Letter("l", 2, 1)]).max_index()
-        2
-        """
-        var = 1
-        for letter in self.letters:
-            if letter.index > var:
-                var = letter.index
-        return var
-
     @classmethod
     def words_size_n(cls, av: Av, size: int) -> Iterator["Word"]:
         """
         Prints the words generating all Cayley permutations in Av(B) of 'size'.
         """
         for cperm in av.generate_cperms(size):
-            config = HorizontalConfiguration(CayleyPermutation(cperm.cperm), [])
+            config = HorizontalConfiguration(CayleyPermutation(cperm), [])
             yield config.get_word()
-
-    @classmethod
-    def max_index_in_av(cls, av: Av, size: int) -> int:
-        """
-        returns the maximum index of a letter in Av(B) for a word of length 'size'.
-
-        Example:
-        >>> Word.max_index_in_av(Av([CayleyPermutation([0, 1]), CayleyPermutation([1, 0])]), 3)
-        1
-        """
-        var = 1
-        for word in cls.words_size_n(av, size):
-            max_index = word.max_index()
-            if max_index > var:
-                var = max_index
-        return var
-
-    def __len__(self):
-        return len(self.letters)
-
-    def __str__(self):
-        return "".join(str(x) for x in self.letters)

@@ -1,6 +1,6 @@
 """Factors the tiling into sections that are independent of each other."""
 
-from typing import Dict, Optional, Tuple
+from typing import Dict, Optional, Tuple, Iterator
 from comb_spec_searcher import CartesianProductStrategy
 from comb_spec_searcher.exception import StrategyDoesNotApply
 from gridded_cayley_permutations import Tiling, GriddedCayleyPerm
@@ -39,6 +39,22 @@ class FactorStrategy(CartesianProductStrategy[Tiling, GriddedCayleyPerm]):
         Return a string that describe the operation performed on the tiling.
         """
         return "Factor the tiling into factors"
+
+    def backward_map(
+        self,
+        comb_class: Tiling,
+        objs: Tuple[Optional[GriddedCayleyPerm], ...],
+        children: Optional[Tuple[Tiling, ...]] = None,
+    ) -> Iterator[GriddedCayleyPerm]:
+        raise NotImplementedError
+
+    def forward_map(
+        self,
+        comb_class: Tiling,
+        obj: GriddedCayleyPerm,
+        children: Optional[Tuple[Tiling, ...]] = None,
+    ) -> Tuple[GriddedCayleyPerm, ...]:
+        raise NotImplementedError
 
     def __str__(self) -> str:
         return self.formal_step()

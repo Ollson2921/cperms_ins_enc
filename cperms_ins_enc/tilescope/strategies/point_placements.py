@@ -136,6 +136,7 @@ class RequirementPlacementStrategy(DisjointUnionStrategy[Tiling, GriddedCayleyPe
         super().__init__(ignore_parent=ignore_parent)
 
     def algorithm(self, tiling: Tiling) -> PointPlacement:
+        """The point placement algorithm."""
         return PointPlacement(tiling)
 
     def decomposition_function(self, comb_class: Tiling) -> Tuple[Tiling, ...]:
