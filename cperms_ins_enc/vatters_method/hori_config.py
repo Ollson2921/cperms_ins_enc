@@ -1,7 +1,10 @@
+"""Classes for horizontal insertion encoding configurations and words
+for Vatter's method."""
+
 from typing import List, Iterable, Iterator
 from math import ceil
-from ..cayley_permutations import CayleyPermutation, Av
-from .vert_config import VerticalConfiguration
+from cayley_permutations import CayleyPermutation, Av
+from .vert_config import Word as VWord
 
 
 class Letter:
@@ -75,7 +78,9 @@ class HorizontalConfiguration:
     The configuration with just a slot is HorizontalConfiguration(CayleyPermutation([]), [-0.5])
     """
 
-    def __init__(self, cperm: CayleyPermutation, slots: Iterable[int]):
+    # pylint: disable=too-many-public-methods
+
+    def __init__(self, cperm: CayleyPermutation, slots: Iterable[float]):
         self.cperm = cperm
         if not isinstance(cperm, CayleyPermutation):
             print(cperm, "is not a Cayley permutation.")
@@ -83,6 +88,7 @@ class HorizontalConfiguration:
         self.slots = sorted(set(slots))
 
     def apply_m(self, index: int, repeat: int) -> "HorizontalConfiguration":
+        """Add a new value between two new slots."""
         new_cperm, slots, value_added = self.apply_letter(index, repeat)
 
         new_slots = (
@@ -91,20 +97,25 @@ class HorizontalConfiguration:
         return self.__class__(new_cperm, new_slots)
 
     def apply_u(self, index: int, repeat: int) -> "HorizontalConfiguration":
+        """Add a new value above a slot."""
         new_cperm, slots, value_added = self.apply_letter(index, repeat)
         new_slots = slots[:index] + [value_added - 0.5] + slots[index:]
         return self.__class__(new_cperm, new_slots)
 
     def apply_d(self, index: int, repeat: int) -> "HorizontalConfiguration":
+        """Add a new value below a slot."""
         new_cperm, slots, value_added = self.apply_letter(index, repeat)
         new_slots = slots[:index] + [value_added + 0.5] + slots[index:]
         return self.__class__(new_cperm, new_slots)
 
     def apply_f(self, index: int, repeat: int) -> "HorizontalConfiguration":
+        """Add a new value which fills a slot."""
         new_cperm, new_slots, _ = self.apply_letter(index, repeat)
         return self.__class__(new_cperm, new_slots)
 
-    def apply_letter(self, index: int, repeat: int) -> "HorizontalConfiguration":
+    def apply_letter(
+        self, index: int, repeat: int
+    ) -> tuple[CayleyPermutation, List[float], int]:
         """Find value of the slot at that index. To place a point, add that value
         to the end of the cperm and anything strictly larger than it increases by
         1 (if it was a constant slot then anything else on that level would not
@@ -125,7 +136,7 @@ class HorizontalConfiguration:
         else:
             new_cperm = [
                 val if val <= value_to_add else val + 1 for val in self.cperm
-            ] + [ceil(value_to_add)]
+            ] + [int(ceil(value_to_add))]
             slots = [val if val <= value_to_add else val + 1 for val in self.slots]
         if repeat:
             new_slots = slots[:index] + [ceil(value_to_add)] + slots[index + 1 :]
@@ -134,6 +145,7 @@ class HorizontalConfiguration:
         return CayleyPermutation(new_cperm), new_slots, ceil(value_to_add)
 
     def undo_last_ins(self) -> "HorizontalConfiguration":
+        """Undo the last insertion of a point."""
         value_removing = self.cperm[-1]
         if value_removing in self.cperm[:-1]:
             # was a repeated element (more of that element in the cperm)
@@ -141,9 +153,9 @@ class HorizontalConfiguration:
             new_slots = self.slots + [value_removing]
         else:
             # was not a repeated element (no more of that element in the cperm)
-            new_cperm = [
+            new_cperm = tuple(
                 val if val < value_removing else val - 1 for val in self.cperm[:-1]
-            ]
+            )
             remove_slots = [
                 val
                 for val in self.slots
@@ -157,6 +169,7 @@ class HorizontalConfiguration:
         return self.__class__(CayleyPermutation(new_cperm), new_slots)
 
     def letter_of_last_ins(self) -> Letter:
+        """Returns the letter corresponding to the last insertion."""
         value_removing = self.cperm[-1]
         if value_removing in self.slots:
             idx2 = 1
@@ -187,22 +200,8 @@ class HorizontalConfiguration:
             configuration = configuration.undo_last_ins()
         return Word(word)
 
-    def cayley_perms(
-        self, size: int, basis: Iterable[CayleyPermutation]
-    ) -> Iterator[CayleyPermutation]:
-        """Returns the next Cayley permutations up to length 'size'
-        which avoid the basis from the configuration."""
-        if size < len(self.cperm):
-            return
-        if not self.cperm.avoids(basis):
-            return
-        if self.is_cayley_perm():
-            if self.cperm.avoids(basis):
-                yield CayleyPermutation(self.cperm)
-        for child in self.children():
-            yield from child.cayley_perms(size, basis)
-
     def all_possible_letters(self) -> List[Letter]:
+        """Returns all possible letters that can be applied to the configuration."""
         letters = []
         for i, val in enumerate(self.slots):
             if isinstance(val, int):
@@ -220,6 +219,7 @@ class HorizontalConfiguration:
         return letters
 
     def children(self) -> List["HorizontalConfiguration"]:
+        """Returns all possible configurations that can be reached."""
         return [letter.apply(self) for letter in self.all_possible_letters()]
 
     @classmethod
@@ -232,30 +232,32 @@ class HorizontalConfiguration:
         of the value in the Cayley permutation.
         """
         new_cperm = CayleyPermutation.standardise(config_cperm)
-        standardisation_map = dict()
+        standardisation_map = {}
         for idx, val in enumerate(config_cperm):
             standardisation_map[val] = new_cperm[idx]
         new_slots = []
         for slot in config_slots:
             if isinstance(slot, int):
-                if slot not in standardisation_map.keys():
+                if slot not in standardisation_map:
                     raise ValueError(
-                        "A constant slot must be a repeat of a value already in the Cayley permnutation."
+                        "A constant slot must be a repeat of a value "
+                        "already in the Cayley permutation."
                     )
                 new_slots.append(standardisation_map[slot])
             else:
                 if slot == -0.5:
-                    new_slots.append(-0.5)
+                    new_slots += [-0.5]
                 else:
-                    new_slots.append(
+                    new_slots += [
                         standardisation_map[
                             cls.closest_value_smaller(slot, config_cperm)
                         ]
                         + 0.5
-                    )
+                    ]
         return cls(new_cperm, new_slots)
 
     def cperm_idx_from_config_idx(self, config_idx: int) -> int:
+        """Returns the index of the Cayley permutation corresponding to a configuration index."""
         return config_idx
 
     def cayley_perms(
@@ -304,12 +306,13 @@ class HorizontalConfiguration:
         not directly adjacent to two slots
 
         Example:
-        >>> print(HorizontalConfiguration(CayleyPermutation([0, 1, 2, 3, 4, 5, 6]), [0.5, 3, 4.5, 5]).candidates_to_delete())
+        >>> print(HorizontalConfiguration(CayleyPermutation([0, 1, 2, 3, 4, 5, 6]),
+          [0.5, 3, 4.5, 5]).candidates_to_delete())
         [0, 1, 2, 4, 6]
         """
         candidates = []
         for idx, val in enumerate(self.cperm):
-            if self.cperm.cperm.count(val) > 1:
+            if self.cperm.count(val) > 1:
                 candidates.append(idx)
                 continue
             if val + 0.5 in self.slots and val - 0.5 in self.slots:
@@ -348,6 +351,7 @@ class HorizontalConfiguration:
         return -1
 
     def is_cayley_perm(self) -> bool:
+        """Returns True if the configuration has no slots."""
         return not self.slots
 
     def __len__(self):
@@ -372,8 +376,8 @@ class HorizontalConfiguration:
             all_rows.append(middle_row)
         for row_number in range(max(self.cperm) + 1):
             row = " "
-            for idx in range(len(self.cperm)):
-                if self.cperm[idx] == row_number:
+            for _, val in enumerate(self.cperm):
+                if val == row_number:
                     row += str(row_number)
                 else:
                     row += " "
@@ -389,20 +393,11 @@ class HorizontalConfiguration:
         return "\n".join(reversed(all_rows))
 
 
-class Word:
+class Word(VWord):
     """
     A Word is a list that begins empty and a list of Letters
     are added to it.
-
-    Examples:
-    >>> print(Word([Letter("m", 1, 1), Letter("l", 2, 1)]))
-    m_(1, 1)l_(2, 1)
-    >>> print(Word([Letter("r", 1, 1), Letter("f", 1, 0)]))
-    r_(1, 1)f_(1, 0)
     """
-
-    def __init__(self, letters: List[Letter]):
-        self.letters = letters
 
     def cayley_permutation(
         self,
@@ -419,47 +414,11 @@ class Word:
             new_config = lett.apply(new_config)
         return new_config
 
-    def max_index(self) -> int:
-        """
-        Returns maximum index of the letters in a word.
-
-        Examples:
-        >>> Word([Letter("m", 1, 1), Letter("l", 2, 1)]).max_index()
-        2
-        """
-        var = 1
-        for letter in self.letters:
-            if letter.index > var:
-                var = letter.index
-        return var
-
     @classmethod
     def words_size_n(cls, av: Av, size: int) -> Iterator["Word"]:
         """
         Prints the words generating all Cayley permutations in Av(B) of 'size'.
         """
         for cperm in av.generate_cperms(size):
-            config = HorizontalConfiguration(CayleyPermutation(cperm.cperm), [])
+            config = HorizontalConfiguration(CayleyPermutation(cperm), [])
             yield config.get_word()
-
-    @classmethod
-    def max_index_in_av(cls, av: Av, size: int) -> int:
-        """
-        returns the maximum index of a letter in Av(B) for a word of length 'size'.
-
-        Example:
-        >>> Word.max_index_in_av(Av([CayleyPermutation([0, 1]), CayleyPermutation([1, 0])]), 3)
-        1
-        """
-        var = 1
-        for word in cls.words_size_n(av, size):
-            max_index = word.max_index()
-            if max_index > var:
-                var = max_index
-        return var
-
-    def __len__(self):
-        return len(self.letters)
-
-    def __str__(self):
-        return "".join(str(x) for x in self.letters)

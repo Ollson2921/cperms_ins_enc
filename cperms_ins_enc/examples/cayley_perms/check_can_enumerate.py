@@ -1,7 +1,8 @@
-"""This module is for checking if a Cayley permutation class has a regular insertion encoding.
+"""This module is for checking if a Cayley permutation class has a regular
+insertion encoding.
 
-The string `basis` can be changed to any string of basis patterns which are one-based or
-zero-based and separated by anything.
+The string `basis` can be changed to any string of basis patterns which are
+one-based or zero-based and separated by anything.
 """
 
 from cperms_ins_enc import (

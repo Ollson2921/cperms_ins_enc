@@ -8,7 +8,7 @@ from comb_spec_searcher import (
     CartesianProductStrategy,
     StrategyFactory,
 )
-from ..cayley_permutations import CayleyPermutation
+from cayley_permutations import CayleyPermutation
 from .vert_config import VerticalConfiguration
 from .hori_config import HorizontalConfiguration
 
@@ -108,6 +108,7 @@ class VertDeleteIndexStrategy(
         workable: bool = True,
     ):
         # pylint: disable=too-many-arguments
+        # pylint: disable=too-many-positional-arguments
         self.index = indx
         super().__init__(ignore_parent, inferrable, possibly_empty, workable)
 
@@ -151,6 +152,8 @@ class VertDeleteIndexStrategy(
 
 
 class HoriDeleteIndexStrategy(VertDeleteIndexStrategy):
+    """Deletes an index from a horizontal configuration."""
+
     def decomposition_function(
         self, comb_class: ConfigAvoidingBasis
     ) -> Tuple[ConfigAvoidingBasis, ...] | None:
@@ -186,6 +189,8 @@ class VertIndexDeletingFactory(StrategyFactory):
 
 
 class HoriIndexDeletingFactory(VertIndexDeletingFactory):
+    """Creates index deleting strategies for horizontal configurations."""
+
     def __call__(
         self, configuration: ConfigAvoidingBasis
     ) -> Iterator[HoriDeleteIndexStrategy]:

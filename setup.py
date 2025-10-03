@@ -12,5 +12,6 @@ setup(
     keywords="enumerative combinatorics pattern avoidance cayley permutations insertion encoding",
     install_requires=[
         "comb_spec_searcher",
+        "cayley_perms @ git+https://github.com/Ollson2921/CayleyPerms",
     ],
 )

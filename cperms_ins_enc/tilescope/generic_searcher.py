@@ -1,10 +1,14 @@
+"""A generic searcher class for insertion encodings."""
+
 import abc
-from comb_spec_searcher import CombinatorialSpecificationSearcher
-from ..cayley_permutations import string_to_basis
 from functools import cached_property
+from comb_spec_searcher import CombinatorialSpecificationSearcher
+from cayley_permutations import string_to_basis
 
 
 class GenericSearcher(abc.ABC):
+    """A generic searcher class for insertion encodings."""
+
     def __init__(self, basis: str, debug=False):
         self.debug = debug
         if isinstance(basis, str):
@@ -12,8 +16,9 @@ class GenericSearcher(abc.ABC):
         else:
             self.basis = basis
         if not self.regular_check():
-            raise Exception(
-                f"The class Av{tuple(self.basis)} can not be enumerated with {self.type_of_encoding()} insertion encoding"
+            raise ValueError(
+                f"The class Av{tuple(self.basis)} can not be enumerated with "
+                f"{self.type_of_encoding()} insertion encoding"
             )
 
     @abc.abstractmethod
@@ -35,6 +40,7 @@ class GenericSearcher(abc.ABC):
     @cached_property
     def comb_spec_searcher(self) -> CombinatorialSpecificationSearcher:
         """Returns the CombinatorialSpecificationSearcher object for this searcher."""
+        print(self.pack(), self.pack().name)
         return CombinatorialSpecificationSearcher(
             self.start_class(), self.pack(), debug=self.debug
         )

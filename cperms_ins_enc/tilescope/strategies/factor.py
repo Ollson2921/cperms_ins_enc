@@ -1,20 +1,20 @@
 """Factors the tiling into sections that are independent of each other."""
 
-from typing import Dict, Iterator, Optional, Tuple
+from typing import Dict, Optional, Tuple, Iterator
 from comb_spec_searcher import CartesianProductStrategy
 from comb_spec_searcher.exception import StrategyDoesNotApply
-from ...gridded_cayley_permutations import Tiling, GriddedCayleyPerm
-from ...gridded_cayley_permutations.factors import Factors
+from gridded_cayley_permutations import Tiling, GriddedCayleyPerm
+from gridded_cayley_permutations.factors import Factors
 
 
-class AbstractFactorStrategy:
+class FactorStrategy(CartesianProductStrategy[Tiling, GriddedCayleyPerm]):
+    """Strategy for factoring tilings"""
+
     def __init__(
         self,
         ignore_parent: bool = True,
         workable: bool = True,
     ):
-        # TODO: input should include partition: Iterable[Iterable[Cell]] to
-        #       allow for interleaving factors.
         super().__init__(
             ignore_parent=ignore_parent, workable=workable, inferrable=True
         )
@@ -46,8 +46,6 @@ class AbstractFactorStrategy:
         objs: Tuple[Optional[GriddedCayleyPerm], ...],
         children: Optional[Tuple[Tiling, ...]] = None,
     ) -> Iterator[GriddedCayleyPerm]:
-        if children is None:
-            children = self.decomposition_function(comb_class)
         raise NotImplementedError
 
     def forward_map(
@@ -56,8 +54,6 @@ class AbstractFactorStrategy:
         obj: GriddedCayleyPerm,
         children: Optional[Tuple[Tiling, ...]] = None,
     ) -> Tuple[GriddedCayleyPerm, ...]:
-        if children is None:
-            children = self.decomposition_function(comb_class)
         raise NotImplementedError
 
     def __str__(self) -> str:
@@ -80,11 +76,22 @@ class AbstractFactorStrategy:
         return d
 
     @classmethod
-    def from_dict(cls, d: dict) -> "AbstractFactorStrategy":
+    def from_dict(cls, d: dict) -> "FactorStrategy":
         return cls(**d)
 
 
-class FactorStrategy(
-    AbstractFactorStrategy, CartesianProductStrategy[Tiling, GriddedCayleyPerm]
-):
-    pass
+class RGFFactorStrategy(FactorStrategy):
+    """Strategy for factoring tilings for the insertion encoding
+    of RGFs."""
+
+    def decomposition_function(self, comb_class: Tiling) -> Tuple[Tiling, ...]:
+        factors = Factors(comb_class).rgf_find_factors()
+        if not factors:
+            raise StrategyDoesNotApply("No factors found.")
+        return factors
+
+    def formal_step(self) -> str:
+        """
+        Return a string that describe the operation performed on the tiling.
+        """
+        return "Factor by removing points from the tiling"

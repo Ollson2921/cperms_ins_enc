@@ -1,7 +1,7 @@
 """This module contains the Letter class, VerticalConfiguration class and the Word class."""
 
 from typing import Iterator, List, Dict, Union
-from ..cayley_permutations import Av, CayleyPermutation
+from cayley_permutations import Av, CayleyPermutation
 
 
 class Letter:
@@ -295,13 +295,14 @@ class VerticalConfiguration:
         raise ValueError
 
     def max_slots_of_evolution(self) -> int:
+        """Return the maximum number of slots in a configuration in the
+        evolution."""
         slots = 0
         curr_config = self
         while len(curr_config) > 1:
             letter = curr_config.letter_of_last_insertion()
             config = curr_config.undoing_last_ins(letter)
-            if config.number_of_slots() > slots:
-                slots = config.number_of_slots()
+            slots = max(slots, config.number_of_slots())
             curr_config = config
             if len(curr_config) == 1:
                 break
@@ -315,12 +316,12 @@ class VerticalConfiguration:
         >>> print(VerticalConfiguration([0, 2, 1, "🔹", 2]).get_word())
         l_(1, 1)m_(1, 1)r_(2, 1)f_(1, 0)
         """
-        VerticalConfiguration = self
+        v_config = self
         word: List[Letter] = []
-        while VerticalConfiguration != self.__class__(["🔹"]):
-            letter = VerticalConfiguration.letter_of_last_insertion()
+        while v_config != self.__class__(["🔹"]):
+            letter = v_config.letter_of_last_insertion()
             word = [letter] + word
-            VerticalConfiguration = VerticalConfiguration.undoing_last_ins(letter)
+            v_config = v_config.undoing_last_ins(letter)
         return Word(word)
 
     @classmethod
@@ -429,7 +430,8 @@ class VerticalConfiguration:
         which avoid the basis from the VerticalConfiguration.
 
         Example:
-        >>> for config in VerticalConfiguration([0, 1, "🔹"]).cayley_perms(4, [CayleyPermutation([1, 0])]):
+        >>> c = VerticalConfiguration([0, 1, "🔹"])
+        >>> for config in c.cayley_perms(4, [CayleyPermutation([1, 0])]):
         ...     print(config)
         012
         0123
@@ -481,7 +483,8 @@ class VerticalConfiguration:
         return len(self.config) - self.number_of_slots()
 
     def all_possible_letters(self) -> List[Letter]:
-        """Returns a list of all possible letters that can be inserted into the VerticalConfiguration.
+        """Returns a list of all possible letters that can be
+        inserted into the VerticalConfiguration.
 
         Examples:
         >>> for letter in VerticalConfiguration([0, 1, "🔹", 2]).all_possible_letters():
@@ -614,7 +617,8 @@ class Word:
     ) -> VerticalConfiguration:
         """
         Applies the letters from a word to a VerticalConfiguration.
-        If no VerticalConfiguration is given, it applies the letters to the empty VerticalConfiguration.
+        If no VerticalConfiguration is given, it applies the letters
+        to the empty VerticalConfiguration.
 
         Examples:
         >>> print(Word([Letter("m", 1, 1), Letter("l", 2, 1)]).permutation())
@@ -637,8 +641,7 @@ class Word:
         """
         var = 1
         for letter in self.letters:
-            if letter.index > var:
-                var = letter.index
+            var = max(var, letter.index)
         return var
 
     @classmethod
@@ -647,7 +650,7 @@ class Word:
         Prints the words generating all Cayley permutations in Av(B) of 'size'.
         """
         for cperm in av.generate_cperms(size):
-            config = VerticalConfiguration(cperm.cperm)
+            config = VerticalConfiguration(cperm)
             yield config.get_word()
 
     @classmethod
@@ -661,9 +664,7 @@ class Word:
         """
         var = 1
         for word in cls.words_size_n(av, size):
-            max_index = word.max_index()
-            if max_index > var:
-                var = max_index
+            var = max(var, word.max_index())
         return var
 
     def __len__(self):

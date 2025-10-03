@@ -16,12 +16,12 @@ basis = "210, 012, 000"
 
 spec = HorizontalSearcher(basis).auto_search(max_expansion_time=60000)
 
-## Print the specification
+# Print the specification
 spec.show()
 
-## Print the generating function
+# Print the generating function
 spec.get_genf()
 
-## Print the counts up to size n
+# Print the counts up to size n
 n = 10
 print([spec.count_objects_of_size(i) for i in range(n)])
