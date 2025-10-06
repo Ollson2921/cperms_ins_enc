@@ -11,7 +11,7 @@ print how many restricted growth functions there are in the class up to
 size n for any n.
 """
 
-from cperms_ins_enc import MatchingHorizontalSearcher
+from insertion_encoding import MatchingHorizontalSearcher
 
 basis = "1201,1320"
 

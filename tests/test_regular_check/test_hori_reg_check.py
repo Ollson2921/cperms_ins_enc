@@ -1,5 +1,5 @@
-from cperms_ins_enc.check_regular import regular_horizontal_insertion_encoding
-from cperms_ins_enc.check_regular.check_regular_hori import dec_left, rgfinc_left
+from insertion_encoding import regular_horizontal_insertion_encoding
+from insertion_encoding.check_regular.check_regular_hori import dec_left, rgfinc_left
 
 from cayley_permutations import CayleyPermutation, Av
 

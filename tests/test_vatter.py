@@ -1,4 +1,4 @@
-from cperms_ins_enc import VatterVerticalSearcher, VatterHorizontalSearcher
+from insertion_encoding import VatterVerticalSearcher, VatterHorizontalSearcher
 
 
 def test_vatter_vertical():

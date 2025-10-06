@@ -1,6 +1,6 @@
 from itertools import combinations
 from typing import List, Iterator
-from cperms_ins_enc.check_regular.check_regular_vert import checks_vert_type
+from insertion_encoding.check_regular.check_regular_vert import checks_vert_type
 
 from cayley_permutations import CayleyPermutation, Av
 

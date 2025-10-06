@@ -1,7 +1,7 @@
-"""This file enumerates Cayley permutation classes using the vertical insertion encoding
-via our implementation of Vatter's method for permutation classes.
+"""This file enumerates Cayley permutation classes using the vertical insertion
+encoding by the tilings method.
 
-Change the basis to a string of Cayley permutations.
+Change the basis to any string of Cayley permutations.
 They can be 1 based or 0 based and separated by anything.
 
 If the class is not regular for vertical insertion encoding, an exception will be raised.
@@ -10,12 +10,11 @@ print the specification, print the generating function, and print how many Cayle
 permutations there are in the class up to size n for any n.
 """
 
-from cperms_ins_enc import VatterHorizontalSearcher
+from insertion_encoding import VerticalSearcher
 
-basis = "12_11"
+basis = "231,312,2121"
 
-spec = VatterHorizontalSearcher(basis).auto_search(max_expansion_time=6000)
-
+spec = VerticalSearcher(basis).auto_search(max_expansion_time=600)
 
 # Print the specification
 spec.show()

@@ -1,4 +1,4 @@
-from cperms_ins_enc import (
+from insertion_encoding import (
     RGFVerticalSearcher,
     RGFHorizontalSearcher,
     MatchingHorizontalSearcher,

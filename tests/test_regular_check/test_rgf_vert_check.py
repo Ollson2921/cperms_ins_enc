@@ -1,5 +1,5 @@
-from cperms_ins_enc import rgf_regular_vertical_insertion_encoding
-from cperms_ins_enc.check_regular.rgf_vert_regular_check import (
+from insertion_encoding import rgf_regular_vertical_insertion_encoding
+from insertion_encoding.check_regular.rgf_vert_regular_check import (
     greedy_grid_left,
     grid_inc_con,
     grid_inc_dec,

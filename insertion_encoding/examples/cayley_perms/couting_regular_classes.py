@@ -3,7 +3,7 @@ Cayley permutation classes with a regular insertion encoding."""
 
 from cayley_permutations import CayleyPermutation
 from itertools import combinations
-from cperms_ins_enc import (
+from insertion_encoding import (
     regular_vertical_insertion_encoding,
     regular_horizontal_insertion_encoding,
 )

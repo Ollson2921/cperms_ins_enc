@@ -7,7 +7,7 @@ setup(
     author="Christian Bean, Abigail Ollson",
     author_email="a.n.ollson@keele.ac.uk",
     packages=[
-        "cperms_ins_enc",
+        "insertion_encoding",
     ],
     keywords="enumerative combinatorics pattern avoidance cayley permutations insertion encoding",
     install_requires=[

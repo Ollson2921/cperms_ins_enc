@@ -3,7 +3,7 @@ that have a regular insertion encoding, either vertical or horizontal."""
 
 from cayley_permutations import CayleyPermutation
 from itertools import combinations
-from cperms_ins_enc import (
+from insertion_encoding import (
     rgf_regular_vertical_insertion_encoding,
     rgf_regular_horizontal_insertion_encoding,
 )
