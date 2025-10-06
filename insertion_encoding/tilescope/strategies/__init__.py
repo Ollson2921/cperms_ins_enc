@@ -17,7 +17,7 @@ from .remove_empty_rows_and_cols import (
     RemoveEmptyRowsAndColumnsStrategy,
     MatchingsRemoveExtraReqsStrategy,
 )
-from .factor import FactorStrategy
+from .factor import FactorStrategy, RGFFactorStrategy
 
 __all__ = [
     "RequirementInsertionStrategy",
@@ -32,4 +32,5 @@ __all__ = [
     "RemoveEmptyRowsAndColumnsStrategy",
     "MatchingsRemoveExtraReqsStrategy",
     "FactorStrategy",
+    "RGFFactorStrategy",
 ]

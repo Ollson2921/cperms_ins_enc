@@ -12,6 +12,7 @@ from comb_spec_searcher.rule_db import RuleDBForest
 from .strategies import (
     RemoveEmptyRowsAndColumnsStrategy,
     FactorStrategy,
+    RGFFactorStrategy,
     HorizontalInsertionEncodingPlacementFactory,
     HorizontalInsertionEncodingRequirementInsertionFactory,
     RGFHorizontalInsertionEncodingPlacementFactory,
@@ -69,7 +70,7 @@ class RGFHorizontalSearcher(HorizontalSearcher):
     def pack(self):
         return StrategyPack(
             initial_strats=[
-                FactorStrategy(),
+                RGFFactorStrategy(),
                 HorizontalInsertionEncodingRequirementInsertionFactory(),
             ],
             inferral_strats=[RemoveEmptyRowsAndColumnsStrategy()],
@@ -91,7 +92,7 @@ class MatchingHorizontalSearcher(RGFHorizontalSearcher):
     def pack(self):
         return StrategyPack(
             initial_strats=[
-                FactorStrategy(),
+                RGFFactorStrategy(),
                 MatchingRequirementInsertionFactory(),
             ],
             inferral_strats=[

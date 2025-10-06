@@ -5,6 +5,7 @@ from gridded_cayley_permutations import Tiling, GriddedCayleyPerm
 from .strategies import (
     RemoveEmptyRowsAndColumnsStrategy,
     FactorStrategy,
+    RGFFactorStrategy,
     VerticalInsertionEncodingPlacementFactory,
     VerticalInsertionEncodingRequirementInsertionFactory,
     RGFVerticalInsertionEncodingPlacementFactory,
@@ -60,7 +61,7 @@ class RGFVerticalSearcher(VerticalSearcher):
     def pack(self):
         return StrategyPack(
             initial_strats=[
-                FactorStrategy(),
+                RGFFactorStrategy(),
                 VerticalInsertionEncodingRequirementInsertionFactory(),
             ],
             inferral_strats=[RemoveEmptyRowsAndColumnsStrategy()],
