@@ -609,7 +609,7 @@ class Word:
     r_(1, 1)f_(1, 0)
     """
 
-    def __init__(self, letters: List[Letter]):
+    def __init__(self, letters: List):
         self.letters = letters
 
     def cayley_permutation(

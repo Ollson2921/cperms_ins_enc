@@ -131,11 +131,11 @@ class HorizontalConfiguration:
         Make sure slots are always in increasing order (count slots from bottom up)."""
         value_to_add = self.slots[index]
         if value_to_add in self.cperm:
-            new_cperm = list(self.cperm) + [value_to_add]
+            new_cperm = list(self.cperm) + [int(value_to_add)]
             slots = self.slots
         else:
             new_cperm = [
-                int(val) if val <= value_to_add else val + 1 for val in self.cperm
+                int(val) if val <= value_to_add else int(val + 1) for val in self.cperm
             ] + [int(ceil(value_to_add))]
             slots = [val if val <= value_to_add else val + 1 for val in self.slots]
         if repeat:
@@ -398,9 +398,6 @@ class Word(VWord):
     A Word is a list that begins empty and a list of Letters
     are added to it.
     """
-
-    def __init__(self, letters: List[Letter]):
-        self.letters = letters
 
     def cayley_permutation(
         self,
