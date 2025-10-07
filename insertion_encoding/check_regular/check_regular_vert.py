@@ -5,7 +5,10 @@ vertical insertion encoding."""
 from cayley_permutations import string_to_basis, CayleyPermutation
 
 
-def regular_vertical_insertion_encoding(basis: str | tuple[CayleyPermutation]) -> bool:
+# pylint: disable=duplicate-code
+def regular_vertical_insertion_encoding(
+    basis: str | tuple[CayleyPermutation, ...],
+) -> bool:
     """Checks if a basis has a regular insertion encoding.
 
     Example:
@@ -15,7 +18,7 @@ def regular_vertical_insertion_encoding(basis: str | tuple[CayleyPermutation]) -
     basis = string_to_basis(basis) if isinstance(basis, str) else basis
     for i in range(3):
         for j in range(3):
-            if any(checks_vert_type(cperm, (i, j)) for cperm in basis):
+            if any(checks_vert_type(list(cperm), (i, j)) for cperm in basis):
                 continue
             return False
     return True

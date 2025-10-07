@@ -50,9 +50,6 @@ class RequirementInsertionStrategy(DisjointUnionStrategy[Tiling, GriddedCayleyPe
             children = self.decomposition_function(comb_class)
         raise NotImplementedError
 
-    def __str__(self) -> str:
-        return self.formal_step()
-
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(" f"ignore_parent={self.ignore_parent})"
 

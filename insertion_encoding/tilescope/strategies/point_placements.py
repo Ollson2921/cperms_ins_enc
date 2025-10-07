@@ -175,9 +175,6 @@ class RequirementPlacementStrategy(DisjointUnionStrategy[Tiling, GriddedCayleyPe
             children = self.decomposition_function(comb_class)
         raise NotImplementedError
 
-    def __str__(self) -> str:
-        return self.formal_step()
-
     def __repr__(self) -> str:
         return (
             f"RequirementPlacementStrategy(gcps={self.gcps}, "
@@ -212,9 +209,6 @@ class RGFVRequirementPlacementStrategy(RequirementPlacementStrategy):
     def formal_step(self):
         return "Point placement in RGF"
 
-    def __str__(self):
-        return self.formal_step()
-
 
 class RGFHRequirementPlacementStrategy(RequirementPlacementStrategy):
     """Strategy for placing requirements in a tiling for restricted growth functions
@@ -225,9 +219,6 @@ class RGFHRequirementPlacementStrategy(RequirementPlacementStrategy):
 
     def formal_step(self):
         return "Point placement in RGF"
-
-    def __str__(self):
-        return self.formal_step()
 
 
 class VerticalInsertionEncodingPlacementFactory(StrategyFactory[Tiling]):

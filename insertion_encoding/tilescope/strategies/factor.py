@@ -56,9 +56,6 @@ class FactorStrategy(CartesianProductStrategy[Tiling, GriddedCayleyPerm]):
     ) -> Tuple[GriddedCayleyPerm, ...]:
         raise NotImplementedError
 
-    def __str__(self) -> str:
-        return self.formal_step()
-
     def __repr__(self) -> str:
         return (
             f"{self.__class__.__name__}("

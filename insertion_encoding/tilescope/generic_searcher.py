@@ -2,7 +2,10 @@
 
 import abc
 from functools import cached_property
-from comb_spec_searcher import CombinatorialSpecificationSearcher
+from comb_spec_searcher import (
+    CombinatorialSpecificationSearcher,
+    CombinatorialSpecification,
+)
 from cayley_permutations import string_to_basis
 
 
@@ -45,7 +48,7 @@ class GenericSearcher(abc.ABC):
             self.start_class(), self.pack(), debug=self.debug
         )
 
-    def auto_search(self, max_expansion_time=600) -> CombinatorialSpecificationSearcher:
+    def auto_search(self, max_expansion_time=600) -> CombinatorialSpecification:
         """Search for a specification."""
         return self.comb_spec_searcher.auto_search(
             max_expansion_time=max_expansion_time

@@ -4,6 +4,8 @@ horizontal insertion encoding."""
 
 from cayley_permutations import string_to_basis, CayleyPermutation
 
+# pylint: disable=duplicate-code
+
 
 def is_increasing(cperm: list[int], vals_seen=None) -> bool:
     """Returns True if the sequence is strictly increasing.
@@ -86,7 +88,7 @@ def seq_type(cperm: list[int], seqtype: int, vals_seen=None) -> bool:
 
 
 def regular_horizontal_insertion_encoding(
-    basis: str | tuple[CayleyPermutation],
+    basis: str | tuple[CayleyPermutation, ...],
 ) -> bool:
     """Checks if a basis has a regular insertion encoding.
     The basis must have permutations which are of the form
@@ -102,7 +104,7 @@ def regular_horizontal_insertion_encoding(
     basis = string_to_basis(basis) if isinstance(basis, str) else basis
     for i in range(2):
         for j in range(2):
-            if any(checks_hori_type(cperm, (i, j)) for cperm in basis):
+            if any(checks_hori_type(list(cperm), (i, j)) for cperm in basis):
                 continue
             return False
     return True
@@ -169,7 +171,7 @@ def dec_left(cperm: list[int], seqtype: int) -> bool:
 
 
 def rgf_regular_horizontal_insertion_encoding(
-    basis: str | tuple[CayleyPermutation],
+    basis: str | tuple[CayleyPermutation, ...],
 ) -> bool:
     """Checks if an RGF class has a regular horizontal insertion encoding.
     The basis must have Cayley permutations which are of the form
@@ -182,7 +184,7 @@ def rgf_regular_horizontal_insertion_encoding(
     """
     basis = string_to_basis(basis) if isinstance(basis, str) else basis
     for j in range(2):
-        if any(rgfinc_left(cperm, j) for cperm in basis):
+        if any(rgfinc_left(list(cperm), j) for cperm in basis):
             continue
         return False
     return True

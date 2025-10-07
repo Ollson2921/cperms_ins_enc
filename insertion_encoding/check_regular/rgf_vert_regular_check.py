@@ -14,7 +14,7 @@ from insertion_encoding.check_regular.check_regular_hori import is_decreasing
 
 
 def rgf_regular_vertical_insertion_encoding(
-    basis: str | tuple[CayleyPermutation],
+    basis: str | tuple[CayleyPermutation, ...],
 ) -> bool:
     """Checks if a basis of a RGF class has a regular insertion encoding.
 
@@ -32,35 +32,35 @@ def rgf_regular_vertical_insertion_encoding(
     return True
 
 
-def check_grids(basis: tuple[CayleyPermutation]) -> bool:
+def check_grids(basis: tuple[CayleyPermutation, ...]) -> bool:
     """checks for the grid classes"""
-    if not any(grid_dec_dec(cperm) for cperm in basis):
+    if not any(grid_dec_dec(list(cperm)) for cperm in basis):
         return False
-    if not any(grid_inc_dec(cperm) for cperm in basis):
+    if not any(grid_inc_dec(list(cperm)) for cperm in basis):
         return False
-    if not any(grid_inc_con(cperm) for cperm in basis):
+    if not any(grid_inc_con(list(cperm)) for cperm in basis):
         return False
-    if not any(grid_dec_con(cperm) for cperm in basis):
+    if not any(grid_dec_con(list(cperm)) for cperm in basis):
         return False
     return True
 
 
-def check_greedy_grids(basis: tuple[CayleyPermutation]) -> bool:
+def check_greedy_grids(basis: tuple[CayleyPermutation, ...]) -> bool:
     """Checks for the grid classes which are greedy left gridded."""
-    if not any(greedy_grid_left(cperm, 0) for cperm in basis):
+    if not any(greedy_grid_left(list(cperm), 0) for cperm in basis):
         return False
-    if not any(greedy_grid_left(cperm, 1) for cperm in basis):
+    if not any(greedy_grid_left(list(cperm), 1) for cperm in basis):
         return False
     return True
 
 
-def check_jux(basis: tuple[CayleyPermutation]) -> bool:
+def check_jux(basis: tuple[CayleyPermutation, ...]) -> bool:
     """Checks for the vertical juxtapositions"""
-    if not any(con_dec(cperm) for cperm in basis):
+    if not any(con_dec(list(cperm)) for cperm in basis):
         return False
-    if not any(con_con(cperm) for cperm in basis):
+    if not any(con_con(list(cperm)) for cperm in basis):
         return False
-    if not any(con_inc(cperm) for cperm in basis):
+    if not any(con_inc(list(cperm)) for cperm in basis):
         return False
     return True
 

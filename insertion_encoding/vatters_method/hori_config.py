@@ -135,7 +135,7 @@ class HorizontalConfiguration:
             slots = self.slots
         else:
             new_cperm = [
-                val if val <= value_to_add else val + 1 for val in self.cperm
+                int(val) if val <= value_to_add else val + 1 for val in self.cperm
             ] + [int(ceil(value_to_add))]
             slots = [val if val <= value_to_add else val + 1 for val in self.slots]
         if repeat:
@@ -235,7 +235,7 @@ class HorizontalConfiguration:
         standardisation_map = {}
         for idx, val in enumerate(config_cperm):
             standardisation_map[val] = new_cperm[idx]
-        new_slots = []
+        new_slots: List[float] = []
         for slot in config_slots:
             if isinstance(slot, int):
                 if slot not in standardisation_map:
@@ -398,6 +398,9 @@ class Word(VWord):
     A Word is a list that begins empty and a list of Letters
     are added to it.
     """
+
+    def __init__(self, letters: List[Letter]):
+        self.letters = letters
 
     def cayley_permutation(
         self,

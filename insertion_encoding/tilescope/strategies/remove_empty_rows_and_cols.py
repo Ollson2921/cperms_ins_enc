@@ -58,9 +58,6 @@ class RemoveEmptyRowsAndColumnsStrategy(
             children = self.decomposition_function(comb_class)
         raise NotImplementedError
 
-    def __str__(self) -> str:
-        return self.formal_step()
-
     def __repr__(self) -> str:
         return (
             f"{self.__class__.__name__}("
@@ -134,9 +131,6 @@ class MatchingsRemoveExtraReqsStrategy(
         if children is None:
             children = self.decomposition_function(comb_class)
         raise NotImplementedError
-
-    def __str__(self) -> str:
-        return self.formal_step()
 
     def __repr__(self) -> str:
         return (

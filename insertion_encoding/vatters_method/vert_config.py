@@ -650,7 +650,7 @@ class Word:
         Prints the words generating all Cayley permutations in Av(B) of 'size'.
         """
         for cperm in av.generate_cperms(size):
-            config = VerticalConfiguration(cperm)
+            config = VerticalConfiguration(list(cperm))
             yield config.get_word()
 
     @classmethod
