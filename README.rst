@@ -1,8 +1,8 @@
 ###############################
-cperms_ins_enc
+insertion_encoding
 ###############################
 
-cperms_ins_enc is a python library for enumerating Cayley permutations, restricted growth functions and restricted growth functions of (perfect) matchings with the insertion encoding.
+insertion_encoding is a python library for enumerating Cayley permutations, restricted growth functions and restricted growth functions of (perfect) matchings with the insertion encoding.
 
 A Cayley permutation is a word `π ∈ ℕ*` such that every number between 1 and the maximum value of `π` appears at least once. Cayley permutations can be seen as a generalisation of permutations where repeated values are allowed. Definitions of pattern containment and Cayley permutation classes follow the same ideas as defined for permutations where the patterns contained are also Cayley permutations, so the Cayley permutation class Av(11) describes all permutations. Cayley permutations are in bijection with ordered set partitions.
 
@@ -18,13 +18,13 @@ If you need support, you can join us in our `Discord support server`_.
 Installing
 ==========
 
-To install cperms_ins_enc on your system, run the following after cloning the repository:
+To install insertion_encoding on your system, run the following after cloning the repository:
 
 .. code-block:: bash
 
     ./setup.py
 
-It is also possible to install cperms_ins_enc in development mode to work on the
+It is also possible to install insertion_encoding in development mode to work on the
 source code, in which case you run the following after cloning the repository:
 
 .. code-block:: bash
@@ -33,10 +33,10 @@ source code, in which case you run the following after cloning the repository:
     
 
 ========================
-Using cperms_ins_enc
+Using insertion_encoding
 ========================
 
-The cperms_ins_enc module uses the comb_spec_searcher module. To find a specification for a set of pattern avoiding Cayley permutations we first create a searcher. There are five different types:
+The insertion_encoding module uses the comb_spec_searcher module. To find a specification for a set of pattern avoiding Cayley permutations we first create a searcher. There are five different types:
 
     - ```VerticalSearcher``` for vertical insertion of Cayley permutations,
     - ```HorizontalSearcher``` for horizontal insertion of Cayley permutations,
@@ -47,13 +47,13 @@ For example, the code below shows how to import the two different searchers for 
 
 .. code-block:: python
 
-    >>> from cperms_ins_enc import VerticalSearcher, HorizontalSearcher
+    >>> from insertion_encoding import VerticalSearcher, HorizontalSearcher
 
 Each searcher can enumerate different classes of Cayley permutations. The ```examples``` folder contains a ```cayley_perms``` folder and an ```rgfs``` folder for enumerating the two different types of words. In each folder, the file ``check_can_enumerate`` contains a linear time on the basis to determine if the class avoiding it can be enumerated with either type of insertion encoding, where a basis is a string of Cayley permutations. Below is an example for a class of Cayley permutations.
 
 .. code-block:: python
 
-    >>> from cperms_ins_enc import regular_vertical_insertion_encoding, regular_horizontal_insertion_encoding
+    >>> from insertion_encoding import regular_vertical_insertion_encoding, regular_horizontal_insertion_encoding
 
     >>> basis = "231, 312, 2121"
     >>> print("Can enumerate with vertical insertion encoding:", regular_vertical_insertion_encoding(basis))
