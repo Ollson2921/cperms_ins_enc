@@ -395,6 +395,7 @@ class HorizontalConfiguration:
         return "\n".join(reversed(all_rows))
 
 
+# pylint: disable=duplicate-code
 class Word(GenericWord):
     """
     A Word for horizontal insertion encoding.

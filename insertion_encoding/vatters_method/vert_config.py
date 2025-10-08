@@ -618,8 +618,8 @@ class GenericWord(abc.ABC):
             var = max(var, letter.index)
         return var
 
-    @abc.abstractmethod
     @classmethod
+    @abc.abstractmethod
     def words_size_n(cls, av: Av, size: int) -> Iterator["GenericWord"]:
         """
         Prints the words generating all Cayley permutations in Av(B) of 'size'.
@@ -646,6 +646,7 @@ class GenericWord(abc.ABC):
         return "".join(str(x) for x in self.letters)
 
 
+# pylint: disable=duplicate-code
 class Word(GenericWord):
     """
     A word for vertical insertion encoding.
