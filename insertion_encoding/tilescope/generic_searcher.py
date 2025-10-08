@@ -6,6 +6,7 @@ from comb_spec_searcher import (
     CombinatorialSpecificationSearcher,
     CombinatorialSpecification,
 )
+from gridded_cayley_permutations import Tiling, GriddedCayleyPerm
 from cayley_permutations import string_to_basis
 
 
@@ -52,4 +53,14 @@ class GenericSearcher(abc.ABC):
         """Search for a specification."""
         return self.comb_spec_searcher.auto_search(
             max_expansion_time=max_expansion_time
+        )
+
+class GenericTilingsSearcher(GenericSearcher):
+    """A generic searcher for methods which use tilings."""
+
+    def start_class(self):
+        return Tiling(
+            [GriddedCayleyPerm(p, [(0, 0) for _ in p]) for p in self.basis],
+            [],
+            (1, 1),
         )

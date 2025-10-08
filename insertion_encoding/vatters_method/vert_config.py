@@ -3,6 +3,7 @@
 from typing import Iterator, List, Dict, Union
 from cayley_permutations import Av, CayleyPermutation
 
+# pylint: disable=duplicate-code
 
 class Letter:
     """

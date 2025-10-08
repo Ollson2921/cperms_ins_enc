@@ -6,6 +6,7 @@ from math import ceil
 from cayley_permutations import CayleyPermutation, Av
 from .vert_config import Word as VWord
 
+# pylint: disable=duplicate-code
 
 class Letter:
     """A letter has three values. The first is one of {u, m, d, f},

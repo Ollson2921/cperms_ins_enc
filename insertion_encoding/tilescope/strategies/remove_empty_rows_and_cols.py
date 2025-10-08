@@ -11,6 +11,7 @@ from gridded_cayley_permutations import Tiling, GriddedCayleyPerm
 
 Cell = Tuple[int, int]
 
+# pylint: disable=duplicate-code
 
 class RemoveEmptyRowsAndColumnsStrategy(
     DisjointUnionStrategy[Tiling, GriddedCayleyPerm]

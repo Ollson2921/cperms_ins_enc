@@ -8,6 +8,7 @@ from cayley_permutations import CayleyPermutation
 
 Cell = Tuple[int, int]
 
+# pylint: disable=duplicate-code
 
 class RequirementInsertionStrategy(DisjointUnionStrategy[Tiling, GriddedCayleyPerm]):
     """Strategy for inserting requirements into a tiling."""
