@@ -599,6 +599,7 @@ class VerticalConfiguration:
     def __eq__(self, other):
         return self.config == other.config
 
+
 class GenericWord(abc.ABC):
     """
     A Word is a list that begins empty and a list of Letters
@@ -644,6 +645,7 @@ class GenericWord(abc.ABC):
     def __str__(self):
         return "".join(str(x) for x in self.letters)
 
+
 class Word(GenericWord):
     """
     A word for vertical insertion encoding.
@@ -684,4 +686,3 @@ class Word(GenericWord):
         for cperm in av.generate_cperms(size):
             config = VerticalConfiguration(list(cperm))
             yield config.get_word()
-

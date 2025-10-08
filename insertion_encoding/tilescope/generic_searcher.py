@@ -55,6 +55,7 @@ class GenericSearcher(abc.ABC):
             max_expansion_time=max_expansion_time
         )
 
+
 class GenericTilingsSearcher(GenericSearcher):
     """A generic searcher for methods which use tilings."""
 
