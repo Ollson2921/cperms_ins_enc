@@ -4,7 +4,6 @@ horizontal insertion encoding."""
 
 from cayley_permutations import string_to_basis, CayleyPermutation
 
-# pylint: disable=duplicate-code
 
 
 def is_increasing(cperm: list[int], vals_seen=None) -> bool:
@@ -195,6 +194,7 @@ def rgfinc_left(cperm: list[int], seqtype: int) -> bool:
     increasing and right is of type 'seqtype'.
     0 -> strictly decreasing
     1 -> strictly increasing"""
+    # pylint: disable=duplicate-code
     if len(cperm) == 0 or len(cperm) == 1:
         return True
     left = cperm[0]
