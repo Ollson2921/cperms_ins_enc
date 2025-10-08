@@ -11,7 +11,6 @@ from gridded_cayley_permutations import Tiling, GriddedCayleyPerm
 
 Cell = Tuple[int, int]
 
-# pylint: disable=duplicate-code
 
 class RemoveEmptyRowsAndColumnsStrategy(
     DisjointUnionStrategy[Tiling, GriddedCayleyPerm]
@@ -45,6 +44,7 @@ class RemoveEmptyRowsAndColumnsStrategy(
         objs: Tuple[Optional[GriddedCayleyPerm], ...],
         children: Optional[Tuple[Tiling, ...]] = None,
     ) -> Iterator[GriddedCayleyPerm]:
+        # pylint: disable=duplicate-code
         if children is None:
             children = self.decomposition_function(comb_class)
         raise NotImplementedError

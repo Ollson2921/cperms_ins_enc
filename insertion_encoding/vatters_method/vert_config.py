@@ -3,7 +3,6 @@
 from typing import Iterator, List, Dict, Union
 from cayley_permutations import Av, CayleyPermutation
 
-# pylint: disable=duplicate-code
 
 class Letter:
     """
@@ -386,6 +385,7 @@ class VerticalConfiguration:
     def deleteable_indices(self, basis: List[CayleyPermutation]) -> List[int]:
         """Returns list of indices from candidates to delete that the
         VerticalConfiguration still avoids the basis after being deleted."""
+        # pylint: disable=duplicate-code
         indices = self.candidates_to_delete()
         to_remove = []
         for idx in indices:
@@ -438,6 +438,7 @@ class VerticalConfiguration:
         0123
         0122
         """
+        # pylint: disable=duplicate-code
         if size < len(self.config):
             return
         if not self.avoids_basis(basis):

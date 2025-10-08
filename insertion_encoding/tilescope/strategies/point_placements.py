@@ -18,7 +18,6 @@ from gridded_cayley_permutations.point_placements import (
 )
 from cayley_permutations import CayleyPermutation
 
-# pylint: disable=duplicate-code
 
 Cell = Tuple[int, int]
 
@@ -162,6 +161,7 @@ class RequirementPlacementStrategy(DisjointUnionStrategy[Tiling, GriddedCayleyPe
         objs: Tuple[Optional[GriddedCayleyPerm], ...],
         children: Optional[Tuple[Tiling, ...]] = None,
     ) -> Iterator[GriddedCayleyPerm]:
+        # pylint: disable=duplicate-code
         if children is None:
             children = self.decomposition_function(comb_class)
         raise NotImplementedError

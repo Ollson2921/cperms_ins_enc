@@ -6,7 +6,6 @@ from math import ceil
 from cayley_permutations import CayleyPermutation, Av
 from .vert_config import Word as VWord
 
-# pylint: disable=duplicate-code
 
 class Letter:
     """A letter has three values. The first is one of {u, m, d, f},
@@ -268,6 +267,7 @@ class HorizontalConfiguration:
         Returns the next Cayley permutations up to length 'size'
         which avoid the basis.
         """
+        # pylint: disable=duplicate-code
         if size < len(self):
             return
         if not self.avoids_basis(basis):
@@ -281,6 +281,7 @@ class HorizontalConfiguration:
     def deleteable_indices(self, basis: List[CayleyPermutation]) -> List[int]:
         """Returns list of indices from candidates to delete that the
         HorizontalConfiguration still avoids the basis after being deleted."""
+        # pylint: disable=duplicate-code
         indices = self.candidates_to_delete()
         to_remove = []
         for idx in indices:

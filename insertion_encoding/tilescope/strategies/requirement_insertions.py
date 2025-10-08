@@ -8,7 +8,6 @@ from cayley_permutations import CayleyPermutation
 
 Cell = Tuple[int, int]
 
-# pylint: disable=duplicate-code
 
 class RequirementInsertionStrategy(DisjointUnionStrategy[Tiling, GriddedCayleyPerm]):
     """Strategy for inserting requirements into a tiling."""
@@ -37,6 +36,7 @@ class RequirementInsertionStrategy(DisjointUnionStrategy[Tiling, GriddedCayleyPe
         objs: Tuple[Optional[GriddedCayleyPerm], ...],
         children: Optional[Tuple[Tiling, ...]] = None,
     ) -> Iterator[GriddedCayleyPerm]:
+        # pylint: disable=duplicate-code
         if children is None:
             children = self.decomposition_function(comb_class)
         raise NotImplementedError
