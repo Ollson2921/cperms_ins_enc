@@ -1,4 +1,4 @@
-from cperms_ins_enc import HorizontalSearcher, VerticalSearcher
+from insertion_encoding import HorizontalSearcher, VerticalSearcher
 
 
 def test_horizontal_searcher():
