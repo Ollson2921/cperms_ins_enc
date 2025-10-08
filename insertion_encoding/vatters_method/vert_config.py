@@ -1,5 +1,6 @@
 """This module contains the Letter class, VerticalConfiguration class and the Word class."""
 
+import abc
 from typing import Iterator, List, Dict, Union
 from cayley_permutations import Av, CayleyPermutation
 
@@ -598,62 +599,30 @@ class VerticalConfiguration:
     def __eq__(self, other):
         return self.config == other.config
 
-
-class Word:
+class GenericWord(abc.ABC):
     """
     A Word is a list that begins empty and a list of Letters
     are added to it.
-
-    Examples:
-    >>> print(Word([Letter("m", 1, 1), Letter("l", 2, 1)]))
-    m_(1, 1)l_(2, 1)
-    >>> print(Word([Letter("r", 1, 1), Letter("f", 1, 0)]))
-    r_(1, 1)f_(1, 0)
     """
 
     def __init__(self, letters: List):
         self.letters = letters
 
-    def cayley_permutation(
-        self, config: VerticalConfiguration = VerticalConfiguration(["🔹"])
-    ) -> VerticalConfiguration:
-        """
-        Applies the letters from a word to a VerticalConfiguration.
-        If no VerticalConfiguration is given, it applies the letters
-        to the empty VerticalConfiguration.
-
-        Examples:
-        >>> print(Word([Letter("m", 1, 1), Letter("l", 2, 1)]).permutation())
-        🔹01🔹
-        >>> print(Word([Letter("r", 1, 1), Letter("f", 1, 0)]).permutation())
-        00
-        """
-        new_config = config
-        for lett in self.letters:
-            new_config = lett.apply(new_config)
-        return new_config
-
     def max_index(self) -> int:
         """
         Returns maximum index of the letters in a word.
-
-        Examples:
-        >>> Word([Letter("m", 1, 1), Letter("l", 2, 1)]).max_index()
-        2
         """
         var = 1
         for letter in self.letters:
             var = max(var, letter.index)
         return var
 
+    @abc.abstractmethod
     @classmethod
-    def words_size_n(cls, av: Av, size: int) -> Iterator["Word"]:
+    def words_size_n(cls, av: Av, size: int) -> Iterator["GenericWord"]:
         """
         Prints the words generating all Cayley permutations in Av(B) of 'size'.
         """
-        for cperm in av.generate_cperms(size):
-            config = VerticalConfiguration(list(cperm))
-            yield config.get_word()
 
     @classmethod
     def max_index_in_av(cls, av: Av, size: int) -> int:
@@ -674,3 +643,45 @@ class Word:
 
     def __str__(self):
         return "".join(str(x) for x in self.letters)
+
+class Word(GenericWord):
+    """
+    A word for vertical insertion encoding.
+    A Word is a list that begins empty and a list of Letters
+    are added to it.
+
+    Examples:
+    >>> print(Word([Letter("m", 1, 1), Letter("l", 2, 1)]))
+    m_(1, 1)l_(2, 1)
+    >>> print(Word([Letter("r", 1, 1), Letter("f", 1, 0)]))
+    r_(1, 1)f_(1, 0)
+    """
+
+    def cayley_permutation(
+        self, config: VerticalConfiguration = VerticalConfiguration(["🔹"])
+    ) -> VerticalConfiguration:
+        """
+        Applies the letters from a word to a VerticalConfiguration.
+        If no VerticalConfiguration is given, it applies the letters
+        to the empty VerticalConfiguration.
+
+        Examples:
+        >>> print(Word([Letter("m", 1, 1), Letter("l", 2, 1)]).permutation())
+        🔹01🔹
+        >>> print(Word([Letter("r", 1, 1), Letter("f", 1, 0)]).permutation())
+        00
+        """
+        new_config = config
+        for lett in self.letters:
+            new_config = lett.apply(new_config)
+        return new_config
+
+    @classmethod
+    def words_size_n(cls, av: Av, size: int) -> Iterator["Word"]:
+        """
+        Prints the words generating all Cayley permutations in Av(B) of 'size'.
+        """
+        for cperm in av.generate_cperms(size):
+            config = VerticalConfiguration(list(cperm))
+            yield config.get_word()
+

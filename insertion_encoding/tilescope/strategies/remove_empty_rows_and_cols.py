@@ -92,7 +92,7 @@ class MatchingsRemoveExtraReqsStrategy(
         super().__init__(ignore_parent=ignore_parent, possibly_empty=possibly_empty)
 
     def decomposition_function(self, comb_class: Tiling) -> Tuple[Tiling, ...]:
-        new_requirements = []
+        new_requirements: list[tuple[GriddedCayleyPerm, ...]] = []
         for req_list in comb_class.requirements:
             if len(req_list) == 1:
                 new_requirements.append(req_list)

@@ -4,7 +4,7 @@ for Vatter's method."""
 from typing import List, Iterable, Iterator
 from math import ceil
 from cayley_permutations import CayleyPermutation, Av
-from .vert_config import Word as VWord
+from .vert_config import GenericWord
 
 
 class Letter:
@@ -395,8 +395,9 @@ class HorizontalConfiguration:
         return "\n".join(reversed(all_rows))
 
 
-class Word(VWord):
+class Word(GenericWord):
     """
+    A Word for horizontal insertion encoding.
     A Word is a list that begins empty and a list of Letters
     are added to it.
     """
