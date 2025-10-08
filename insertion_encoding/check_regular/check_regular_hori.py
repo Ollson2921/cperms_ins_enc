@@ -5,7 +5,6 @@ horizontal insertion encoding."""
 from cayley_permutations import string_to_basis, CayleyPermutation
 
 
-
 def is_increasing(cperm: list[int], vals_seen=None) -> bool:
     """Returns True if the sequence is strictly increasing.
     Also checks that no vals in vals_seen occur in the sequence."""
