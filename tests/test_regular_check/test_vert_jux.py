@@ -1,12 +1,12 @@
 from itertools import combinations
 from typing import List, Iterator
-from cperms_ins_enc.check_regular.check_regular_vert import checks_vert_type
+from insertion_encoding.check_regular.check_regular_vert import checks_vert_type
 
-from cperms_ins_enc import CayleyPermutation, Av
+from cayley_permutations import CayleyPermutation, Av
 
-decreasing = [CayleyPermutation([1, 1]), CayleyPermutation([1, 2])]
-increasing = [CayleyPermutation([1, 1]), CayleyPermutation([2, 1])]
-constant = [CayleyPermutation([2, 1]), CayleyPermutation([1, 2])]
+decreasing = [CayleyPermutation([0, 0]), CayleyPermutation([0, 1])]
+increasing = [CayleyPermutation([0, 0]), CayleyPermutation([1, 0])]
+constant = [CayleyPermutation([1, 0]), CayleyPermutation([0, 1])]
 
 
 def shuffle(list_a: List[int], list_b: List[int]) -> Iterator[List[int]]:

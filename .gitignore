@@ -8,6 +8,7 @@ tilescope/__pycache__/
 vatters_method/__pycache__/
 *.py[cod]
 *$py.class
+.tox/
 
 # Distribution / packaging
 .Python
