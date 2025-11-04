@@ -22,14 +22,14 @@ To install insertion_encoding on your system, run the following after cloning th
 
 .. code-block:: bash
 
-    ./setup.py
+    ./pip install .
 
 It is also possible to install insertion_encoding in development mode to work on the
 source code, in which case you run the following after cloning the repository:
 
 .. code-block:: bash
 
-    ./setup.py develop
+    ./pip install -e .
     
 
 ========================
