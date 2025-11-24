@@ -1,6 +1,9 @@
 """A searcher for the vertical insertion encoding."""
 
 from comb_spec_searcher import StrategyPack, AtomStrategy
+from check_regular_ins_enc import (
+    regular_vertical_insertion_encoding,
+)
 from .strategies import (
     RemoveEmptyRowsAndColumnsStrategy,
     FactorStrategy,
@@ -10,7 +13,6 @@ from .strategies import (
     RGFVerticalInsertionEncodingPlacementFactory,
 )
 from ..check_regular import (
-    regular_vertical_insertion_encoding,
     rgf_regular_vertical_insertion_encoding,
 )
 from .generic_searcher import GenericTilingsSearcher
