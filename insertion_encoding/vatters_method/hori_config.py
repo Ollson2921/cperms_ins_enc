@@ -308,8 +308,9 @@ class HorizontalConfiguration:
         not directly adjacent to two slots
 
         Example:
-        >>> print(HorizontalConfiguration(CayleyPermutation([0, 1, 2, 3, 4, 5, 6]),
-          [0.5, 3, 4.5, 5]).candidates_to_delete())
+        >>> cperm = CayleyPermutation([0, 1, 2, 3, 4, 5, 6])
+        >>> config = HorizontalConfiguration(cperm, [0.5, 3, 4.5, 5])
+        >>> print(config.candidates_to_delete())
         [0, 1, 2, 4, 6]
         """
         candidates = []
