@@ -1,7 +1,7 @@
 """Functions to check if a basis of a RGF class has a regular insertion encoding."""
 
 from cayley_permutations import string_to_basis, CayleyPermutation
-from insertion_encoding.check_regular.check_regular_vert import (
+from check_regular_ins_enc.check_regular_vert import (
     con_inc,
     con_con,
     con_dec,
@@ -10,7 +10,7 @@ from insertion_encoding.check_regular.check_regular_vert import (
     inc_con,
     dec_con,
 )
-from insertion_encoding.check_regular.check_regular_hori import is_decreasing
+from check_regular_ins_enc.check_regular_hori import is_decreasing
 
 
 def rgf_regular_vertical_insertion_encoding(
