@@ -74,6 +74,7 @@ def greedy_grid_left(cperm: list[int], type_of_seq: int) -> bool:
     0 -> decreasing
     1 -> increasing
     and top right is increasing."""
+    # pylint:disable='duplicate-code'
     if len(cperm) < 3:
         return True
     left = cperm[0]

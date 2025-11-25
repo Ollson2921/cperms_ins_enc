@@ -5,6 +5,7 @@ horizontal insertion encoding."""
 from cayley_permutations import string_to_basis, CayleyPermutation
 from check_regular_ins_enc.check_regular_hori import seq_type
 
+
 def rgf_regular_horizontal_insertion_encoding(
     basis: str | tuple[CayleyPermutation, ...],
 ) -> bool:

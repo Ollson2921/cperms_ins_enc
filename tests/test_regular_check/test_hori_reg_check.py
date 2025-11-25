@@ -1,8 +1,10 @@
 """Tests the horizontal insertion encoding check on some rgf
 horizontal juxtapositions."""
+
 from insertion_encoding.check_regular.check_regular_hori import rgfinc_left
 
 from cayley_permutations import CayleyPermutation, Av
+
 
 def test_rgf_hori_regular_check():
     decreasing = [CayleyPermutation([0, 0]), CayleyPermutation([0, 1])]

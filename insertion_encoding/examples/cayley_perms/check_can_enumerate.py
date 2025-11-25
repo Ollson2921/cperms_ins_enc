@@ -5,7 +5,7 @@ The string `basis` can be changed to any string of basis patterns which are
 one-based or zero-based and separated by anything.
 """
 
-from insertion_encoding import (
+from check_regular_ins_enc import (
     regular_vertical_insertion_encoding,
     regular_horizontal_insertion_encoding,
 )
