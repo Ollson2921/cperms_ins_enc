@@ -40,4 +40,4 @@ def rgfinc_left(cperm: list[int], seqtype: int) -> bool:
         left = cperm[idx]
     else:
         return True
-    return seq_type(cperm[idx:], seqtype, [])
+    return seq_type(cperm[idx:], seqtype, None)
