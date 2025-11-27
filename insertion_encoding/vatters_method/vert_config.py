@@ -242,7 +242,7 @@ class VerticalConfiguration:
 
         Example:
         >>> print(VerticalConfiguration([0, 2, 1, "🔹", 2]).letter_of_last_insertion())
-        f_(1, 0)
+        r_(1, 0)
         """
         index = self.index_of_max()
         if index != 0 and self.config[index - 1] == "🔹":
@@ -281,8 +281,8 @@ class VerticalConfiguration:
         """Returns the VerticalConfiguration before the last letter was applied.
 
         Example:
-        >>> print(VerticalConfiguration([0, 2, 1, "🔹", 2]).undoing_last_ins(Letter("f", 1, 0)))
-        0🔹1🔹2
+        >>> print(VerticalConfiguration([0, 2, 1, "🔹", 2]).undoing_last_ins(Letter("r", 1, 0)))
+        021🔹
         """
         index = self.index_of_max()
         if letter.letter == "m":
@@ -315,7 +315,7 @@ class VerticalConfiguration:
 
         Example:
         >>> print(VerticalConfiguration([0, 2, 1, "🔹", 2]).get_word())
-        l_(1, 1)m_(1, 1)r_(2, 1)f_(1, 0)
+        l_(1, 1)m_(1, 1)f_(1, 1)r_(1, 0)
         """
         v_config = self
         word: List[Letter] = []
@@ -435,9 +435,12 @@ class VerticalConfiguration:
         >>> c = VerticalConfiguration([0, 1, "🔹"])
         >>> for config in c.cayley_perms(4, [CayleyPermutation([1, 0])]):
         ...     print(config)
+        011
+        0111
+        0112
         012
-        0123
         0122
+        0123
         """
         # pylint: disable=duplicate-code
         if size < len(self.config):
@@ -457,7 +460,7 @@ class VerticalConfiguration:
 
         Example:
         >>> VerticalConfiguration([0, 1, "🔹"]).count(4, [CayleyPermutation([1, 0])])
-        0,0,0,1,2,
+        0,0,0,2,4,
         """
         counts: Dict[int, List[CayleyPermutation]] = {}
         for i in range(size + 1):
@@ -537,10 +540,6 @@ class VerticalConfiguration:
         Examples:
         >>> for config in VerticalConfiguration([0, 1, "🔹", 2]).children():
         ...     print(config)
-        0122
-        012🔹2
-        01🔹2🔹2
-        01🔹22
         0132
         013🔹2
         01🔹3🔹2
@@ -669,9 +668,9 @@ class Word(GenericWord):
         to the empty VerticalConfiguration.
 
         Examples:
-        >>> print(Word([Letter("m", 1, 1), Letter("l", 2, 1)]).permutation())
+        >>> print(Word([Letter("m", 1, 1), Letter("l", 2, 1)]).cayley_permutation())
         🔹01🔹
-        >>> print(Word([Letter("r", 1, 1), Letter("f", 1, 0)]).permutation())
+        >>> print(Word([Letter("r", 1, 1), Letter("f", 1, 0)]).cayley_permutation())
         00
         """
         new_config = config
