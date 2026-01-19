@@ -61,7 +61,7 @@ class ConfigAvoidingBasis(CombinatorialClass[CPermutation]):
     def objects_of_size(self, n: int, **parameters: int) -> Iterator[CPermutation]:
         for cperm in self.config.cayley_perms(n, self.basis):
             if len(cperm) == n:
-                yield CPermutation(cperm.cperm)
+                yield CPermutation(cperm)
 
     def __str__(self):
         return f"Configuration {self.config} avoiding basis {', '.join(str(p) for p in self.basis)}"
