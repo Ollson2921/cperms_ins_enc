@@ -1,19 +1,9 @@
-from insertion_encoding import regular_horizontal_insertion_encoding
-from insertion_encoding.check_regular.check_regular_hori import dec_left, rgfinc_left
+"""Tests the horizontal insertion encoding check on some rgf
+horizontal juxtapositions."""
+
+from insertion_encoding.check_regular.check_regular_hori import rgfinc_left
 
 from cayley_permutations import CayleyPermutation, Av
-
-
-def test_hori_regular_check_fail():
-    """Test that this class should fail as they are not permutations"""
-    assert regular_horizontal_insertion_encoding("132, 212") is False
-    assert dec_left([1, 0, 1], 1) is False
-
-
-def test_hori_regular_check_pass():
-    """Test that this class should pass."""
-    assert regular_horizontal_insertion_encoding("132, 213")
-    assert dec_left([1, 0, 2], 1)
 
 
 def test_rgf_hori_regular_check():

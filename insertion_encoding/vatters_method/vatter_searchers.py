@@ -6,11 +6,11 @@ from comb_spec_searcher import (
     AtomStrategy,
 )
 from cayley_permutations import CayleyPermutation
-from ..tilescope.generic_searcher import GenericSearcher
-from ..check_regular import (
+from check_regular_ins_enc import (
     regular_horizontal_insertion_encoding,
     regular_vertical_insertion_encoding,
 )
+from ..tilescope.generic_searcher import GenericSearcher
 from .vert_config import VerticalConfiguration
 from .hori_config import HorizontalConfiguration
 from .strategies import (

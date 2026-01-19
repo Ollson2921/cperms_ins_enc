@@ -1,9 +1,9 @@
 """This module is used for counting the number of
 Cayley permutation classes with a regular insertion encoding."""
 
-from cayley_permutations import CayleyPermutation
 from itertools import combinations
-from insertion_encoding import (
+from cayley_permutations import CayleyPermutation
+from check_regular_ins_enc import (
     regular_vertical_insertion_encoding,
     regular_horizontal_insertion_encoding,
 )

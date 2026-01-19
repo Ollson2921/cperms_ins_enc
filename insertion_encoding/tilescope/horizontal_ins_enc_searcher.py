@@ -3,6 +3,9 @@
 from functools import cached_property
 from cayley_permutations import CayleyPermutation
 from gridded_cayley_permutations import GriddedCayleyPerm
+from check_regular_ins_enc import (
+    regular_horizontal_insertion_encoding,
+)
 from comb_spec_searcher import (
     CombinatorialSpecificationSearcher,
     StrategyPack,
@@ -20,7 +23,6 @@ from .strategies import (
     MatchingsRemoveExtraReqsStrategy,
 )
 from ..check_regular import (
-    regular_horizontal_insertion_encoding,
     rgf_regular_horizontal_insertion_encoding,
 )
 from .generic_searcher import GenericTilingsSearcher
