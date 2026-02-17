@@ -12,7 +12,7 @@ from comb_spec_searcher import DisjointUnionStrategy, StrategyFactory
 from gridded_cayley_permutations import Tiling, GriddedCayleyPerm
 from gridded_cayley_permutations.point_placements import (
     PointPlacement,
-    Directions,
+    DIRECTIONS,
     DIR_LEFT,
     DIR_LEFT_BOT,
 )
@@ -120,7 +120,7 @@ class RGFHPointPlacement(RGFVPointPlacement):
 class RequirementPlacementStrategy(DisjointUnionStrategy[Tiling, GriddedCayleyPerm]):
     """Strategy for placing requirements in a tiling."""
 
-    DIRECTIONS = Directions
+    DIRECTIONS = DIRECTIONS
 
     def __init__(
         self,
